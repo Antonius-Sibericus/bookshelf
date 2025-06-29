@@ -16,12 +16,12 @@ model User {
   email       String    @unique
   password    String
   role        UserRole  @default(VISITOR)
-  basketId    String    @unique @map("basket_id")
-  basket      Basket    @relation(fields: [basketId], references: [id])
-  publishedId String    @unique @map("published_id")
-  published   Published @relation(fields: [publishedId], references: [id])
-  favoritesId String    @unique @map("favorites_id")
-  favorites   Favorites @relation(fields: [favoritesId], references: [id])
+  basketId    String?    @unique @map("basket_id")
+  basket      Basket?    @relation(fields: [basketId], references: [id])
+  publishedId String?    @unique @map("published_id")
+  published   Published? @relation(fields: [publishedId], references: [id])
+  favoritesId String?    @unique @map("favorites_id")
+  favorites   Favorites? @relation(fields: [favoritesId], references: [id])
   publisherOf Book[]    @relation()
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
@@ -113,7 +113,7 @@ model Theme {
 enum UserRole {
   VISITOR
   READER
-  AUTHOR
+  PUBLISHER
   ADMIN
 
   @@map("enum_user_roles")
