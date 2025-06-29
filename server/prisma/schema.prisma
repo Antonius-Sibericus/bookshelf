@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URI")
+}
+
+model User {
+  id          String    @id @default(uuid())
+  surname     String
+  name        String
+  paternal    String
+  email       String    @unique
+  password    String
+  role        UserRole  @default(VISITOR)
+  basketId    String    @unique @map("basket_id")
+  basket      Basket    @relation(fields: [basketId], references: [id])
+  publishedId String    @unique @map("published_id")
+  published   Published @relation(fields: [publishedId], references: [id])
+  favoritesId String    @unique @map("favorites_id")
+  favorites   Favorites @relation(fields: [favoritesId], references: [id])
+  publisherOf Book[]    @relation()
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Basket {
+  id        String   @id @default(uuid())
+  user      User?    @relation()
+  books     Book[]   @relation("baskets_books")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("baskets")
+}
+
+model Published {
+  id        String   @id @default(uuid())
+  user      User?    @relation()
+  books     Book[]   @relation("published_books")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("published")
+}
+
+model Favorites {
+  id        String   @id @default(uuid())
+  user      User?    @relation()
+  books     Book[]   @relation("favorites_books")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("favorites")
+}
+
+model Book {
+  id          String      @id @default(uuid())
+  heading     String
+  tag         String      @unique
+  author      String
+  description String
+  pages       Int
+  isInStrock  Boolean     @default(true)
+  year        Int
+  isbn        Int
+  isSoftCover Boolean     @default(false)
+  baskets     Basket[]    @relation("baskets_books")
+  published   Published[] @relation("published_books")
+  favorites   Favorites[] @relation("favorites_books")
+  publisherId String      @unique @map("publisher_id")
+  publisher   User        @relation(fields: [publisherId], references: [id])
+  categoryId  String      @unique @map("category_id")
+  category    Category    @relation("category_books", fields: [categoryId], references: [id])
+  themeId     String      @unique @map("theme_id")
+  theme       Theme       @relation("theme_books", fields: [themeId], references: [id])
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  @@map("books")
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  title     String
+  tag       String   @unique
+  themes    Theme[]  @relation("category_themes")
+  books     Book[]   @relation("category_books")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("categories")
+}
+
+model Theme {
+  id         String   @id @default(uuid())
+  title      String
+  tag        String   @unique
+  books      Book[]   @relation("theme_books")
+  categoryId String   @unique @map("category_id")
+  category   Category @relation("category_themes", fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("themes")
+}
+
+enum UserRole {
+  VISITOR
+  READER
+  AUTHOR
+  ADMIN
+
+  @@map("enum_user_roles")
+}
