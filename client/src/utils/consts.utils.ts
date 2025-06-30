@@ -1,4 +1,5 @@
 export const mainPath = '/'
+export const notFoundPath = '/404'
 export const signupPath = '/signup'
 export const loginPath = '/login'
 export const catalogPath = '/catalog'
