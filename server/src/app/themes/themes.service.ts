@@ -138,7 +138,6 @@ export class ThemesService {
                 throw new BadRequestException('Для обновления темы необходим тэг')
             }
 
-
             const oldData = await this.prismaService.theme.findUnique({
                 where: {
                     tag

@@ -7,7 +7,9 @@ import { ThemeUpdateDTO } from './dto/theme-update.dto'
 
 @Controller('themes')
 export class ThemesController {
-  constructor(private readonly themesService: ThemesService) { }
+  constructor(
+    private readonly themesService: ThemesService
+  ) { }
 
   @ApiOperation({
     summary: 'Поиск всех тем',

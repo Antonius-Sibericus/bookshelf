@@ -1,34 +1,32 @@
-import { ApiProperty } from '@nestjs/swagger'
-import { IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator'
-import { UserRoles } from 'src/types/user-roles.enum'
+import { ApiProperty } from "@nestjs/swagger"
+import { IsString, IsNotEmpty, MaxLength, IsEmail, IsOptional } from "class-validator"
+import { UserRole } from "generated/prisma"
 
-export class SignupDTO {
+export class UserInfoDTO {
     @ApiProperty({
         name: 'Фамилия',
         description: 'Фамилия пользователя',
         example: 'Васильев',
         maxLength: 63,
-        required: true,
         type: String
     })
+    @IsOptional()
     @IsString({ message: 'Значение должно иметь строковый тип' })
-    @IsNotEmpty({ message: 'Поле не должно быть пустым' })
     @MaxLength(63, { message: 'Значение не должно быть длиннее 63 символов' })
-    surname: string
-
+    surname?: string
+    
     @ApiProperty({
         name: 'Имя',
         description: 'Имя пользователя',
         example: 'Алексей',
         maxLength: 63,
-        required: true,
         type: String
     })
+    @IsOptional()
     @IsString({ message: 'Значение должно иметь строковый тип' })
-    @IsNotEmpty({ message: 'Поле не должно быть пустым' })
     @MaxLength(63, { message: 'Значение не должно быть длиннее 63 символов' })
-    name: string
-
+    name?: string
+    
     @ApiProperty({
         name: 'Отчество',
         description: 'Отчество пользователя',
@@ -36,43 +34,29 @@ export class SignupDTO {
         maxLength: 63,
         type: String
     })
+    @IsOptional()
     @IsString({ message: 'Значение должно иметь строковый тип' })
     @MaxLength(63, { message: 'Значение не должно быть длиннее 63 символов' })
-    paternal: string
-
+    paternal?: string
+    
     @ApiProperty({
         name: 'E-Mail',
         description: 'Электронная почта пользователя',
         example: 'example@mail.ru',
         maxLength: 63,
-        required: true,
         type: String
     })
+    @IsOptional()
     @IsString({ message: 'Значение должно иметь строковый тип' })
     @IsEmail({}, { message: 'Введите адрес электронной почты правильно' })
-    @IsNotEmpty({ message: 'Поле не должно быть пустым' })
     @MaxLength(63, { message: 'Значение не должно быть длиннее 63 символов' })
-    email: string
-
-    @ApiProperty({
-        name: 'Пароль',
-        description: 'Пароль пользователя',
-        example: '12345678Qq',
-        maxLength: 63,
-        required: true,
-        type: String
-    })
-    @IsNotEmpty({ message: 'Поле не должно быть пустым' })
-    @MinLength(6, { message: 'пароль не должен быть короче 6 символов' })
-    @MaxLength(12, { message: 'пароль не должен быть длиннее 12 символов' })
-    password: string
-
+    email?: string
+    
     @ApiProperty({
         name: 'Роль',
         description: 'Роль пользователя - посетитель, читатель, публикатор, администратор',
         example: 'VISITOR',
-        required: true,
     })
-    @IsNotEmpty({ message: 'Поле не должно быть пустым' })
-    role: UserRoles
+    @IsOptional()
+    role?: UserRole
 }

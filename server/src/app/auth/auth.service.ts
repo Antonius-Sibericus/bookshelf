@@ -8,6 +8,7 @@ import { isDev } from 'src/utils/is-dev.util'
 import { SignupDTO } from './dto/signup.dto'
 import { hash, verify } from 'argon2'
 import { LoginDTO } from './dto/login.dto'
+import { UserPasswordDTO } from '../users/dto/user-password.dto'
 
 @Injectable()
 export class AuthService {
@@ -40,7 +41,7 @@ export class AuthService {
         }
     }
 
-    private setCookie(res: Response, value: string, expires: Date): void {
+    public setCookie(res: Response, value: string, expires: Date): void {
         res.cookie('refreshToken', value, {
             httpOnly: true,
             domain: this.COOKIE_DOMAIN,
@@ -189,6 +190,7 @@ export class AuthService {
             }
 
             const isValidPassword = await verify(potentialUser.password, password)
+            console.log(password)
 
             if (!isValidPassword) {
                 throw new UnauthorizedException('Корректно введите пароль')
@@ -246,6 +248,74 @@ export class AuthService {
                     message: `Токены обновлены успешно`,
                     accessToken,
                     userId: user.id
+                })
+        } catch (err) {
+            console.error(err.message)
+            return res.status(HttpStatus.NOT_IMPLEMENTED).json({ error: true, message: err.message })
+        }
+    }
+
+    public async patchPassword(id: string, dto: UserPasswordDTO, res: Response) {
+        try {
+            if (!id) {
+                throw new BadRequestException('Для обновления информации о пользователе необходим ID')
+            }
+
+            const { password } = dto
+
+            if (!password) {
+                throw new BadRequestException('Новый пароль не найден')
+            }
+
+            const oldData = await this.prismaService.user.findUnique({
+                where: {
+                    id
+                },
+                select: {
+                    password: true
+                }
+            })
+
+            if (!oldData) {
+                throw new NotFoundException(`Пользователя с ID ${id} не существует`)
+            }
+
+            const isValidPassword = await verify(oldData.password, password)
+
+            if (isValidPassword) {
+                throw new ConflictException('Новый пароль не должен совпадать со старым')
+            }
+
+            const newPassword = await hash(password)
+
+            const patchedUser = await this.prismaService.user.update({
+                where: {
+                    id
+                },
+                data: {
+                    password: newPassword
+                },
+                select: {
+                    id: true,
+                    surname: true,
+                    name: true,
+                    paternal: true,
+                    email: true,
+                    role: true,
+                    publisherOf: true
+                }
+            })
+
+            if (!patchedUser) {
+                throw new NotImplementedException('Не удалось обновить пароль')
+            }
+
+            return res
+                .status(HttpStatus.OK)
+                .json({
+                    error: false,
+                    message: `Пароль пользователя ${patchedUser.surname + ' ' + patchedUser.name} успешно обновлен`,
+                    patchedUser
                 })
         } catch (err) {
             console.error(err.message)
