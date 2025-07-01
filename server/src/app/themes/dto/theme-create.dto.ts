@@ -1,11 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger"
-import { IsString, IsNotEmpty, MaxLength } from "class-validator"
+import { IsNotEmpty, IsString, IsUUID, MaxLength } from "class-validator"
 
-export class CategoryCreateDTO {
+export class ThemeCreateDTO {
     @ApiProperty({
-        name: 'Название категории',
-        description: 'Название категории, которое будет подставлено в качестве категории книги',
-        example: 'Учебники',
+        name: 'Название темы',
+        description: 'Название темы, которое будет подставлено в качестве темы книги',
+        example: 'Физика',
         maxLength: 63,
         type: String
     })
@@ -15,9 +15,9 @@ export class CategoryCreateDTO {
     title: string
 
     @ApiProperty({
-        name: 'Тэг категории',
+        name: 'Тэг темы',
         description: 'Кодовое слово латинскими буквами для более удобной работы с данными',
-        example: 'textbooks',
+        example: 'physics',
         maxLength: 63,
         type: String
     })
@@ -25,4 +25,15 @@ export class CategoryCreateDTO {
     @IsNotEmpty({ message: 'Поле не должно быть пустым' })
     @MaxLength(63, { message: 'Значение не должно быть длиннее 63 символов' })
     tag: string
+
+    @ApiProperty({
+        name: 'ID категории',
+        description: 'ID категории, к которой относится данная тема',
+        example: '123abc123abc...',
+        type: String
+    })
+    @IsString({ message: 'Значение должно иметь строковый тип' })
+    @IsNotEmpty({ message: 'Поле не должно быть пустым' })
+    @IsUUID("4", { message: 'Значение должно иметь тип UUID' })
+    categoryId: string
 }

@@ -73,11 +73,11 @@ model Book {
   baskets     Basket[]    @relation("baskets_books")
   published   Published[] @relation("published_books")
   favorites   Favorites[] @relation("favorites_books")
-  publisherId String      @unique @map("publisher_id")
+  publisherId String      @map("publisher_id")
   publisher   User        @relation(fields: [publisherId], references: [id])
-  categoryId  String      @unique @map("category_id")
+  categoryId  String      @map("category_id")
   category    Category    @relation("category_books", fields: [categoryId], references: [id])
-  themeId     String      @unique @map("theme_id")
+  themeId     String      @map("theme_id")
   theme       Theme       @relation("theme_books", fields: [themeId], references: [id])
   createdAt   DateTime    @default(now()) @map("created_at")
   updatedAt   DateTime    @updatedAt @map("updated_at")
@@ -102,7 +102,7 @@ model Theme {
   title      String
   tag        String   @unique
   books      Book[]   @relation("theme_books")
-  categoryId String   @unique @map("category_id")
+  categoryId String   @map("category_id")
   category   Category @relation("category_themes", fields: [categoryId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")

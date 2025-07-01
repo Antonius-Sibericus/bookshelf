@@ -186,7 +186,7 @@ export class CategoriesService {
                 .status(HttpStatus.OK)
                 .json({
                     error: false,
-                    message: `Категория с тэгом ${deletedCategory.tag} успешно удалена`,
+                    message: `Категория '${deletedCategory.title}' успешно удалена`,
                     deletedCategory
                 })
         } catch (err) {
