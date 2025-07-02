@@ -9,29 +9,27 @@ datasource db {
 }
 
 model User {
-  id          String    @id @default(uuid())
+  id          String     @id @default(uuid())
   surname     String
   name        String
   paternal    String
-  email       String    @unique
+  email       String     @unique
   password    String
-  role        UserRole  @default(VISITOR)
-  basketId    String?    @unique @map("basket_id")
-  basket      Basket?    @relation(fields: [basketId], references: [id])
-  publishedId String?    @unique @map("published_id")
-  published   Published? @relation(fields: [publishedId], references: [id])
-  favoritesId String?    @unique @map("favorites_id")
-  favorites   Favorites? @relation(fields: [favoritesId], references: [id])
-  publisherOf Book[]    @relation()
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
+  role        UserRole   @default(VISITOR)
+  basket      Basket?    @relation()
+  published   Published? @relation()
+  favorites   Favorites? @relation()
+  publisherOf Book[]     @relation()
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
 
   @@map("users")
 }
 
 model Basket {
   id        String   @id @default(uuid())
-  user      User?    @relation()
+  userId    String   @unique @map("user_id")
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   books     Book[]   @relation("baskets_books")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -41,7 +39,8 @@ model Basket {
 
 model Published {
   id        String   @id @default(uuid())
-  user      User?    @relation()
+  userId    String   @unique @map("user_id")
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   books     Book[]   @relation("published_books")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -51,7 +50,8 @@ model Published {
 
 model Favorites {
   id        String   @id @default(uuid())
-  user      User?    @relation()
+  userId    String   @unique @map("user_id")
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   books     Book[]   @relation("favorites_books")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -66,7 +66,7 @@ model Book {
   author      String
   description String
   pages       Int
-  isInStock  Boolean     @default(true)
+  isInStock   Boolean     @default(true)
   year        Int
   isbn        Int
   isSoftCover Boolean     @default(false)
@@ -74,11 +74,11 @@ model Book {
   published   Published[] @relation("published_books")
   favorites   Favorites[] @relation("favorites_books")
   publisherId String      @map("publisher_id")
-  publisher   User        @relation(fields: [publisherId], references: [id])
-  categoryId  String      @map("category_id")
-  category    Category    @relation("category_books", fields: [categoryId], references: [id])
-  themeId     String      @map("theme_id")
-  theme       Theme       @relation("theme_books", fields: [themeId], references: [id])
+  publisher   User        @relation(fields: [publisherId], references: [id], onDelete: Cascade)
+  categoryTag String      @map("category_tag")
+  category    Category    @relation("category_books", fields: [categoryTag], references: [tag], onDelete: Cascade)
+  themeTag    String      @map("theme_tag")
+  theme       Theme       @relation("theme_books", fields: [themeTag], references: [tag], onDelete: Cascade)
   createdAt   DateTime    @default(now()) @map("created_at")
   updatedAt   DateTime    @updatedAt @map("updated_at")
 
@@ -98,14 +98,14 @@ model Category {
 }
 
 model Theme {
-  id         String   @id @default(uuid())
-  title      String
-  tag        String   @unique
-  books      Book[]   @relation("theme_books")
-  categoryId String   @map("category_id")
-  category   Category @relation("category_themes", fields: [categoryId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
+  id          String   @id @default(uuid())
+  title       String
+  tag         String   @unique
+  books       Book[]   @relation("theme_books")
+  categoryTag String   @map("category_tag")
+  category    Category @relation("category_themes", fields: [categoryTag], references: [tag], onDelete: Cascade)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("themes")
 }

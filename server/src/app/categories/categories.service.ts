@@ -166,6 +166,10 @@ export class CategoriesService {
 
     public async delete(tag: string, res: Response) {
         try {
+            if (!tag) {
+                throw new BadRequestException('Для удаления информации о категории необходим тэг')
+            }
+
             const potentialCategory = await this.prismaService.category.findUnique({
                 where: {
                     tag

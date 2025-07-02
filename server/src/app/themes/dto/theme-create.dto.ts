@@ -27,13 +27,12 @@ export class ThemeCreateDTO {
     tag: string
 
     @ApiProperty({
-        name: 'ID категории',
-        description: 'ID категории, к которой относится данная тема',
-        example: '123abc123abc...',
+        name: 'Тэг категории',
+        description: 'Тэг категории, к которой относится данная тема',
+        example: 'textbooks',
         type: String
     })
     @IsString({ message: 'Значение должно иметь строковый тип' })
     @IsNotEmpty({ message: 'Поле не должно быть пустым' })
-    @IsUUID("4", { message: 'Значение должно иметь тип UUID' })
-    categoryId: string
+    categoryTag: string
 }

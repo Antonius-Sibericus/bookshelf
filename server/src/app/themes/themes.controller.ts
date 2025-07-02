@@ -31,7 +31,7 @@ export class ThemesController {
 
   @ApiOperation({
     summary: 'Создание темы для категории',
-    description: 'Формирует запись о теме книг по названию, тэгу и ID категории'
+    description: 'Формирует запись о теме книг по названию, тэгу и тэгу категории'
   })
   @Post()
   public async createTheme(@Res() res: Response, @Body() dto: ThemeCreateDTO) {
@@ -40,10 +40,10 @@ export class ThemesController {
 
   @ApiOperation({
     summary: 'Обновление темы для категории',
-    description: 'Редактирует запись о теме книг по названию, тэгу и ID категории'
+    description: 'Редактирует запись о теме книг по названию, тэгу и тэгу категории'
   })
   @Put(':tag')
-  public async updateTheme(@Param('tag') tag: string, @Res() res: Response, @Body() dto: ThemeUpdateDTO) {
+  public async updateTheme(@Param('tag') tag: string, @Body() dto: ThemeUpdateDTO, @Res() res: Response) {
     return await this.themesService.update(tag, dto, res)
   }
 

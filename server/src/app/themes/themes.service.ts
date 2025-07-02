@@ -75,12 +75,12 @@ export class ThemesService {
 
     public async create(dto: ThemeCreateDTO, res: Response) {
         try {
-            const { title, tag, categoryId } = dto
+            const { title, tag, categoryTag } = dto
 
             if (!title || !tag) {
                 throw new BadRequestException(`Введены не все данные для создания темы - ${!title ? 'Название ' : '' +
-                    !tag ? 'Тэг ' : '' +
-                        !categoryId ? 'ID категории ' : ''
+                    !tag ? 'Тэг темы ' : '' +
+                        !categoryTag ? 'Тэг категории ' : ''
                     }`)
             }
 
@@ -96,19 +96,19 @@ export class ThemesService {
 
             const potentialCategory = await this.prismaService.category.findUnique({
                 where: {
-                    id: categoryId
+                    tag: categoryTag
                 }
             })
 
             if (!potentialCategory) {
-                throw new BadRequestException(`Категории с ID ${categoryId} не существует`)
+                throw new BadRequestException(`Категории с тэгом ${categoryTag} не существует`)
             }
 
             const theme = await this.prismaService.theme.create({
                 data: {
                     title,
                     tag,
-                    categoryId
+                    categoryTag
                 }
             })
 
@@ -120,7 +120,7 @@ export class ThemesService {
                 .status(HttpStatus.CREATED)
                 .json({
                     error: false,
-                    message: `Тема ${title} с тэгом ${tag} категории ${categoryId} успешно создана`,
+                    message: `Тема ${title} с тэгом ${tag} категории ${categoryTag} успешно создана`,
                     theme
                 })
         } catch (err) {
@@ -132,7 +132,7 @@ export class ThemesService {
 
     public async update(tag: string, dto: ThemeUpdateDTO, res: Response) {
         try {
-            const { title, categoryId } = dto
+            const { title, categoryTag } = dto
 
             if (!tag) {
                 throw new BadRequestException('Для обновления темы необходим тэг')
@@ -144,7 +144,7 @@ export class ThemesService {
                 },
                 select: {
                     title: true,
-                    categoryId: true
+                    categoryTag: true
                 }
             })
 
@@ -158,7 +158,7 @@ export class ThemesService {
                 },
                 data: {
                     title: title ? title : oldData.title,
-                    categoryId: categoryId ? categoryId : oldData.categoryId
+                    categoryTag: categoryTag ? categoryTag : oldData.categoryTag
                 }
             })
 
@@ -181,6 +181,10 @@ export class ThemesService {
 
     public async delete(tag: string, res: Response) {
         try {
+            if (!tag) {
+                throw new BadRequestException('Для удаления информации о теме необходим тэг')
+            }
+
             const potentialTheme = await this.prismaService.theme.findUnique({
                 where: {
                     tag
