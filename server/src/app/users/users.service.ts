@@ -1,11 +1,11 @@
-import { BadRequestException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException, NotImplementedException, UnauthorizedException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { Request, Response } from 'express';
-import { AuthService } from '../auth/auth.service';
-import { JwtPayload } from 'src/types/jwt.interface';
-import { JwtService } from '@nestjs/jwt';
-import { UserInfoDTO } from './dto/user-info.dto';
-import { UserPasswordDTO } from './dto/user-password.dto';
+import { BadRequestException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException, NotImplementedException, UnauthorizedException } from '@nestjs/common'
+import { PrismaService } from '../prisma/prisma.service'
+import { Request, Response } from 'express'
+import { AuthService } from '../auth/auth.service'
+import { JwtPayload } from 'src/types/jwt.interface'
+import { JwtService } from '@nestjs/jwt'
+import { UserInfoDTO } from './dto/user-info.dto'
+import { UserPasswordDTO } from './dto/user-password.dto'
 
 @Injectable()
 export class UsersService {

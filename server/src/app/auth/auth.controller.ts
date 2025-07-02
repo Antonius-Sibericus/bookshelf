@@ -50,8 +50,8 @@ export class AuthController {
   }
 
   @ApiOperation({
-    summary: "Выход из системы",
-    description: "Удаляет токен обновления из Cookie"
+    summary: 'Выход из системы',
+    description: 'Удаляет токен обновления из Cookie'
   })
   @Post('logout')
   public async logout(@Res({ passthrough: true }) res: Response) {

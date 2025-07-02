@@ -1,6 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger"
-import { IsString, IsNotEmpty, MaxLength, IsEmail, IsOptional } from "class-validator"
-import { UserRole } from "generated/prisma"
+import { ApiProperty } from '@nestjs/swagger'
+import { IsEmail, IsOptional, IsString, MaxLength } from 'class-validator'
+import { UserRole } from 'generated/prisma'
 
 export class UserInfoDTO {
     @ApiProperty({

@@ -1,9 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Patch, Put, Req, Res, UseGuards } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Request, Response } from 'express';
-import { UserInfoDTO } from './dto/user-info.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { Body, Controller, Delete, Get, Param, Patch, Put, Req, Res, UseGuards } from '@nestjs/common'
+import { UsersService } from './users.service'
+import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Request, Response } from 'express'
+import { UserInfoDTO } from './dto/user-info.dto'
+import { AuthGuard } from 'src/guards/auth.guard'
 
 @ApiTags('Пользователи')
 @Controller('users')

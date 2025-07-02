@@ -5,7 +5,8 @@ import { Request } from 'express'
 export class AuthGuard implements CanActivate {
     canActivate(context: ExecutionContext): boolean {
         const request = context.switchToHttp().getRequest() as Request
-        const token = request.headers['accessToken']
+        const token = request.headers['access_token']
+        console.log(request.headers)
         if (!token) { throw new UnauthorizedException('Токен доступа не действителен или не найден') }
         return true
     }

@@ -1,12 +1,12 @@
-import { BadRequestException, ConflictException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException, NotImplementedException, UnauthorizedException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { BookCreateDTO } from './dto/book-create.dto';
-import { Request, Response } from 'express';
-import { Filters } from 'src/types/filters.enum';
-import { BookUpdateDTO } from './dto/book-update.dto';
-import { JwtPayload } from 'src/types/jwt.interface';
-import { JwtService } from '@nestjs/jwt';
-import { UserRoles } from 'src/types/user-roles.enum';
+import { BadRequestException, ConflictException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException, NotImplementedException, UnauthorizedException } from '@nestjs/common'
+import { PrismaService } from '../prisma/prisma.service'
+import { BookCreateDTO } from './dto/book-create.dto'
+import { Request, Response } from 'express'
+import { Filters } from 'src/types/filters.enum'
+import { BookUpdateDTO } from './dto/book-update.dto'
+import { JwtPayload } from 'src/types/jwt.interface'
+import { JwtService } from '@nestjs/jwt'
+import { UserRoles } from 'src/types/user-roles.enum'
 
 @Injectable()
 export class BooksService {

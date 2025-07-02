@@ -1,8 +1,8 @@
-import { BadRequestException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException, NotImplementedException, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { Request, Response } from 'express';
-import { JwtPayload } from 'src/types/jwt.interface';
-import { PrismaService } from '../prisma/prisma.service';
+import { BadRequestException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException, NotImplementedException, UnauthorizedException } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
+import { Request, Response } from 'express'
+import { JwtPayload } from 'src/types/jwt.interface'
+import { PrismaService } from '../prisma/prisma.service'
 
 @Injectable()
 export class FavoritesService {

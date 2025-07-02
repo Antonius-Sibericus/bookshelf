@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger"
-import { IsString, IsNotEmpty, MaxLength, IsOptional } from "class-validator"
+import { ApiProperty } from '@nestjs/swagger'
+import { IsOptional, IsString, MaxLength } from 'class-validator'
 
 export class CategoryUpdateDTO {
     @ApiProperty({

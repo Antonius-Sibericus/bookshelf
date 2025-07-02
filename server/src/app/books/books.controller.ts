@@ -1,11 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
-import { BooksService } from './books.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { BookCreateDTO } from './dto/book-create.dto';
-import { Request, Response } from 'express';
-import { Filters } from 'src/types/filters.enum';
-import { BookUpdateDTO } from './dto/book-update.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common'
+import { BooksService } from './books.service'
+import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { BookCreateDTO } from './dto/book-create.dto'
+import { Request, Response } from 'express'
+import { Filters } from 'src/types/filters.enum'
+import { BookUpdateDTO } from './dto/book-update.dto'
+import { AuthGuard } from 'src/guards/auth.guard'
 
 @ApiTags('Книги')
 @Controller('books')

@@ -28,17 +28,9 @@ export class AuthService {
 
     private generateTokens(id: string) {
         const payload: JwtPayload = { id }
-        const accessToken = this.jwtService.sign(payload, {
-            expiresIn: this.JWT_ACCESS_TOKEN_TTL
-        })
-        const refreshToken = this.jwtService.sign(payload, {
-            expiresIn: this.JWT_REFRESH_TOKEN_TTL
-        })
-
-        return {
-            accessToken,
-            refreshToken
-        }
+        const accessToken = this.jwtService.sign(payload, { expiresIn: this.JWT_ACCESS_TOKEN_TTL })
+        const refreshToken = this.jwtService.sign(payload, { expiresIn: this.JWT_REFRESH_TOKEN_TTL })
+        return { accessToken, refreshToken }
     }
 
     public setCookie(res: Response, value: string, expires: Date): void {
@@ -63,16 +55,8 @@ export class AuthService {
     }
 
     public async validate(id: string) {
-        const user = await this.prismaService.user.findUnique({
-            where: {
-                id
-            }
-        })
-
-        if (!user) {
-            throw new NotFoundException('Пользователь по переданному ID не найден')
-        }
-
+        const user = await this.prismaService.user.findUnique({ where: { id } })
+        if (!user) { throw new NotFoundException('Пользователь по переданному ID не найден') }
         return user
     }
 
@@ -88,15 +72,8 @@ export class AuthService {
                     }`)
             }
 
-            const potentialUser = await this.prismaService.user.findUnique({
-                where: {
-                    email
-                }
-            })
-
-            if (potentialUser) {
-                throw new ConflictException('Пользователь с таким email уже существует')
-            }
+            const potentialUser = await this.prismaService.user.findUnique({ where: { email } })
+            if (potentialUser) { throw new ConflictException('Пользователь с таким email уже существует') }
 
             const user = await this.prismaService.user.create({
                 data: {
@@ -112,9 +89,7 @@ export class AuthService {
             const basket = await this.prismaService.basket.create({
                 data: {
                     user: {
-                        connect: {
-                            id: user.id
-                        }
+                        connect: { id: user.id }
                     }
                 }
             })
@@ -122,9 +97,7 @@ export class AuthService {
             const published = await this.prismaService.published.create({
                 data: {
                     user: {
-                        connect: {
-                            id: user.id
-                        }
+                        connect: { id: user.id }
                     }
                 }
             })
@@ -132,18 +105,16 @@ export class AuthService {
             const favorites = await this.prismaService.favorites.create({
                 data: {
                     user: {
-                        connect: {
-                            id: user.id
-                        }
+                        connect: { id: user.id }
                     }
                 }
             })
 
             if (!user || !basket || !published || !favorites) {
-                throw new NotImplementedException(`Не удалось создать таблицу (отношение) - ${!user ? "Пользователь" : "" +
-                    !basket ? "Корзина пользователя" : "" +
-                        !published ? "Опубликованные книги" : "" +
-                            !favorites ? " Избранное" : ""
+                throw new NotImplementedException(`Не удалось создать таблицу (отношение) - ${!user ? 'Пользователь' : '' +
+                    !basket ? 'Корзина пользователя' : '' +
+                        !published ? 'Опубликованные книги' : '' +
+                            !favorites ? ' Избранное' : ''
                     }`)
             }
 
@@ -168,15 +139,13 @@ export class AuthService {
             const { email, password } = dto
 
             if (!email || !password) {
-                throw new BadRequestException(`Введены не все данные для авторизации - ${!email ? "E-Mail" : "" +
-                    !password ? "Пароль" : ""
+                throw new BadRequestException(`Введены не все данные для авторизации - ${!email ? 'E-Mail' : '' +
+                    !password ? 'Пароль' : ''
                     }`)
             }
 
             const potentialUser = await this.prismaService.user.findUnique({
-                where: {
-                    email
-                },
+                where: { email },
                 select: {
                     id: true,
                     name: true,
@@ -185,17 +154,10 @@ export class AuthService {
                 }
             })
 
-            if (!potentialUser) {
-                throw new NotFoundException(`Пользователя с E-Mail ${email} не найден. Корректно введите E-Mail`)
-            }
+            if (!potentialUser) { throw new NotFoundException(`Пользователя с E-Mail ${email} не найден. Корректно введите E-Mail`) }
 
             const isValidPassword = await verify(potentialUser.password, password)
-            console.log(password)
-
-            if (!isValidPassword) {
-                throw new UnauthorizedException('Корректно введите пароль')
-            }
-
+            if (!isValidPassword) { throw new UnauthorizedException('Корректно введите пароль') }
             const accessToken = this.auth(res, potentialUser.id)
 
             return res
@@ -215,29 +177,17 @@ export class AuthService {
     public async refresh(req: Request, res: Response) {
         try {
             const refreshToken = req.cookies['refreshToken']
-
-            if (!refreshToken) {
-                throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию')
-            }
+            if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
 
             const payload: JwtPayload = await this.jwtService.verifyAsync(refreshToken)
-
-            if (!payload) {
-                throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)')
-            }
+            if (!payload) { throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)') }
 
             const user = await this.prismaService.user.findUnique({
-                where: {
-                    id: payload.id
-                },
-                select: {
-                    id: true,
-                }
+                where: { id: payload.id },
+                select: { id: true, }
             })
 
-            if (!user) {
-                throw new NotFoundException('Пользователь не найден, обновление токенов невозможно')
-            }
+            if (!user) { throw new NotFoundException('Пользователь не найден, обновление токенов невозможно') }
 
             const accessToken = this.auth(res, user.id)
 
@@ -257,44 +207,26 @@ export class AuthService {
 
     public async patchPassword(id: string, dto: UserPasswordDTO, res: Response) {
         try {
-            if (!id) {
-                throw new BadRequestException('Для обновления информации о пользователе необходим ID')
-            }
+            if (!id) { throw new BadRequestException('Для обновления информации о пользователе необходим ID') }
 
             const { password } = dto
-
-            if (!password) {
-                throw new BadRequestException('Новый пароль не найден')
-            }
+            if (!password) { throw new BadRequestException('Новый пароль не найден') }
 
             const oldData = await this.prismaService.user.findUnique({
-                where: {
-                    id
-                },
-                select: {
-                    password: true
-                }
+                where: { id },
+                select: { password: true }
             })
 
-            if (!oldData) {
-                throw new NotFoundException(`Пользователя с ID ${id} не существует`)
-            }
+            if (!oldData) { throw new NotFoundException(`Пользователя с ID ${id} не существует`) }
 
             const isValidPassword = await verify(oldData.password, password)
-
-            if (isValidPassword) {
-                throw new ConflictException('Новый пароль не должен совпадать со старым')
-            }
+            if (isValidPassword) { throw new ConflictException('Новый пароль не должен совпадать со старым') }
 
             const newPassword = await hash(password)
 
             const patchedUser = await this.prismaService.user.update({
-                where: {
-                    id
-                },
-                data: {
-                    password: newPassword
-                },
+                where: { id },
+                data: { password: newPassword },
                 select: {
                     id: true,
                     surname: true,
@@ -306,9 +238,7 @@ export class AuthService {
                 }
             })
 
-            if (!patchedUser) {
-                throw new NotImplementedException('Не удалось обновить пароль')
-            }
+            if (!patchedUser) { throw new NotImplementedException('Не удалось обновить пароль') }
 
             return res
                 .status(HttpStatus.OK)

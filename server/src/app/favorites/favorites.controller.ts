@@ -1,8 +1,8 @@
-import { Controller, Delete, Get, Param, Patch, Req, Res, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Request, Response } from 'express';
-import { FavoritesService } from './favorites.service';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { Controller, Delete, Get, Param, Patch, Req, Res, UseGuards } from '@nestjs/common'
+import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Request, Response } from 'express'
+import { FavoritesService } from './favorites.service'
+import { AuthGuard } from 'src/guards/auth.guard'
 
 @ApiTags('Избранное пользователя')
 @Controller('favorites')

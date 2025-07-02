@@ -1,8 +1,8 @@
-import { Controller, Delete, Get, Param, Patch, Req, Res, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Request, Response } from 'express';
-import { BasketsService } from './baskets.service';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { Controller, Delete, Get, Param, Patch, Req, Res, UseGuards } from '@nestjs/common'
+import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Request, Response } from 'express'
+import { BasketsService } from './baskets.service'
+import { AuthGuard } from 'src/guards/auth.guard'
 
 @ApiTags('Корзина пользователя')
 @Controller('basket')
