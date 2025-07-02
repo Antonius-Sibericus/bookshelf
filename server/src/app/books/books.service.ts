@@ -15,9 +15,11 @@ export class BooksService {
         private readonly jwtService: JwtService
     ) { }
 
-    public async findAll(res: Response, cat: string, theme: string, title: Filters, year: Filters) {
+    public async findAll(res: Response, cat: string, theme: string, title: Filters, year: Filters, page: string) {
         try {
             const books = await this.prismaService.book.findMany({
+                skip: 6 * (+page - 1),
+                take: 6,
                 where: {
                     categoryTag: {
                         contains: cat ? cat : ''

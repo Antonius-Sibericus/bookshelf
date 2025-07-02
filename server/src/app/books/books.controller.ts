@@ -19,8 +19,8 @@ export class BooksController {
     description: 'Возвращает массив книг по переданным данным'
   })
   @Get()
-  public async getAllBooks(@Res() res: Response, @Query('cat') cat: string, @Query('theme') theme: string, @Query('title') title: Filters, @Query('year') year: Filters) {
-    return this.booksService.findAll(res, cat, theme, title, year)
+  public async getAllBooks(@Res() res: Response, @Query('cat') cat: string, @Query('theme') theme: string, @Query('title') title: Filters, @Query('year') year: Filters, @Query('page') page: string) {
+    return this.booksService.findAll(res, cat, theme, title, year, page)
   }
 
   @ApiOperation({
