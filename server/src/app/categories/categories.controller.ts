@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Res } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put, Res, UseGuards } from '@nestjs/common'
 import { CategoriesService } from './categories.service'
 import { Response } from 'express'
 import { CategoryCreateDTO } from './dto/cat-create.dto'
-import { ApiOperation } from '@nestjs/swagger'
+import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { CategoryUpdateDTO } from './dto/cat-update.dto'
+import { AuthGuard } from 'src/guards/auth.guard'
 
+@ApiTags('Категории книг')
 @Controller('categories')
 export class CategoriesController {
   constructor(
@@ -29,6 +31,7 @@ export class CategoriesController {
     return await this.categoriesService.findByTag(tag, res)
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Создание категории',
     description: 'Формирует запись о категории книг по названию и тэгу'
@@ -38,6 +41,7 @@ export class CategoriesController {
     return await this.categoriesService.create(dto, res)
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Обновление категории',
     description: 'Редактирует запись о категории книг по названию и тэгу'
@@ -47,6 +51,7 @@ export class CategoriesController {
     return await this.categoriesService.update(tag, dto, res)
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Удаление категории',
     description: 'Удаляет запись о категории книг по тэгу'

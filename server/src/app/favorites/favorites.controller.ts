@@ -1,14 +1,17 @@
-import { Controller, Delete, Get, Param, Patch, Req, Res } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { Controller, Delete, Get, Param, Patch, Req, Res, UseGuards } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { FavoritesService } from './favorites.service';
+import { AuthGuard } from 'src/guards/auth.guard';
 
+@ApiTags('Избранное пользователя')
 @Controller('favorites')
 export class FavoritesController {
   constructor(
     private readonly favoritesService: FavoritesService
   ) { }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Получение изранного',
     description: 'Получение изранного'
@@ -18,6 +21,7 @@ export class FavoritesController {
     return await this.favoritesService.get(req, res)
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Добавление книги в избранное',
     description: 'Добавление книги в избранное'
@@ -27,6 +31,7 @@ export class FavoritesController {
     return await this.favoritesService.add(req, tag, res)
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Удаление книги из избранного',
     description: 'Удаление книги из избранного'

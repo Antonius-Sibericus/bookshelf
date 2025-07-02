@@ -10,6 +10,6 @@ import { PrismaService } from '../prisma/prisma.service';
 @Module({
   imports: [PrismaModule, ConfigModule],
   controllers: [PublishedController],
-  providers: [PublishedService, PrismaService, AuthService, JwtService],
+  providers: [PublishedService, PrismaService, AuthService, JwtService]
 })
 export class PublishedModule {}

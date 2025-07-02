@@ -9,7 +9,6 @@ export class BookCreateDTO {
     year: number
     isbn: number
     isSoftCover: boolean
-    publisherId: string
     categoryTag: string
     themeTag: string
 }

@@ -14,15 +14,15 @@ export class BasketsService {
     public async get(req: Request, res: Response) {
         try {
             const refreshToken = req.cookies['refreshToken']
-            if (!refreshToken) throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию')
+            if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
 
             const payload: JwtPayload = await this.jwtService.decode(refreshToken)
-            if (!payload) throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)')
+            if (!payload) { throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)') }
 
             const userId = payload.id
-            if (!userId) throw new NotFoundException('ID пользователя не найден')
+            if (!userId) { throw new NotFoundException('ID пользователя не найден') }
 
-            const booksInFavorites = await this.prismaService.favorites.findUnique({
+            const booksInBasket = await this.prismaService.basket.findUnique({
                 where: {
                     userId
                 },
@@ -31,8 +31,8 @@ export class BasketsService {
                 }
             })
 
-            if (!booksInFavorites) throw new NotFoundException('Книги в корзине не найдены')
-            const books = booksInFavorites.books
+            if (!booksInBasket) { throw new NotFoundException('Книги в корзине не найдены') }
+            const books = booksInBasket.books
 
             return res
                 .status(HttpStatus.OK)
@@ -50,10 +50,10 @@ export class BasketsService {
     public async add(req: Request, bookTag: string, res: Response) {
         try {
             const refreshToken = req.cookies['refreshToken']
-            if (!refreshToken) throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию')
+            if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
 
             const payload: JwtPayload = await this.jwtService.decode(refreshToken)
-            if (!payload) throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)')
+            if (!payload) { throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)') }
 
             const userId = payload.id
 
@@ -62,15 +62,15 @@ export class BasketsService {
             }
 
             const potentialUser = await this.prismaService.user.findUnique({ where: { id: userId } })
-            if (!potentialUser) throw new NotFoundException(`Пользователь с ID ${userId} не найден`)
+            if (!potentialUser) { throw new NotFoundException(`Пользователь с ID ${userId} не найден`) }
 
             const potentialBook = await this.prismaService.book.findUnique({ where: { tag: bookTag } })
-            if (!potentialBook) throw new NotFoundException(`Книга с тэгом ${bookTag} не найдена`)
+            if (!potentialBook) { throw new NotFoundException(`Книга с тэгом ${bookTag} не найдена`) }
 
-            const favorites = await this.prismaService.favorites.findUnique({ where: { userId } })
-            if (!favorites) throw new NotFoundException('Корзина пользователя не найдена')
+            const basket = await this.prismaService.basket.findUnique({ where: { userId } })
+            if (!basket) { throw new NotFoundException('Корзина пользователя не найдена') }
 
-            const updatedFavorites = await this.prismaService.favorites.update({
+            const updatedBasket = await this.prismaService.basket.update({
                 where: {
                     userId
                 },
@@ -80,17 +80,21 @@ export class BasketsService {
                             tag: bookTag
                         }
                     }
+                },
+                select: {
+                    books: true
                 }
             })
 
-            if (!updatedFavorites) throw new NotImplementedException(`Не удалось добавить книгу ${bookTag} в корзину пользователя`)
+            if (!updatedBasket) { throw new NotImplementedException(`Не удалось добавить книгу ${bookTag} в корзину пользователя`) }
+            const books = updatedBasket.books
 
             return res
                 .status(HttpStatus.CREATED)
                 .json({
                     error: false,
                     message: 'Книга добавлена успешно, корзина обновлена',
-                    updatedFavorites
+                    books
                 })
         } catch (err) {
             console.error(err.message)
@@ -101,10 +105,10 @@ export class BasketsService {
     public async remove(req: Request, bookTag: string, res: Response) {
         try {
             const refreshToken = req.cookies['refreshToken']
-            if (!refreshToken) throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию')
+            if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
 
             const payload: JwtPayload = await this.jwtService.decode(refreshToken)
-            if (!payload) throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)')
+            if (!payload) { throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)') }
 
             const userId = payload.id
 
@@ -113,15 +117,15 @@ export class BasketsService {
             }
 
             const potentialUser = await this.prismaService.user.findUnique({ where: { id: userId } })
-            if (!potentialUser) throw new NotFoundException(`Пользователь с ID ${userId} не найден`)
+            if (!potentialUser) { throw new NotFoundException(`Пользователь с ID ${userId} не найден`) }
 
             const potentialBook = await this.prismaService.book.findUnique({ where: { tag: bookTag } })
-            if (!potentialBook) throw new NotFoundException(`Книга с тэгом ${bookTag} не найдена`)
+            if (!potentialBook) { throw new NotFoundException(`Книга с тэгом ${bookTag} не найдена`) }
 
-            const favorites = await this.prismaService.favorites.findUnique({ where: { userId } })
-            if (!favorites) throw new NotFoundException('Корзина пользователя не найдена')
+            const basket = await this.prismaService.basket.findUnique({ where: { userId } })
+            if (!basket) { throw new NotFoundException('Корзина пользователя не найдена') }
 
-            const updatedFavorites = await this.prismaService.favorites.update({
+            const updatedBasket = await this.prismaService.basket.update({
                 where: {
                     userId
                 },
@@ -131,17 +135,21 @@ export class BasketsService {
                             tag: bookTag
                         }
                     }
+                },
+                select: {
+                    books: true
                 }
             })
 
-            if (!updatedFavorites) { throw new NotImplementedException(`Не удалось убрать книгу ${bookTag} из корзины пользователя`) }
+            if (!updatedBasket) { throw new NotImplementedException(`Не удалось убрать книгу ${bookTag} из корзины пользователя`) }
+            const books = updatedBasket.books
 
             return res
                 .status(HttpStatus.CREATED)
                 .json({
                     error: false,
                     message: 'Книга убрана успешно, корзина обновлена',
-                    updatedFavorites
+                    books
                 })
         } catch (err) {
             console.error(err.message)

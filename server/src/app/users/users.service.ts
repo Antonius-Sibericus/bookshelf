@@ -157,9 +157,11 @@ export class UsersService {
                 throw new NotFoundException(`Пользователь по ID ${id} не найден`)
             }
 
-            if (potentialUser.id === payload.id) {
-                this.authService.setCookie(res, 'refreshToken', new Date(0))
+            if (potentialUser.id !== payload.id) {
+                throw new UnauthorizedException('Пользователя может удалить только он сам')
             }
+            
+            this.authService.setCookie(res, 'refreshToken', new Date(0))
 
             const deletedUser = await this.prismaService.user.delete({
                 where: {

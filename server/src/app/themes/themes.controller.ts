@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Res } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put, Res, UseGuards } from '@nestjs/common'
 import { ThemesService } from './themes.service'
 import { Response } from 'express'
 import { ThemeCreateDTO } from './dto/theme-create.dto'
-import { ApiOperation } from '@nestjs/swagger'
+import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ThemeUpdateDTO } from './dto/theme-update.dto'
+import { AuthGuard } from 'src/guards/auth.guard'
 
+@ApiTags('Темы книг')
 @Controller('themes')
 export class ThemesController {
   constructor(
@@ -29,6 +31,7 @@ export class ThemesController {
     return await this.themesService.findByTag(tag, res)
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Создание темы для категории',
     description: 'Формирует запись о теме книг по названию, тэгу и тэгу категории'
@@ -38,6 +41,7 @@ export class ThemesController {
     return await this.themesService.create(dto, res)
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Обновление темы для категории',
     description: 'Редактирует запись о теме книг по названию, тэгу и тэгу категории'
@@ -47,6 +51,7 @@ export class ThemesController {
     return await this.themesService.update(tag, dto, res)
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Удаление темы',
     description: 'Удаляет запись о теме книг по тэгу'

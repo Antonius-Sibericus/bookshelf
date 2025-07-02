@@ -1,14 +1,17 @@
-import { Controller, Delete, Get, Param, Patch, Req, Res } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { Controller, Delete, Get, Param, Patch, Req, Res, UseGuards } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { BasketsService } from './baskets.service';
+import { AuthGuard } from 'src/guards/auth.guard';
 
+@ApiTags('Корзина пользователя')
 @Controller('basket')
 export class BasketsController {
   constructor(
     private readonly basketsService: BasketsService
   ) { }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Получение корзины',
     description: 'Получение корзины'
@@ -18,6 +21,7 @@ export class BasketsController {
     return await this.basketsService.get(req, res)
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Добавление книги в корзину',
     description: 'Добавление книги в корзину'
@@ -27,6 +31,7 @@ export class BasketsController {
     return await this.basketsService.add(req, tag, res)
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Удаление книги из корзины',
     description: 'Удаление книги из корзины'

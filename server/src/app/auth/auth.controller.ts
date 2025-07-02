@@ -2,10 +2,11 @@ import { Body, Controller, Param, Patch, Post, Req, Res } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { Request, Response } from 'express'
 import { SignupDTO } from './dto/signup.dto'
-import { ApiOperation } from '@nestjs/swagger'
+import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { LoginDTO } from './dto/login.dto'
 import { UserPasswordDTO } from '../users/dto/user-password.dto'
 
+@ApiTags('Авторизация и аутентификация')
 @Controller('auth')
 export class AuthController {
   constructor(

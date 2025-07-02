@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Patch, Put, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Put, Req, Res, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { UserInfoDTO } from './dto/user-info.dto';
-import { UserPasswordDTO } from './dto/user-password.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
 
+@ApiTags('Пользователи')
 @Controller('users')
 export class UsersController {
   constructor(
@@ -29,6 +30,7 @@ export class UsersController {
     return await this.usersService.findById(id, res)
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Изменение информации пользователя по ID',
     description: 'Изменяет и возвращает информацию о пользователе по ID, переданному в параметры'
@@ -38,6 +40,7 @@ export class UsersController {
     return await this.usersService.patchInfo(id, dto, res)
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Удаление пользователя',
     description: 'Удаляет запись о пользователе по ID, если он и есть текущий пользователь, то производится удаление токенов'

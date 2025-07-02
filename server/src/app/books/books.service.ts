@@ -1,14 +1,18 @@
-import { BadRequestException, ConflictException, HttpStatus, Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException, NotImplementedException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { BookCreateDTO } from './dto/book-create.dto';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { Filters } from 'src/types/filters.enum';
 import { BookUpdateDTO } from './dto/book-update.dto';
+import { JwtPayload } from 'src/types/jwt.interface';
+import { JwtService } from '@nestjs/jwt';
+import { UserRoles } from 'src/types/user-roles.enum';
 
 @Injectable()
 export class BooksService {
     constructor(
-        private readonly prismaService: PrismaService
+        private readonly prismaService: PrismaService,
+        private readonly jwtService: JwtService
     ) { }
 
     public async findAll(res: Response, cat: string, theme: string, title: Filters, year: Filters) {
@@ -92,11 +96,33 @@ export class BooksService {
         }
     }
 
-    public async create(dto: BookCreateDTO, res: Response) {
+    public async create(req: Request, dto: BookCreateDTO, res: Response) {
         try {
-            const { heading, tag, author, description, pages, isInStock, year, isbn, isSoftCover, publisherId, categoryTag, themeTag } = dto
+            const refreshToken = req.cookies['refreshToken']
+            if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
 
-            if (!heading || !tag || !author || !description || !pages || isInStock === undefined || !year || !isbn || isSoftCover === undefined || !publisherId || !categoryTag || !themeTag) {
+            const payload: JwtPayload = await this.jwtService.decode(refreshToken)
+            if (!payload) { throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)') }
+
+            const userId = payload.id
+            if (!userId) { throw new NotFoundException('ID пользователя не найден') }
+            
+            const potentialPublished = await this.prismaService.user.findUnique({
+                where: {
+                    id: userId
+                },
+                select: {
+                    role: true
+                }
+            })
+
+            if (!potentialPublished || potentialPublished.role === UserRoles.READER || potentialPublished.role === UserRoles.VISITOR) {
+                throw new NotFoundException('Такой пользователь не может опубликовать книгу или отредактировать информацию о ней, необходимо обладать правами администратора или публикатора')
+            }
+
+            const { heading, tag, author, description, pages, isInStock, year, isbn, isSoftCover, categoryTag, themeTag } = dto
+
+            if (!heading || !tag || !author || !description || !pages || isInStock === undefined || !year || !isbn || isSoftCover === undefined || !categoryTag || !themeTag) {
                 throw new BadRequestException(`Введены не все данные для создания книги - ${!heading ? 'Название ' : '' +
                     !tag ? 'Тэг ' : '' +
                         !author ? 'Автор ' : '' +
@@ -106,9 +132,8 @@ export class BooksService {
                                         !year ? 'Год ' : '' +
                                             !isbn ? 'ISBN ' : '' +
                                                 isSoftCover === undefined ? 'Тип обложки ' : '' +
-                                                    !publisherId ? 'Публикатор ' : '' +
-                                                        !categoryTag ? 'Категория ' : '' +
-                                                            !themeTag ? 'Тема ' : ''
+                                                    !categoryTag ? 'Категория ' : '' +
+                                                        !themeTag ? 'Тема ' : ''
                     }`)
             }
 
@@ -120,16 +145,6 @@ export class BooksService {
 
             if (potentialBook) {
                 throw new ConflictException('Книга с таким тэгом уже существует')
-            }
-
-            const potentialPublished = await this.prismaService.user.findUnique({
-                where: {
-                    id: publisherId
-                }
-            })
-
-            if (!potentialPublished) {
-                throw new NotFoundException('Такой пользователь не мог опубликовать книгу')
             }
 
             const potentialCategory = await this.prismaService.category.findUnique({
@@ -163,7 +178,7 @@ export class BooksService {
                     year,
                     isbn,
                     isSoftCover,
-                    publisherId,
+                    publisherId: userId,
                     categoryTag,
                     themeTag
                 }
@@ -172,6 +187,21 @@ export class BooksService {
             if (!book) {
                 throw new NotImplementedException('Не удалось создать таблицу (отношение)')
             }
+
+            const updatedPublished = await this.prismaService.published.update({
+                where: {
+                    userId
+                },
+                data: {
+                    books: {
+                        connect: {
+                            tag: book.tag
+                        }
+                    }
+                }
+            })
+
+            if (!updatedPublished) { throw new NotImplementedException('Не удалось обновить опубликованное') }
 
             return res
                 .status(HttpStatus.CREATED)
@@ -186,8 +216,30 @@ export class BooksService {
         }
     }
 
-    public async update(tag: string, dto: BookUpdateDTO, res: Response) {
+    public async update(req: Request, tag: string, dto: BookUpdateDTO, res: Response) {
         try {
+            const refreshToken = req.cookies['refreshToken']
+            if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
+
+            const payload: JwtPayload = await this.jwtService.decode(refreshToken)
+            if (!payload) { throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)') }
+
+            const userId = payload.id
+            if (!userId) { throw new NotFoundException('ID пользователя не найден') }
+            
+            const potentialPublished = await this.prismaService.user.findUnique({
+                where: {
+                    id: userId
+                },
+                select: {
+                    role: true
+                }
+            })
+
+            if (!potentialPublished || potentialPublished.role === UserRoles.READER || potentialPublished.role === UserRoles.VISITOR) {
+                throw new NotFoundException('Такой пользователь не может опубликовать книгу или отредактировать информацию о ней, необходимо обладать правами администратора или публикатора')
+            }
+
             const { heading, author, description, pages, isInStock, year, isbn, isSoftCover, categoryTag, themeTag } = dto
 
             if (!tag) {
@@ -199,21 +251,26 @@ export class BooksService {
                     tag
                 },
                 select: {
-                    heading: true, 
-                    author: true, 
-                    description: true, 
-                    pages: true, 
-                    isInStock: true, 
-                    year: true, 
-                    isbn: true, 
-                    isSoftCover: true, 
-                    categoryTag: true, 
-                    themeTag: true
+                    heading: true,
+                    author: true,
+                    description: true,
+                    pages: true,
+                    isInStock: true,
+                    year: true,
+                    isbn: true,
+                    isSoftCover: true,
+                    categoryTag: true,
+                    themeTag: true,
+                    publisherId: true
                 }
             })
 
             if (!oldData) {
                 throw new NotFoundException(`Книга с тэгом ${tag} не найдена`)
+            }
+
+            if (userId !== oldData.publisherId) {
+                throw new UnauthorizedException('Только публикатор книги может редактировать информацию о ней')
             }
 
             const potentialCategory = await this.prismaService.category.findUnique({
@@ -241,15 +298,15 @@ export class BooksService {
                     tag
                 },
                 data: {
-                    heading: heading ? heading : oldData.heading, 
-                    author: author ? author : oldData.author, 
-                    description: description ? description : oldData.description, 
-                    pages: pages ? pages : oldData.pages, 
-                    isInStock: isInStock !== undefined ? isInStock : oldData.isInStock, 
-                    year: year ? year : oldData.year, 
-                    isbn: isbn ? isbn : oldData.isbn, 
-                    isSoftCover: isSoftCover !== undefined ? isSoftCover : oldData.isSoftCover, 
-                    categoryTag: categoryTag ? categoryTag : oldData.categoryTag, 
+                    heading: heading ? heading : oldData.heading,
+                    author: author ? author : oldData.author,
+                    description: description ? description : oldData.description,
+                    pages: pages ? pages : oldData.pages,
+                    isInStock: isInStock !== undefined ? isInStock : oldData.isInStock,
+                    year: year ? year : oldData.year,
+                    isbn: isbn ? isbn : oldData.isbn,
+                    isSoftCover: isSoftCover !== undefined ? isSoftCover : oldData.isSoftCover,
+                    categoryTag: categoryTag ? categoryTag : oldData.categoryTag,
                     themeTag: themeTag ? themeTag : oldData.themeTag
                 }
             })
@@ -271,8 +328,30 @@ export class BooksService {
         }
     }
 
-    public async delete(tag: string, res: Response) {
+    public async delete(req: Request, tag: string, res: Response) {
         try {
+            const refreshToken = req.cookies['refreshToken']
+            if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
+
+            const payload: JwtPayload = await this.jwtService.decode(refreshToken)
+            if (!payload) { throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)') }
+
+            const userId = payload.id
+            if (!userId) { throw new NotFoundException('ID пользователя не найден') }
+            
+            const potentialPublished = await this.prismaService.user.findUnique({
+                where: {
+                    id: userId
+                },
+                select: {
+                    role: true
+                }
+            })
+
+            if (!potentialPublished || potentialPublished.role === UserRoles.READER || potentialPublished.role === UserRoles.VISITOR) {
+                throw new NotFoundException('Такой пользователь не может опубликовать книгу или отредактировать информацию о ней, необходимо обладать правами администратора или публикатора')
+            }
+
             if (!tag) {
                 throw new BadRequestException('Для удаления информации о книге необходим тэг')
             }
@@ -280,6 +359,9 @@ export class BooksService {
             const potentialBook = await this.prismaService.book.findUnique({
                 where: {
                     tag
+                },
+                select: {
+                    publisherId: true
                 }
             })
 
@@ -287,11 +369,34 @@ export class BooksService {
                 throw new NotFoundException(`Книга по тэгу ${tag} не найдена`)
             }
 
+            if (userId !== potentialBook.publisherId) {
+                throw new UnauthorizedException('Только публикатор книги может удалить информацию о ней')
+            }
+
             const deletedBook = await this.prismaService.book.delete({
                 where: {
                     tag
                 }
             })
+
+            if (!deletedBook) {
+                throw new NotImplementedException('Не удалось создать таблицу (отношение)')
+            }
+
+            const updatedPublished = await this.prismaService.published.update({
+                where: {
+                    userId
+                },
+                data: {
+                    books: {
+                        disconnect: {
+                            tag: deletedBook.tag
+                        }
+                    }
+                }
+            })
+
+            if (!updatedPublished) { throw new NotImplementedException('Не удалось обновить опубликованное') }
 
             return res
                 .status(HttpStatus.OK)

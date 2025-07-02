@@ -1,14 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { BooksService } from './books.service';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { BookCreateDTO } from './dto/book-create.dto';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { Filters } from 'src/types/filters.enum';
 import { BookUpdateDTO } from './dto/book-update.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
 
+@ApiTags('Книги')
 @Controller('books')
 export class BooksController {
-  constructor(private readonly booksService: BooksService) { }
+  constructor(
+    private readonly booksService: BooksService
+  ) { }
 
   @ApiOperation({
     summary: 'Получение книг по параметрам',
@@ -28,30 +32,33 @@ export class BooksController {
     return await this.booksService.findByTag(tag, res)
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Добавление книги',
     description: 'Формирует запись о книге по переданным данным'
   })
   @Post()
-  public async createBook(@Body() dto: BookCreateDTO, @Res() res: Response) {
-    return await this.booksService.create(dto, res)
+  public async createBook(@Req() req: Request, @Body() dto: BookCreateDTO, @Res() res: Response) {
+    return await this.booksService.create(req, dto, res)
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Обновление информации о книге',
     description: 'Редактирует запись о книге по переданной инфвормации'
   })
   @Put(':tag')
-  public async updateTheme(@Param('tag') tag: string, @Body() dto: BookUpdateDTO, @Res() res: Response) {
-    return await this.booksService.update(tag, dto, res)
+  public async updateTheme(@Req() req: Request, @Param('tag') tag: string, @Body() dto: BookUpdateDTO, @Res() res: Response) {
+    return await this.booksService.update(req, tag, dto, res)
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Удаление информации о книге',
     description: 'Удаляет запись о книге по тэгу'
   })
   @Delete(':tag')
-  public async deleteCategory(@Param('tag') tag: string, @Res() res: Response) {
-    return await this.booksService.delete(tag, res)
+  public async deleteCategory(@Req() req: Request, @Param('tag') tag: string, @Res() res: Response) {
+    return await this.booksService.delete(req, tag, res)
   }
 }
