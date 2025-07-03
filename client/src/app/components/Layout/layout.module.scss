@@ -1,0 +1,21 @@
+/* Layout Styles */
+
+@import '../../../assets/styles/variables';
+
+.wrapper {
+    width: calc(100vw - 90px);
+    height: 100%;
+    background-color: #fff;
+    margin: 48px auto;
+    border-radius: 10px;
+    max-width: 2000px;
+
+    @media screen and (max-width: 767px) {
+        width: calc(100vw - 30px);
+        margin: 15px auto;
+    }
+
+    .content {
+        padding: 36px 0;
+    }
+}

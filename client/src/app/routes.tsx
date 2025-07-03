@@ -1,15 +1,5 @@
 import { lazy } from 'react'
 import { basketPath, bookPath, catalogPath, favoritesPath, loginPath, mainPath, notFoundPath, profilePath, publishedPath, signupPath } from '../utils/consts.utils'
-// import LoginPage from './pages/Auth/Login.page'
-// import SignupPage from './pages/Auth/Signup.page'
-// import Book from './pages/Book/Book.page'
-// import Catalog from './pages/Catalog/Catalog.page'
-// import MainPage from './pages/Main/Main.page'
-// import NotFoundPage from './pages/Main/NotFound.page'
-// import BasketPage from './pages/Personal/Basket.page'
-// import FavoritesPage from './pages/Personal/Favorites.page'
-// import PublishedPage from './pages/Personal/Published.page'
-// import ProfilePage from './pages/Profile/Profile.page'
 
 const ProfilePage = lazy(() => import('./pages/Profile/Profile.page'))
 const BasketPage = lazy(() => import('./pages/Personal/Basket.page'))

@@ -1,1 +1,168 @@
 /* Header Styles */
+
+@import '../../../../assets/styles/variables';
+
+.header {
+    padding: 30px 0 49px 0;
+
+    .container {
+        width: $container-width;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        gap: 72px;
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            img {
+                height: 150px;
+                width: 150px;
+                border-radius: 50%;
+            }
+        }
+
+        .headerContent {
+            width: 100%;
+            .headerTop {
+                padding-top: 32px;
+                padding-bottom: 25px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid #c5c5c5;
+                font-family: "Montserrat", sans-serif;
+                font-weight: 500;
+    
+                .headerTopMenu {
+                    margin-left: 26px;
+                    // margin-right: 191px;
+    
+                    nav ul {
+                        margin: 0;
+                        padding: 0;
+                        display: flex;
+    
+                        li {
+                            margin-right: 40px;
+                            list-style: none;
+                            border-bottom: 1px solid transparent;
+    
+                            &.active {
+                                border-bottom-color: $main-color;
+                            }
+    
+                            a {
+                                font-size: 16px;
+                                color: $main-color;
+                                text-decoration: none;
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                }
+    
+                .headerTopPhone {
+                    font-size: 16px;
+                    color: $main-color;
+                    text-decoration: none;
+                }
+    
+                .headerTopActions {
+                    display: flex;
+                    align-items: center;
+    
+                    a {
+                        margin-right: 8px;
+                        position: relative;
+                        cursor: pointer;
+    
+                        &:last-child {
+                            margin-right: 18px;
+                        }
+    
+                        span {
+                            position: absolute;
+                            width: 18px;
+                            height: 18px;
+                            top: 10px;
+                            right: -18px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-family: "Montserrat", sans-serif;
+                            font-size: 9px;
+                            font-weight: 400;
+                            color: white;
+                            border-radius: 50%;
+                            background: $main-color;
+                        }
+                    }
+                }
+            }
+    
+            .headerBottom {
+                padding-top: 16px;
+                display: flex;
+                align-items: center;
+    
+                .headerBottomMenu {
+                    margin-left: 26px;
+                    margin-right: 97px;
+    
+                    nav ul {
+                        margin: 0;
+                        padding: 0;
+                        display: flex;
+    
+                        li {
+                            margin-right: 50px;
+                            list-style: none;
+                            border-bottom: 1px solid transparent;
+    
+                            &.active {
+                                border-bottom-color: $main-color;
+                            }
+    
+                            a {
+                                font-size: 16px;
+                                color: $main-color;
+                                text-decoration: none;
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                }
+    
+                .headerBottomSearch {
+                    position: relative;
+    
+                    input {
+                        border: 1px solid $main-color;
+                        border-radius: 30px;
+                        padding: 10px 10px 10px 43px;
+                        width: 214px;
+                        height: 41px;
+                        font-size: 16px;
+                        color: $main-color;
+                        box-sizing: border-box;
+                        outline: none;
+                    }
+    
+                    &::after {
+                        content: "";
+                        background-image: url("images/icons/search.png");
+                        background-size: cover;
+                        position: absolute;
+                        width: 16px;
+                        height: 16px;
+                        left: 15px;
+                        top: 12px;
+                    }
+                }
+            }
+        }
+    }
+}
