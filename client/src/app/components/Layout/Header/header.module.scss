@@ -26,6 +26,7 @@
 
         .headerContent {
             width: 100%;
+
             .headerTop {
                 padding-top: 32px;
                 padding-bottom: 25px;
@@ -38,7 +39,6 @@
     
                 .headerTopMenu {
                     margin-left: 26px;
-                    // margin-right: 191px;
     
                     nav ul {
                         margin: 0;
@@ -51,12 +51,12 @@
                             border-bottom: 1px solid transparent;
     
                             &.active {
-                                border-bottom-color: $main-color;
+                                border-bottom-color: $text-lt-color;
                             }
     
                             a {
                                 font-size: 16px;
-                                color: $main-color;
+                                color: $text-lt-color;
                                 text-decoration: none;
                                 cursor: pointer;
                             }
@@ -66,7 +66,7 @@
     
                 .headerTopPhone {
                     font-size: 16px;
-                    color: $main-color;
+                    color: $text-lt-color;
                     text-decoration: none;
                 }
     
@@ -97,7 +97,7 @@
                             font-weight: 400;
                             color: white;
                             border-radius: 50%;
-                            background: $main-color;
+                            background: $text-lt-color;
                         }
                     }
                 }
@@ -107,6 +107,7 @@
                 padding-top: 16px;
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
     
                 .headerBottomMenu {
                     margin-left: 26px;
@@ -123,12 +124,12 @@
                             border-bottom: 1px solid transparent;
     
                             &.active {
-                                border-bottom-color: $main-color;
+                                border-bottom-color: $text-lt-color;
                             }
     
                             a {
                                 font-size: 16px;
-                                color: $main-color;
+                                color: $text-lt-color;
                                 text-decoration: none;
                                 cursor: pointer;
                             }
@@ -140,20 +141,20 @@
                     position: relative;
     
                     input {
-                        border: 1px solid $main-color;
+                        border: 1px solid $text-lt-color;
                         border-radius: 30px;
                         padding: 10px 10px 10px 43px;
                         width: 214px;
                         height: 41px;
                         font-size: 16px;
-                        color: $main-color;
+                        color: $text-lt-color;
                         box-sizing: border-box;
                         outline: none;
                     }
     
                     &::after {
                         content: "";
-                        background-image: url("images/icons/search.png");
+                        background-image: url("images/search.png");
                         background-size: cover;
                         position: absolute;
                         width: 16px;
