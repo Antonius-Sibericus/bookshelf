@@ -17,6 +17,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+
             img {
                 height: 150px;
                 width: 150px;
@@ -36,53 +37,78 @@
                 border-bottom: 1px solid #c5c5c5;
                 font-family: "Montserrat", sans-serif;
                 font-weight: 500;
-    
+
                 .headerTopMenu {
                     margin-left: 26px;
-    
+
                     nav ul {
                         margin: 0;
                         padding: 0;
                         display: flex;
-    
+
                         li {
                             margin-right: 40px;
                             list-style: none;
                             border-bottom: 1px solid transparent;
-    
+
                             &.active {
                                 border-bottom-color: $text-lt-color;
                             }
-    
+
                             a {
                                 font-size: 16px;
-                                color: $text-lt-color;
+                                // color: $text-lt-color;
                                 text-decoration: none;
                                 cursor: pointer;
+
+                                &.light {
+                                    color: $text-lt-color
+                                }
+
+                                &.dark {
+                                    color: $text-d-color;
+                                }
                             }
                         }
                     }
                 }
-    
+
                 .headerTopPhone {
                     font-size: 16px;
-                    color: $text-lt-color;
+                    // color: $text-lt-color;
                     text-decoration: none;
+
+
+                    &.light {
+                        color: $text-lt-color
+                    }
+
+                    &.dark {
+                        color: $text-d-color;
+                    }
                 }
-    
+
                 .headerTopActions {
                     display: flex;
                     align-items: center;
-    
+
                     a {
                         margin-right: 8px;
-                        position: relative;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
                         cursor: pointer;
-    
+                        position: relative;
+
                         &:last-child {
                             margin-right: 18px;
                         }
-    
+
+                        svg {
+                            width: 30px;
+                            height: 30px;
+                        }
+
                         span {
                             position: absolute;
                             width: 18px;
@@ -102,31 +128,31 @@
                     }
                 }
             }
-    
+
             .headerBottom {
                 padding-top: 16px;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-    
+
                 .headerBottomMenu {
                     margin-left: 26px;
                     margin-right: 97px;
-    
+
                     nav ul {
                         margin: 0;
                         padding: 0;
                         display: flex;
-    
+
                         li {
                             margin-right: 50px;
                             list-style: none;
                             border-bottom: 1px solid transparent;
-    
+
                             &.active {
                                 border-bottom-color: $text-lt-color;
                             }
-    
+
                             a {
                                 font-size: 16px;
                                 color: $text-lt-color;
@@ -136,10 +162,10 @@
                         }
                     }
                 }
-    
+
                 .headerBottomSearch {
                     position: relative;
-    
+
                     input {
                         border: 1px solid $text-lt-color;
                         border-radius: 30px;
@@ -151,7 +177,7 @@
                         box-sizing: border-box;
                         outline: none;
                     }
-    
+
                     &::after {
                         content: "";
                         background-image: url("images/search.png");

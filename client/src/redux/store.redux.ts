@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
+import colorTheme from './colorTheme/colorTheme.slice'
 
 export const store = configureStore({
-    reducer: {}
+    reducer: {
+        colorTheme
+    }
 });
 
 export type RootState = ReturnType<typeof store.getState>
