@@ -5,10 +5,20 @@
 .wrapper {
     width: calc(100vw - 90px);
     height: 100%;
-    background-color: #fff;
+    // background-color: #fff;
     margin: 48px auto;
     border-radius: 10px;
     max-width: 2000px;
+
+    &.light {
+        background-color: $main-lt-color;
+        color: $text-lt-color
+    }
+
+    &.dark {
+        background-color: $main-d-color;
+        color: $text-d-color
+    }
 
     @media screen and (max-width: 767px) {
         width: calc(100vw - 30px);
