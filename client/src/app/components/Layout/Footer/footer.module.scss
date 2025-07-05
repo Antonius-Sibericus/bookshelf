@@ -1,1 +1,113 @@
 /* Footer Styles */
+
+@import '../../../../assets/styles/variables';
+
+.footer {
+    padding: 33px 0 48px 0;
+
+    .container {
+        width: $container-width;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 72px;
+
+        @media screen and (max-width: 1169px) {
+            grid-template-columns: repeat(2, 1fr);
+            grid-auto-rows: min-content;
+            gap: 36px;
+        }
+
+        @media screen and (max-width: 549px) {
+            grid-template-columns: repeat(1, 1fr);
+            gap: 21px;
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: start;
+
+            @media screen and (max-width: 767px) {
+                align-items: center;
+            }
+
+            img {
+                height: 150px;
+                width: 150px;
+                border-radius: 50%;
+
+                @media screen and (max-width: 549px) {
+                    height: 69px;
+                    width: 69px;
+                }
+            }
+        }
+
+        .footerColumn {
+            display: flex;
+            align-items: start;
+            justify-content: start;
+            gap: 12px;
+            flex-direction: column;
+
+            @media screen and (max-width: 1169px) {
+                justify-content: center;
+            }
+
+            @media screen and (max-width: 549px) {
+                align-items: center;
+                text-align: center;
+            }
+
+            h6 {
+                margin: 0;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 500;
+
+                &.light {
+                    color: $text-lt-color
+                }
+
+                &.dark {
+                    color: $text-d-color;
+                }
+            }
+
+            a {
+                font-size: 16px;
+                text-decoration: none;
+                cursor: pointer;
+
+                &.light {
+                    color: $text-lt-color
+                }
+
+                &.dark {
+                    color: $text-d-color;
+                }
+            }
+
+            .footerPhone {
+                font-size: 16px;
+                text-decoration: none;
+
+                &.light {
+                    color: $text-lt-color
+                }
+
+                &.dark {
+                    color: $text-d-color;
+                }
+            }
+        }
+
+        @media screen and (max-width: 1169px) {
+            .footerNav {
+                display: none;
+            }
+        }
+    }
+}

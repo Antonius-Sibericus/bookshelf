@@ -12,11 +12,11 @@ const Layout: FC = () => {
 
     return (
         <div className={styles.wrapper + ' ' + (theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark)}>
-            <Header />
+            <Header theme={theme} />
             <div className={styles.content}>
                 <Outlet />
             </div>
-            <Footer />
+            <Footer theme={theme} />
         </div>
     )
 }
