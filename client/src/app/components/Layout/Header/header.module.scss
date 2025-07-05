@@ -3,7 +3,7 @@
 @import '../../../../assets/styles/variables';
 
 .header {
-    padding: 33px 0 48px 0;
+    padding: 48px 0;
 
     .container {
         width: $container-width;
@@ -66,19 +66,27 @@
                         li {
                             margin-right: 40px;
                             list-style: none;
-                            border-bottom: 1px solid transparent;
 
                             a {
                                 font-size: 16px;
                                 text-decoration: none;
                                 cursor: pointer;
+                                border-bottom: 1px solid transparent;
 
                                 &.light {
-                                    color: $text-lt-color
+                                    color: $text-lt-color;
+
+                                    &:hover {
+                                        border-bottom: 1px solid $text-lt-color;
+                                    }
                                 }
 
                                 &.dark {
                                     color: $text-d-color;
+
+                                    &:hover {
+                                        border-bottom: 1px solid $text-d-color;
+                                    }
                                 }
                             }
                         }

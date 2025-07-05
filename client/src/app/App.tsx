@@ -2,12 +2,12 @@ import { BrowserRouter } from 'react-router-dom'
 import './App.scss'
 import AppRouter from './components/AppRouter.component'
 import { useSelector } from 'react-redux'
-import { selectorColorTheme } from '../redux/colorTheme/colorTheme.selector'
+import { selectorGeneral } from '../redux/general/general.selector'
 import { useEffect } from 'react'
-import { ColorThemeEnum } from '../redux/colorTheme/colorTheme.types'
+import { ColorThemeEnum } from '../redux/general/general.types'
 
 function App() {
-  const { theme } = useSelector(selectorColorTheme)
+  const { theme } = useSelector(selectorGeneral)
 
   useEffect(() => {
     if (theme === ColorThemeEnum.LIGHT) {document.body.style.backgroundColor = '#1cadc9'} else {document.body.style.backgroundColor = '#072e36'}

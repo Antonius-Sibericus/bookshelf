@@ -1,12 +1,13 @@
 import { useState, type FC } from 'react'
 import styles from './header.module.scss'
 import { Link, useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { ColorThemeEnum } from '../../../../redux/colorTheme/colorTheme.types'
-import { setTheme } from '../../../../redux/colorTheme/colorTheme.slice'
-import type { LayoutPropsType } from '../../../../types/props.type'
+import { useDispatch, useSelector } from 'react-redux'
+import { ColorThemeEnum } from '../../../../redux/general/general.types'
+import { setTheme } from '../../../../redux/general/general.slice'
+import { selectorGeneral } from '../../../../redux/general/general.selector'
 
-const Header: FC<LayoutPropsType> = ({ theme }) => {
+const Header: FC = () => {
+    const { theme, isAuthed } = useSelector(selectorGeneral)
     const dispatch = useDispatch()
 
     const changeTheme = () => {
@@ -52,18 +53,7 @@ const Header: FC<LayoutPropsType> = ({ theme }) => {
                                         </svg>
                                     </a>
                                 }
-                                {true ?
-                                    <Link to={true ? '/signup' : '/login'}>
-                                        <svg className={themeTernary} width='23' height='23' viewBox='0 0 23 23' fill='none' xmlns='http://www.w3.org/2000/svg'>
-                                            <path
-                                                d='M8.5293 7.24498C8.82638 3.79498 10.5993 2.38623 14.4805 2.38623H14.6051C18.8889 2.38623 20.6043 4.10165 20.6043 8.3854V14.6337C20.6043 18.9175 18.8889 20.6329 14.6051 20.6329H14.4805C10.628 20.6329 8.85513 19.2433 8.53888 15.8508'
-                                                strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' />
-                                            <path d='M1.91699 11.5H14.2603' strokeWidth='1.5' strokeLinecap='round'
-                                                strokeLinejoin='round' />
-                                            <path d='M12.123 8.28955L15.3335 11.5L12.123 14.7104' strokeWidth='1.5'
-                                                strokeLinecap='round' strokeLinejoin='round' />
-                                        </svg>
-                                    </Link> :
+                                {isAuthed ?
                                     <Link to='/profile/1'>
                                         <svg className={themeTernary} fill='none' width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
                                             <path
@@ -75,6 +65,17 @@ const Header: FC<LayoutPropsType> = ({ theme }) => {
                                             <path
                                                 d='M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z'
                                                 strokeWidth='1.3' strokeLinecap='round' strokeLinejoin='round' />
+                                        </svg>
+                                    </Link> :
+                                    <Link to='/login'>
+                                        <svg className={themeTernary} width='23' height='23' viewBox='0 0 23 23' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                                            <path
+                                                d='M8.5293 7.24498C8.82638 3.79498 10.5993 2.38623 14.4805 2.38623H14.6051C18.8889 2.38623 20.6043 4.10165 20.6043 8.3854V14.6337C20.6043 18.9175 18.8889 20.6329 14.6051 20.6329H14.4805C10.628 20.6329 8.85513 19.2433 8.53888 15.8508'
+                                                strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' />
+                                            <path d='M1.91699 11.5H14.2603' strokeWidth='1.5' strokeLinecap='round'
+                                                strokeLinejoin='round' />
+                                            <path d='M12.123 8.28955L15.3335 11.5L12.123 14.7104' strokeWidth='1.5'
+                                                strokeLinecap='round' strokeLinejoin='round' />
                                         </svg>
                                     </Link>
                                 }

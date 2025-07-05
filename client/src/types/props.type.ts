@@ -1,4 +1,4 @@
-import type { ColorThemeEnum } from "../redux/colorTheme/colorTheme.types"
+import type { ColorThemeEnum } from "../redux/general/general.types"
 
 export type LayoutPropsType = {
     theme: ColorThemeEnum

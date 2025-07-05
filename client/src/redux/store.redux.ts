@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
-import colorTheme from './colorTheme/colorTheme.slice'
+import general from './general/general.slice'
 
 export const store = configureStore({
     reducer: {
-        colorTheme
+        general
     }
 });
 

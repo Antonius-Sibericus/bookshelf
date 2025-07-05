@@ -1,10 +1,12 @@
 import type { FC } from 'react'
 import styles from './footer.module.scss'
 import { Link } from 'react-router-dom'
-import { ColorThemeEnum } from '../../../../redux/colorTheme/colorTheme.types'
-import type { LayoutPropsType } from '../../../../types/props.type'
+import { ColorThemeEnum } from '../../../../redux/general/general.types'
+import { selectorGeneral } from '../../../../redux/general/general.selector'
+import { useSelector } from 'react-redux'
 
-const Footer: FC<LayoutPropsType> = ({ theme }) => {
+const Footer: FC = () => {
+    const { theme } = useSelector(selectorGeneral)
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
 
     return (
