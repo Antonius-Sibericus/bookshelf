@@ -68,10 +68,6 @@
                             list-style: none;
                             border-bottom: 1px solid transparent;
 
-                            // &.active {
-                            //     border-bottom-color: $text-lt-color;
-                            // }
-
                             a {
                                 font-size: 16px;
                                 text-decoration: none;
@@ -94,6 +90,11 @@
                     align-items: center;
                     justify-content: space-between;
 
+                    @media screen and (max-width: 499px) {
+                        flex-direction: column;
+                        gap: 18px;
+                    }
+
                     .headerTopPhone {
                         font-size: 16px;
                         text-decoration: none;
@@ -113,12 +114,16 @@
                         align-items: center;
 
                         a {
-                            margin-right: 8px;
+                            margin-right: 9px;
                             display: flex;
                             justify-content: center;
                             align-items: center;
                             cursor: pointer;
                             position: relative;
+
+                            @media screen and (max-width: 499px) {
+                                margin-right: 15px;
+                            }
 
                             &:last-child {
                                 margin-right: 18px;
@@ -195,13 +200,8 @@
                         }
 
                         li {
-                            // margin-right: 50px;
                             list-style: none;
                             border-bottom: 1px solid transparent;
-
-                            // &.active {
-                            //     border-bottom-color: $text-lt-color;
-                            // }
 
                             a {
                                 font-size: 16px;
@@ -226,7 +226,6 @@
                     input {
                         font-family: 'Lora', sans-serif;
                         font-weight: 400;
-                        // border: 1px solid $text-lt-color;
                         border-radius: 30px;
                         padding: 10px 10px 10px 43px;
                         width: 214px;
