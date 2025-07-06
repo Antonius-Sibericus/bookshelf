@@ -12,15 +12,6 @@
         .authHeading {
             @include head-lora-36;
             margin-bottom: 24px;
-
-            @media screen and (max-width: 899px) {
-                font-size: 27px;
-            }
-
-            @media screen and (max-width: 767px) {
-                font-size: 24px;
-                text-align: center;
-            }
         }
 
         .authForm {
@@ -63,14 +54,6 @@
             .authButton {
                 margin-top: 36px;
                 @include button;
-
-                @media screen and (max-width: 899px) {
-                    margin-top: 27px;
-                }
-
-                @media screen and (max-width: 767px) {
-                    margin-top: 21px;
-                }
             }
 
             .authLink {

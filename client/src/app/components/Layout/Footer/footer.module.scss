@@ -1,9 +1,10 @@
 /* Footer Styles */
 
 @import '../../../../assets/styles/variables';
+@import '../../../../assets/styles/mixins';
 
 .footer {
-    padding: 48px 0;
+    @include section;
 
     .container {
         width: $container-width;

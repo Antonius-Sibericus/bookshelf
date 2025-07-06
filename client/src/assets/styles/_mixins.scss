@@ -1,5 +1,13 @@
 @import 'variables';
 
+@mixin section {
+    padding: 48px 0;
+
+    @media screen and (max-width: 767px) {
+        padding: 24px 0;
+    }
+}
+
 @mixin container {
     max-width: $container-width;
     margin: 0 auto;
@@ -17,6 +25,15 @@
 
     &.dark {
         color: $text-d-color;
+    }
+
+    @media screen and (max-width: 899px) {
+        font-size: 27px;
+    }
+
+    @media screen and (max-width: 767px) {
+        text-align: center;
+        font-size: 21px;
     }
 }
 

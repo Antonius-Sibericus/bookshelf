@@ -4,12 +4,12 @@
 @import '../../../assets/styles/mixins';
 
 .main {
-    padding: 48px 0;
+    @include section;
     background-image: url("images/page/main.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 540px;
+    min-height: 540px;
 
     .container {
         @include container;
@@ -22,6 +22,15 @@
             color: $common-text-color;
             margin-bottom: 30px;
             margin: 18px 0;
+
+            @media screen and (max-width: 1023px) {
+                font-size: 45px;
+            }
+
+            @media screen and (max-width: 767px) {
+                text-align: center;
+                font-size: 33px;
+            }
         }
 
         .mainText {
@@ -30,6 +39,20 @@
             line-height: 130%;
             color: $common-text-color;
             margin: 12px 0;
+
+            @media screen and (max-width: 1023px) {
+                font-size: 24px;
+            }
+
+            @media screen and (max-width: 767px) {
+                text-align: center;
+                font-size: 21px;
+            }
+
+            @media screen and (max-width: 424px) {
+                // text-align: center;
+                font-size: 18px;
+            }
 
             a {
                 text-decoration: none;
@@ -46,7 +69,7 @@
 }
 
 .address {
-    padding: 48px 0;
+    @include section;
 
     .addressHeading {
         margin-bottom: 24px;
@@ -56,5 +79,10 @@
 
     iframe {
         border: none;
+        height: 500px;
+
+        @media screen and (max-width: 767px) {
+            height: 300px;
+        }
     }
 }

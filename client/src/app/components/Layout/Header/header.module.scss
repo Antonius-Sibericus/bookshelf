@@ -1,9 +1,10 @@
 /* Header Styles */
 
 @import '../../../../assets/styles/variables';
+@import '../../../../assets/styles/mixins';
 
 .header {
-    padding: 48px 0;
+    @include section;
 
     .container {
         width: $container-width;

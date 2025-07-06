@@ -29,7 +29,7 @@ const MainPage: FC = () => {
             </section>
             <section className={styles.address}>
                 <div className={styles.addressHeading + ' ' + themeTernary}>Наш офис и место получения заказов</div>
-                <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A9cd8f5a4976c1bb039e234bf5e46cdb3cf15f248e995c02b6b8bdbddd1a06216&amp;source=constructor" width="100%" height="500"></iframe>
+                <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A9cd8f5a4976c1bb039e234bf5e46cdb3cf15f248e995c02b6b8bdbddd1a06216&amp;source=constructor" width="100%"></iframe>
             </section>
         </>
     )
