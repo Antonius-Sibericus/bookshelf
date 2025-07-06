@@ -48,6 +48,15 @@
             background-color: $input-d-hover;
         }
     }
+
+    @media screen and (max-width: 899px) {
+        font-size: 18px;
+    }
+
+    @media screen and (max-width: 767px) {
+        font-size: 15px;
+        text-align: center;
+    }
 }
 
 @mixin select {
@@ -79,6 +88,14 @@
             background-color: $input-d-hover;
         }
     }
+
+    @media screen and (max-width: 899px) {
+        font-size: 18px;
+    }
+
+    @media screen and (max-width: 767px) {
+        font-size: 15px;
+    }
 }
 
 @mixin option {
@@ -89,6 +106,10 @@
     box-sizing: border-box;
     outline: none;
     cursor: pointer;
+
+    @media screen and (max-width: 899px) {
+        font-size: 15px;
+    }
 }
 
 @mixin button {
@@ -126,5 +147,15 @@
         &:active {
             background-color: $button-d-active;
         }
+    }
+
+    @media screen and (max-width: 899px) {
+        padding: 12px;
+        font-size: 18px;
+    }
+
+    @media screen and (max-width: 767px) {
+        padding: 9px;
+        font-size: 15px;
     }
 }
