@@ -1,17 +1,130 @@
-// @import 'variables';
+@import 'variables';
 
-// @mixin head-lora-32 {
-//     font-family: 'Lora', serif;
-//     font-style: normal;
-//     font-weight: 400;
-//     font-size: 32px;
-//     color: $blue-text-color;
-// }
+@mixin container {
+    max-width: $container-width;
+    margin: 0 auto;
+}
 
-// @mixin head-lora-36 {
-//     font-family: 'Lora', serif;
-//     font-style: normal;
-//     font-weight: 400;
-//     font-size: 36px;
-//     color: #000000;
-// }
+@mixin head-lora-36 {
+    font-family: 'Lora', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 36px;
+
+    &.light {
+        color: $text-lt-color
+    }
+
+    &.dark {
+        color: $text-d-color;
+    }
+}
+
+@mixin input {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-family: 'Lora', sans-serif;
+    font-weight: 400;
+    font-size: 21px;
+    box-sizing: border-box;
+    outline: none;
+
+    &.light {
+        border: 2px solid $text-lt-color;
+        background-color: $input-lt-color;
+        color: $text-lt-color;
+
+        &:hover {
+            background-color: $input-lt-hover;
+        }
+    }
+
+    &.dark {
+        border: 2px solid $text-d-color;
+        background-color: $input-d-color;
+        color: $text-d-color;
+
+        &:hover {
+            background-color: $input-d-hover;
+        }
+    }
+}
+
+@mixin select {
+    padding: 6px 12px;
+    font-family: 'Montserrat', serif;
+    font-weight: 500;
+    font-size: 21px;
+    box-sizing: border-box;
+    outline: none;
+    cursor: pointer;
+    cursor: pointer;
+
+    &.light {
+        border: 2px solid $text-lt-color;
+        background-color: $input-lt-color;
+        color: $text-lt-color;
+
+        &:hover {
+            background-color: $input-lt-hover;
+        }
+    }
+
+    &.dark {
+        border: 2px solid $text-d-color;
+        background-color: $input-d-color;
+        color: $text-d-color;
+
+        &:hover {
+            background-color: $input-d-hover;
+        }
+    }
+}
+
+@mixin option {
+    font-family: 'Montserrat', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 18px;
+    box-sizing: border-box;
+    outline: none;
+    cursor: pointer;
+}
+
+@mixin button {
+    text-align: center;
+    padding: 15px;
+    border-radius: 6px;
+    box-sizing: border-box;
+    cursor: pointer;
+    border: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 21px;
+
+    &.light {
+        background-color: $button-lt-color;
+        color: $button-text-lt-color;
+
+        &:hover {
+            background-color: $button-lt-hover;
+        }
+
+        &:active {
+            background-color: $button-lt-active;
+        }
+    }
+
+    &.dark {
+        background-color: $button-d-color;
+        color: $button-text-d-color;
+
+        &:hover {
+            background-color: $button-d-hover;
+        }
+
+        &:active {
+            background-color: $button-d-active;
+        }
+    }
+}

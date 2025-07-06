@@ -1,1 +1,78 @@
 /* Signup and Login Pages Styles */
+
+@import '../../../assets/styles/mixins';
+@import '../../../assets/styles/variables';
+
+.auth {
+    padding: 48px 0;
+
+    .container {
+        @include container;
+
+        .authHeading {
+            @include head-lora-36;
+            margin-bottom: 24px;
+        }
+
+        .authForm {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            max-width: 750px;
+
+            .authGroup {
+                display: flex;
+                flex-direction: column;
+                gap: 9px;
+
+                .authLabel {
+                    font-size: 24px;
+                }
+
+                .authInput {
+                    @include input;
+                }
+
+                .authSelect {
+                    @include select;
+
+                    .authOption {
+                        @include option;
+                    }
+                }
+            }
+
+            .authButton {
+                margin-top: 36px;
+                @include button;
+            }
+
+            .authLink {
+                text-align: center;
+
+                a {
+                    font-size: 16px;
+                    text-decoration: none;
+                    cursor: pointer;
+                    border-bottom: 1px solid transparent;
+
+                    &.light {
+                        color: $anchor-lt-color;
+
+                        &:hover {
+                            border-bottom: 1px solid $anchor-lt-color;
+                        }
+                    }
+
+                    &.dark {
+                        color: $anchor-d-color;
+
+                        &:hover {
+                            border-bottom: 1px solid $anchor-d-color;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

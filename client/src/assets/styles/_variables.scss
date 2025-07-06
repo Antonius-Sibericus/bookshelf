@@ -2,13 +2,33 @@ $container-width: 90%;
 $fast-duration: 0.25s;
 $slow-duration: 0.75s;
 
-$common-text-color: #aeefff;
+$common-text-color: rgb(174, 239, 255);
 $common-anchor-color: rgb(41, 255, 205);
 
-$main-lt-color: #d2eff6;
-$text-lt-color: #072e36;
-$input-lt-color: #f1fcff;
+// --- --- --- --- --- --- Light Theme --- --- --- --- --- --- //
 
-$main-d-color: #011a1f;
-$text-d-color: #229fb8;
-$input-d-color: #4fe1fe;
+$main-lt-color: rgb(210, 239, 246);
+$text-lt-color: rgb(7, 46, 54);
+$input-lt-color: rgb(234, 250, 255);
+$input-lt-hover: rgb(255, 255, 255);
+
+$anchor-lt-color: rgb(0, 125, 77);
+
+$button-lt-color: rgb(78, 190, 175);
+$button-lt-hover: rgb(105, 212, 197);
+$button-lt-active: rgb(127, 229, 215);
+$button-text-lt-color: rgb(11, 67, 54);
+
+// --- --- --- --- --- --- Dark Theme --- --- --- --- --- --- //
+
+$main-d-color: rgb(1, 26, 31);
+$text-d-color: rgb(34, 159, 184);
+$input-d-color: rgb(22, 35, 38);
+$input-d-hover:rgb(31, 47, 51);
+
+$anchor-d-color: rgb(0, 255, 170);
+
+$button-d-color: rgb(9, 53, 43);
+$button-d-hover: rgb(20, 89, 73);
+$button-d-active: rgb(31, 115, 95);
+$button-text-d-color: rgb(39, 230, 186);

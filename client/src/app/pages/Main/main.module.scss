@@ -1,6 +1,7 @@
 /* Main Page Styles */
 
 @import '../../../assets/styles/variables';
+@import '../../../assets/styles/mixins';
 
 .main {
     padding: 48px 0;
@@ -11,8 +12,7 @@
     height: 540px;
 
     .container {
-        width: $container-width;
-        margin: 0 auto;
+        @include container;
         font-family: "Lora", serif;
 
         .mainHeading {
@@ -48,27 +48,13 @@
 .address {
     padding: 48px 0;
 
-    .container {
-        margin: 0 auto;
-        font-family: "Lora", serif;
+    .addressHeading {
+        margin-bottom: 24px;
+        @include head-lora-36;
+        text-align: center;
+    }
 
-        .addressHeading {
-            font-weight: 500;
-            font-size: 30px;
-            text-align: center;
-            margin-bottom: 24px;
-
-            &.light {
-                color: $text-lt-color
-            }
-
-            &.dark {
-                color: $text-d-color;
-            }
-        }
-
-        iframe {
-            border: none;
-        }
+    iframe {
+        border: none;
     }
 }
