@@ -39,19 +39,19 @@ const SignupPage: FC = () => {
                         <label htmlFor="email" className={styles.authLabel + ' ' + themeTernary}>
                             Электронная почта
                         </label>
-                        <input type="text" id='email' name='email' className={styles.authInput + ' ' + themeTernary} />
+                        <input type="email" id='email' name='email' className={styles.authInput + ' ' + themeTernary} />
                     </div>
                     <div className={styles.authGroup}>
                         <label htmlFor="password" className={styles.authLabel + ' ' + themeTernary}>
                             Пароль
                         </label>
-                        <input type="text" id='password' name='password' className={styles.authInput + ' ' + themeTernary} />
+                        <input type="password" id='password' name='password' className={styles.authInput + ' ' + themeTernary} />
                     </div>
                     <div className={styles.authGroup}>
                         <label htmlFor="repeatPassword" className={styles.authLabel + ' ' + themeTernary}>
                             Повторите пароль
                         </label>
-                        <input type="text" id='repeatPassword' name='repeatPassword' className={styles.authInput + ' ' + themeTernary} />
+                        <input type="password" id='repeatPassword' name='repeatPassword' className={styles.authInput + ' ' + themeTernary} />
                     </div>
                     <div className={styles.authGroup}>
                         <label htmlFor="role" className={styles.authLabel + ' ' + themeTernary}>

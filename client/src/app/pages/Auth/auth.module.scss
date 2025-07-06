@@ -4,7 +4,7 @@
 @import '../../../assets/styles/variables';
 
 .auth {
-    padding: 48px 0;
+    @include section;
 
     .container {
         @include container;

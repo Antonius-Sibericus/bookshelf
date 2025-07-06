@@ -20,13 +20,13 @@ const LoginPage: FC = () => {
                         <label htmlFor="email" className={styles.authLabel + ' ' + themeTernary}>
                             Электронная почта
                         </label>
-                        <input type="text" id='email' name='email' className={styles.authInput + ' ' + themeTernary} />
+                        <input type="email" id='email' name='email' className={styles.authInput + ' ' + themeTernary} />
                     </div>
                     <div className={styles.authGroup}>
                         <label htmlFor="password" className={styles.authLabel + ' ' + themeTernary}>
                             Пароль
                         </label>
-                        <input type="text" id='password' name='password' className={styles.authInput + ' ' + themeTernary} />
+                        <input type="password" id='password' name='password' className={styles.authInput + ' ' + themeTernary} />
                     </div>
                     <button className={styles.authButton + ' ' + themeTernary}>Войти</button>
                     <p className={styles.authLink + ' ' + themeTernary}>Ещё нет аккаунта? <Link className={themeTernary} to='/signup'>Зарегистрируйтесь</Link></p>

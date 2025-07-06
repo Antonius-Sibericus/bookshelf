@@ -46,13 +46,18 @@
     box-sizing: border-box;
     outline: none;
 
+    
     &.light {
         border: 2px solid $text-lt-color;
         background-color: $input-lt-color;
         color: $text-lt-color;
-
+        
         &:hover {
             background-color: $input-lt-hover;
+        }
+        
+        &.disabled {
+            background-color: $input-lt-disabled;
         }
     }
 
@@ -63,6 +68,10 @@
 
         &:hover {
             background-color: $input-d-hover;
+        }
+        
+        &.disabled {
+            background-color: $input-d-disabled;
         }
     }
 
@@ -85,24 +94,34 @@
     outline: none;
     cursor: pointer;
     cursor: pointer;
-
+    
     &.light {
         border: 2px solid $text-lt-color;
         background-color: $input-lt-color;
         color: $text-lt-color;
-
+        
         &:hover {
             background-color: $input-lt-hover;
         }
+        
+        &.disabled {
+            cursor: auto;
+            background-color: $input-lt-disabled;
+        }
     }
-
+    
     &.dark {
         border: 2px solid $text-d-color;
         background-color: $input-d-color;
         color: $text-d-color;
-
+        
         &:hover {
             background-color: $input-d-hover;
+        }
+        
+        &.disabled {
+            cursor: auto;
+            background-color: $input-d-disabled;
         }
     }
 

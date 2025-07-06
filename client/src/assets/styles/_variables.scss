@@ -9,10 +9,11 @@ $common-anchor-color: rgb(41, 255, 205);
 
 $main-lt-color: rgb(210, 239, 246);
 $text-lt-color: rgb(7, 46, 54);
+$anchor-lt-color: rgb(0, 125, 77);
+
 $input-lt-color: rgb(234, 250, 255);
 $input-lt-hover: rgb(255, 255, 255);
-
-$anchor-lt-color: rgb(0, 125, 77);
+$input-lt-disabled: rgb(204, 228, 237);
 
 $button-lt-color: rgb(78, 190, 175);
 $button-lt-hover: rgb(105, 212, 197);
@@ -23,10 +24,11 @@ $button-text-lt-color: rgb(11, 67, 54);
 
 $main-d-color: rgb(1, 26, 31);
 $text-d-color: rgb(34, 159, 184);
+$anchor-d-color: rgb(0, 255, 170);
+
 $input-d-color: rgb(22, 35, 38);
 $input-d-hover:rgb(31, 47, 51);
-
-$anchor-d-color: rgb(0, 255, 170);
+$input-d-disabled: rgb(36, 37, 37);
 
 $button-d-color: rgb(9, 53, 43);
 $button-d-hover: rgb(20, 89, 73);

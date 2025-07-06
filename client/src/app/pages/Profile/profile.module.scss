@@ -1,1 +1,83 @@
 /* Profile Page Styles */
+
+@import '../../../assets/styles/mixins';
+@import '../../../assets/styles/variables';
+
+.profile {
+    @include section;
+
+    .container {
+        @include container;
+
+        .profileHeading {
+            @include head-lora-36;
+            margin-bottom: 24px;
+        }
+
+        .profileContainer {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: start;
+            gap: 72px;
+
+            @media screen and (max-width: 1023px) {
+                flex-direction: column;
+                gap: 54px;
+            }
+
+            @media screen and (max-width: 767px) {
+                align-items: center;
+            }
+
+            .profileForm,
+            .profilePassword {
+                display: flex;
+                flex-direction: column;
+                gap: 18px;
+                width: 75%;
+                flex-grow: 1;
+
+                @media screen and (max-width: 767px) {
+                    width: 100%;
+                }
+
+                .profileGroup {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 9px;
+
+                    .profileLabel {
+                        font-size: 24px;
+
+                        @media screen and (max-width: 899px) {
+                            font-size: 18px;
+                        }
+
+                        @media screen and (max-width: 767px) {
+                            font-size: 15px;
+                            text-align: center;
+                        }
+                    }
+
+                    .profileInput {
+                        @include input;
+                    }
+
+                    .profileSelect {
+                        @include select;
+
+                        .profileOption {
+                            @include option;
+                        }
+                    }
+                }
+
+                .profileButton {
+                    margin-top: 36px;
+                    @include button;
+                }
+            }
+        }
+    }
+}
