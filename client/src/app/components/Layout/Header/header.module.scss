@@ -168,11 +168,11 @@
                                 border-radius: 50%;
 
                                 &.light {
-                                    background-color: #1cadc9;
+                                    background-color: $bg-lt-color;
                                 }
 
                                 &.dark {
-                                    background-color: #072e36;
+                                    background-color: $bg-d-color;
                                 }
                             }
 

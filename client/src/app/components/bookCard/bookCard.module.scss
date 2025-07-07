@@ -1,0 +1,77 @@
+/* Book Card Styles */
+
+@import '../../../assets/styles/mixins';
+@import '../../../assets/styles/variables';
+
+.bookBlock {
+    padding: 12px;
+    background-color: $block-one-lt-color;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 9px;
+
+    @media screen and (max-width: 767px) {
+        padding: 6px;
+    }
+
+    .bookHeading {
+        font-family: "Lora", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 21px;
+        color: $text-lt-color;
+        line-height: 1;
+    }
+
+    .bookAuthor {
+        font-family: "Montserrat", serif;
+        font-weight: 300;
+        font-style: italic;
+        font-size: 15px;
+        color: $text-lt-color;
+        line-height: 1;
+    }
+
+    .bookImage {
+        height: 300px;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        @media screen and (max-width: 1439px) {
+            height: 200px;
+        }
+    }
+
+    .bookButton {
+        @include small-button;
+        width: 100%;
+        
+        &.bookButtonToFav {
+            border: 1px solid $fav-button-color;
+            background-color: $fav-button-color;
+            color: $fav-button-anticolor;
+        }
+        
+        &.bookButtonInFav {
+            border: 1px solid $fav-button-color;
+            background-color: $fav-button-anticolor;
+            color: $fav-button-color;
+        }
+        
+        &.bookButtonToBas {
+            border: 1px solid $bas-button-color;
+            background-color: $bas-button-color;
+            color: $bas-button-anticolor;
+        }
+        
+        &.bookButtonInBas {
+            border: 1px solid $bas-button-color;
+            background-color: $bas-button-anticolor;
+            color: $bas-button-color;
+        }
+    }
+}

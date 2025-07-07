@@ -5,8 +5,15 @@ $slow-duration: 0.75s;
 $common-text-color: rgb(174, 239, 255);
 $common-anchor-color: rgb(41, 255, 205);
 
+$fav-button-color: rgb(95, 0, 80);
+$fav-button-anticolor: rgb(224, 208, 222);
+
+$bas-button-color: rgb(0, 65, 49);
+$bas-button-anticolor: rgb(150, 218, 184);
+
 // --- --- --- --- --- --- Light Theme --- --- --- --- --- --- //
 
+$bg-lt-color: rgb(28, 173, 201);
 $main-lt-color: rgb(210, 239, 246);
 $text-lt-color: rgb(7, 46, 54);
 $anchor-lt-color: rgb(0, 125, 77);
@@ -20,17 +27,24 @@ $button-lt-hover: rgb(105, 212, 197);
 $button-lt-active: rgb(127, 229, 215);
 $button-text-lt-color: rgb(11, 67, 54);
 
+$block-one-lt-color: rgb(200, 240, 221);
+$border-light-lt-color: rgb(153, 212, 192);
+
 // --- --- --- --- --- --- Dark Theme --- --- --- --- --- --- //
 
+$bg-d-color: rgb(7, 46, 54);
 $main-d-color: rgb(1, 26, 31);
 $text-d-color: rgb(34, 159, 184);
 $anchor-d-color: rgb(0, 255, 170);
 
 $input-d-color: rgb(22, 35, 38);
-$input-d-hover:rgb(31, 47, 51);
+$input-d-hover: rgb(31, 47, 51);
 $input-d-disabled: rgb(36, 37, 37);
 
 $button-d-color: rgb(9, 53, 43);
 $button-d-hover: rgb(20, 89, 73);
 $button-d-active: rgb(31, 115, 95);
 $button-text-d-color: rgb(39, 230, 186);
+
+$block-one-d-color: rgb(14, 56, 37);
+$border-light-d-color: rgb(61, 83, 76);

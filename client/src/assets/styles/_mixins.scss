@@ -18,6 +18,7 @@
     font-style: normal;
     font-weight: 500;
     font-size: 36px;
+    line-height: 1;
 
     &.light {
         color: $text-lt-color
@@ -194,4 +195,16 @@
         padding: 9px;
         font-size: 15px;
     }
+}
+
+@mixin small-button {
+    text-align: center;
+    padding: 9px;
+    border-radius: 6px;
+    box-sizing: border-box;
+    cursor: pointer;
+    border: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
 }

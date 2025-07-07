@@ -2,7 +2,6 @@ import { useState, type FC } from 'react'
 import styles from './profile.module.scss'
 import { UserRoles, UserRolesTranslations } from '../../../types/user-roles.enum'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { selectorGeneral } from '../../../redux/general/general.selector'
 import { ColorThemeEnum } from '../../../redux/general/general.types'
 
