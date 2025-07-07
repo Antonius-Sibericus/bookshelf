@@ -1,0 +1,155 @@
+/* Personal Card Styles */
+
+@import '../../../assets/styles/mixins';
+@import '../../../assets/styles/variables';
+
+.personalCard {
+    padding: 6px 24px;
+    border-radius: 12px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    gap: 24px;
+
+    @media screen and (max-width: 599px) {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    &.light {
+        background-color: $block-one-lt-color;
+        border: 2px solid $anchor-lt-color;
+    }
+
+    &.dark {
+        background-color: $block-one-d-color;
+        border: 2px solid $anchor-d-color;
+    }
+
+    .personalCardImage {
+        width: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        @media screen and (max-width: 699px) {
+            width: 90px;
+        }
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .personalCardDescription {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-grow: 1;
+
+        @media screen and (max-width: 767px) {
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        @media screen and (max-width: 599px) {
+            flex-direction: row;
+            justify-content: space-evenly;
+            width: 100%;
+        }
+
+        @media screen and (max-width: 424px) {
+            flex-direction: column;
+        }
+
+        .personalCardHeading {
+            font-family: "Lora", sans-serif;
+            font-size: 21px;
+            font-weight: 700;
+            text-align: center;
+
+            @media screen and (max-width: 1169px) {
+                font-size: 18px;
+            }
+
+            @media screen and (max-width: 699px) {
+                font-size: 15px;
+            }
+
+            &.light {
+                color: $anchor-lt-color;
+            }
+
+            &.dark {
+                color: $anchor-d-color;
+            }
+        }
+
+        .personalCardInfo {
+            font-family: "Lora", sans-serif;
+            font-size: 21px;
+            font-weight: 400;
+            text-align: center;
+
+            @media screen and (max-width: 1169px) {
+                font-size: 18px;
+            }
+
+            @media screen and (max-width: 699px) {
+                font-size: 15px;
+            }
+
+            &.light {
+                color: $anchor-lt-color;
+            }
+
+            &.dark {
+                color: $anchor-d-color;
+            }
+        }
+    }
+
+    .personalCardStore {
+        font-family: "Lora", sans-serif;
+        font-size: 21px;
+        font-weight: 400;
+        text-align: center;
+
+        @media screen and (max-width: 1169px) {
+            font-size: 18px;
+        }
+
+        @media screen and (max-width: 699px) {
+            font-size: 15px;
+        }
+
+        &.light {
+            color: $anchor-lt-color;
+        }
+
+        &.dark {
+            color: $anchor-d-color;
+        }
+    }
+
+    .personalCardClose {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        svg {
+            width: 24px;
+            height: 24px;
+
+            &.light {
+                fill: $anchor-lt-color;
+            }
+
+            &.dark {
+                fill: $anchor-d-color;
+            }
+        }
+    }
+}

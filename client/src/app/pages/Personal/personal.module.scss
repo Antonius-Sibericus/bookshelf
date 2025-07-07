@@ -1,1 +1,56 @@
 /* Personal Pages Styles */
+
+@import '../../../assets/styles/mixins';
+@import '../../../assets/styles/variables';
+
+.personal {
+    @include section;
+
+    .container {
+        @include container;
+
+        .personalHeading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+
+            @media screen and (max-width: 424px) {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            span {
+                @include head-lora-36;
+            }
+
+            a {
+                text-decoration: none;
+                border-bottom: 2px solid transparent;
+
+                &.light {
+                    color: $anchor-lt-color;
+
+                    &:hover {
+                        border-bottom: 2px solid $anchor-lt-color;
+                    }
+                }
+
+                &.dark {
+                    color: $anchor-d-color;
+
+                    &:hover {
+                        border-bottom: 2px solid $anchor-d-color;
+                    }
+                }
+            }
+        }
+
+        .personalContent {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+    }
+}

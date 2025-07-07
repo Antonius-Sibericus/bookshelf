@@ -1,7 +1,6 @@
 import { useState, type FC } from 'react'
 import styles from './bookCard.module.scss'
 import { Link } from 'react-router-dom'
-import { bookPath } from '../../../utils/consts.utils'
 
 const BookCard: FC = () => {
     const [isInBasket, setIsInBasket] = useState(false)
