@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { ColorThemeEnum } from '../../../../redux/general/general.types'
 import { selectorGeneral } from '../../../../redux/general/general.selector'
 import { useSelector } from 'react-redux'
+import logo from '../../../../assets/images/logo-bookshelf.jpg'
 
 const Footer: FC = () => {
     const { theme } = useSelector(selectorGeneral)
@@ -14,7 +15,7 @@ const Footer: FC = () => {
             <div className={styles.container}>
                 <Link to='/'>
                     <div className={styles.logo}>
-                        <img width='120' src='images/logo-bookshelf.jpg' alt='Bookshelf Logo' />
+                        <img width='120' src={logo} alt='Bookshelf Logo' />
                     </div>
                 </Link>
                 <div className={styles.footerColumn}>

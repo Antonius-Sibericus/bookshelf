@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ColorThemeEnum } from '../../../../redux/general/general.types'
 import { setTheme } from '../../../../redux/general/general.slice'
 import { selectorGeneral } from '../../../../redux/general/general.selector'
+import logo from '../../../../assets/images/logo-bookshelf.jpg'
 
 const Header: FC = () => {
     const { theme, isAuthed } = useSelector(selectorGeneral)
@@ -24,7 +25,7 @@ const Header: FC = () => {
             <div className={styles.container}>
                 <Link to='/'>
                     <div className={styles.logo}>
-                        <img width='120' src='images/logo-bookshelf.jpg' alt='Bookshelf Logo' />
+                        <img width='120' src={logo} alt='Bookshelf Logo' />
                     </div>
                 </Link>
                 <div className={styles.headerContent}>
