@@ -42,6 +42,13 @@
                     @include input;
                 }
 
+                .authError {
+                    font-size: 12px;
+                    padding: 3px;
+                    color: red;
+                    display: block;
+                }
+
                 .authSelect {
                     @include select;
 

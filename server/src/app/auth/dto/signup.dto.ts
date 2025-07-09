@@ -58,7 +58,8 @@ export class SignupDTO {
         name: 'Пароль',
         description: 'Пароль пользователя',
         example: '12345678Qq',
-        maxLength: 63,
+        minLength: 6,
+        maxLength: 12,
         required: true,
         type: String
     })
