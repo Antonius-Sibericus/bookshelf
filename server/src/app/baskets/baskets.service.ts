@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt'
 import { Request, Response } from 'express'
 import { JwtPayload } from 'src/types/jwt.interface'
 import { PrismaService } from '../prisma/prisma.service'
+import { User } from 'generated/prisma'
 
 @Injectable()
 export class BasketsService {

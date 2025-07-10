@@ -3,6 +3,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 import { BasketsService } from './baskets.service'
 import { AuthGuard } from 'src/guards/auth.guard'
+import { Roles } from 'src/decorators/roles.decorator'
 
 @ApiTags('Корзина пользователя')
 @Controller('basket')

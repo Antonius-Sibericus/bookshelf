@@ -160,13 +160,6 @@ export class AuthService {
                     isActivated: true
                 }
             })
-
-            // return res
-            //     .status(HttpStatus.OK)
-            //     .json({
-            //         error: false,
-            //         message: `Пользователь со ссылкой ${updatedUser.activationLink} успешно активирован`
-            //     })
         } catch (err) {
             console.log(err.message)
             return res.status(HttpStatus.NOT_IMPLEMENTED).json({ error: true, message: err.message })

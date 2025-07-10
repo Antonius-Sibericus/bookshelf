@@ -19,7 +19,7 @@ import { MailService } from './authUtils/mail.service'
     }),
     ConfigModule,
     PassportModule,
-    PrismaModule,
+    PrismaModule
   ],
   controllers: [AuthController],
   providers: [AuthService, MailService, JwtStrategy, PrismaService]

@@ -70,16 +70,6 @@ export class SignupDTO {
     @MaxLength(12, { message: 'пароль не должен быть длиннее 12 символов' })
     password: string
 
-    // @ApiProperty({
-    //     name: 'Активирован',
-    //     description: 'Булево значение об активации аккаунта пользователя',
-    //     example: true,
-    //     type: Boolean
-    // })
-    // @IsBoolean({ message: 'Значение должно иметь булев тип' })
-    // @IsNotEmpty({ message: 'Поле не должно быть пустым' })
-    // isActivated: boolean
-
     @ApiProperty({
         name: 'Роль',
         description: 'Роль пользователя - посетитель, читатель, публикатор, администратор',
