@@ -9,6 +9,9 @@ import { SignupDTO } from './dto/signup.dto'
 import { hash, verify } from 'argon2'
 import { LoginDTO } from './dto/login.dto'
 import { UserPasswordDTO } from '../users/dto/user-password.dto'
+import * as uuid from 'uuid'
+import { UserRole } from 'generated/prisma'
+import { MailService } from './authUtils/mail.service'
 
 @Injectable()
 export class AuthService {
@@ -18,6 +21,7 @@ export class AuthService {
 
     constructor(
         private readonly configService: ConfigService,
+        private readonly mailService: MailService,
         private readonly prismaService: PrismaService,
         private readonly jwtService: JwtService
     ) {
@@ -26,8 +30,8 @@ export class AuthService {
         this.COOKIE_DOMAIN = configService.getOrThrow<string>('COOKIE_DOMAIN')
     }
 
-    private generateTokens(id: string) {
-        const payload: JwtPayload = { id }
+    private generateTokens(id: string, email: string, role: UserRole) {
+        const payload: JwtPayload = { id, email, role }
         const accessToken = this.jwtService.sign(payload, { expiresIn: this.JWT_ACCESS_TOKEN_TTL })
         const refreshToken = this.jwtService.sign(payload, { expiresIn: this.JWT_REFRESH_TOKEN_TTL })
         return { accessToken, refreshToken }
@@ -43,8 +47,8 @@ export class AuthService {
         })
     }
 
-    private auth(res: Response, id: string) {
-        const { accessToken, refreshToken } = this.generateTokens(id)
+    private auth(res: Response, id: string, email: string, role: UserRole) {
+        const { accessToken, refreshToken } = this.generateTokens(id, email, role)
         this.setCookie(
             res,
             refreshToken,
@@ -75,6 +79,8 @@ export class AuthService {
             const potentialUser = await this.prismaService.user.findUnique({ where: { email } })
             if (potentialUser) { throw new ConflictException('Пользователь с таким email уже существует') }
 
+            const activationLink = uuid.v4()
+
             const user = await this.prismaService.user.create({
                 data: {
                     surname,
@@ -82,9 +88,11 @@ export class AuthService {
                     paternal: paternal ? paternal : '',
                     email,
                     password: await hash(password),
+                    activationLink: activationLink,
                     role: role ? role : 'READER'
                 }
             })
+            this.mailService.sendActivationMail(email, `${this.configService.getOrThrow('SERVER_URL')}/auth/activate/${activationLink}`)
 
             const basket = await this.prismaService.basket.create({
                 data: {
@@ -118,7 +126,7 @@ export class AuthService {
                     }`)
             }
 
-            const accessToken = this.auth(res, user.id)
+            const accessToken = this.auth(res, user.id, user.email, user.role)
 
             return res
                 .status(HttpStatus.CREATED)
@@ -130,6 +138,37 @@ export class AuthService {
                 })
         } catch (err) {
             console.error(err.message)
+            return res.status(HttpStatus.NOT_IMPLEMENTED).json({ error: true, message: err.message })
+        }
+    }
+
+    public async activate(activationLink: string, res: Response) {
+        try {
+            const user = await this.prismaService.user.findUnique({
+                where: {
+                    activationLink
+                }
+            })
+    
+            if (!user) { throw new NotFoundException('Пользователь с такой ссылкой не найден') }
+            
+            const updatedUser = await this.prismaService.user.update({
+                where: {
+                    activationLink
+                },
+                data: {
+                    isActivated: true
+                }
+            })
+
+            // return res
+            //     .status(HttpStatus.OK)
+            //     .json({
+            //         error: false,
+            //         message: `Пользователь со ссылкой ${updatedUser.activationLink} успешно активирован`
+            //     })
+        } catch (err) {
+            console.log(err.message)
             return res.status(HttpStatus.NOT_IMPLEMENTED).json({ error: true, message: err.message })
         }
     }
@@ -150,7 +189,9 @@ export class AuthService {
                     id: true,
                     name: true,
                     paternal: true,
-                    password: true
+                    password: true,
+                    isActivated: true,
+                    role: true
                 }
             })
 
@@ -158,7 +199,7 @@ export class AuthService {
 
             const isValidPassword = await verify(potentialUser.password, password)
             if (!isValidPassword) { throw new UnauthorizedException('Корректно введите пароль') }
-            const accessToken = this.auth(res, potentialUser.id)
+            const accessToken = this.auth(res, potentialUser.id, email, potentialUser.role)
 
             return res
                 .status(HttpStatus.ACCEPTED)
@@ -184,12 +225,12 @@ export class AuthService {
 
             const user = await this.prismaService.user.findUnique({
                 where: { id: payload.id },
-                select: { id: true, }
+                select: { id: true, email: true, isActivated: true, role: true }
             })
 
             if (!user) { throw new NotFoundException('Пользователь не найден, обновление токенов невозможно') }
 
-            const accessToken = this.auth(res, user.id)
+            const accessToken = this.auth(res, user.id, user.email, user.role)
 
             return res
                 .status(HttpStatus.OK)

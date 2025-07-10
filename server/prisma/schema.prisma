@@ -9,19 +9,21 @@ datasource db {
 }
 
 model User {
-  id          String     @id @default(uuid())
-  surname     String
-  name        String
-  paternal    String
-  email       String     @unique
-  password    String
-  role        UserRole   @default(VISITOR)
-  basket      Basket?    @relation()
-  published   Published? @relation()
-  favorites   Favorites? @relation()
-  publisherOf Book[]     @relation()
-  createdAt   DateTime   @default(now()) @map("created_at")
-  updatedAt   DateTime   @updatedAt @map("updated_at")
+  id             String     @id @default(uuid())
+  surname        String
+  name           String
+  paternal       String
+  email          String     @unique
+  password       String
+  isActivated    Boolean    @default(false)
+  activationLink String     @unique
+  role           UserRole   @default(READER)
+  basket         Basket?    @relation()
+  published      Published? @relation()
+  favorites      Favorites? @relation()
+  publisherOf    Book[]     @relation()
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
 
   @@map("users")
 }
@@ -111,7 +113,6 @@ model Theme {
 }
 
 enum UserRole {
-  VISITOR
   READER
   PUBLISHER
   ADMIN

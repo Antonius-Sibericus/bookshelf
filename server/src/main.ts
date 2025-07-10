@@ -5,6 +5,7 @@ import * as cookieParser from 'cookie-parser'
 import { setUpSwagger } from './utils/swagger.util'
 
 async function bootstrap() {
+  const port = 3000
   const app = await NestFactory.create(AppModule)
   app.enableCors({
     origin: ['http://localhost:5173', 'http://localhost:5170', 'http://localhost:5171', 'http://localhost:5172', 'http://localhost:5174'],
@@ -16,6 +17,6 @@ async function bootstrap() {
   app.use(cookieParser())
   app.useGlobalPipes(new ValidationPipe())
   setUpSwagger(app)
-  await app.listen(process.env.PORT ?? 3000)
+  await app.listen(process.env.PORT ?? port, () => console.log('Server is running on port ' + port))
 }
 bootstrap()

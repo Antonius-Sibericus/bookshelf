@@ -118,7 +118,7 @@ export class BooksService {
                 }
             })
 
-            if (!potentialPublished || potentialPublished.role === UserRoles.READER || potentialPublished.role === UserRoles.VISITOR) {
+            if (!potentialPublished || potentialPublished.role === UserRoles.READER) {
                 throw new NotFoundException('Такой пользователь не может опубликовать книгу или отредактировать информацию о ней, необходимо обладать правами администратора или публикатора')
             }
 
@@ -238,7 +238,7 @@ export class BooksService {
                 }
             })
 
-            if (!potentialPublished || potentialPublished.role === UserRoles.READER || potentialPublished.role === UserRoles.VISITOR) {
+            if (!potentialPublished || potentialPublished.role === UserRoles.READER) {
                 throw new NotFoundException('Такой пользователь не может опубликовать книгу или отредактировать информацию о ней, необходимо обладать правами администратора или публикатора')
             }
 
@@ -350,7 +350,7 @@ export class BooksService {
                 }
             })
 
-            if (!potentialPublished || potentialPublished.role === UserRoles.READER || potentialPublished.role === UserRoles.VISITOR) {
+            if (!potentialPublished || potentialPublished.role === UserRoles.READER) {
                 throw new NotFoundException('Такой пользователь не может опубликовать книгу или отредактировать информацию о ней, необходимо обладать правами администратора или публикатора')
             }
 

@@ -1,15 +1,17 @@
-import { Body, Controller, Param, Patch, Post, Req, Res } from '@nestjs/common'
+import { Body, Controller, Get, Param, Patch, Post, Req, Res } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { Request, Response } from 'express'
 import { SignupDTO } from './dto/signup.dto'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { LoginDTO } from './dto/login.dto'
 import { UserPasswordDTO } from '../users/dto/user-password.dto'
+import { ConfigService } from '@nestjs/config'
 
 @ApiTags('Авторизация и аутентификация')
 @Controller('auth')
 export class AuthController {
   constructor(
+    private readonly configService: ConfigService,
     private readonly authService: AuthService
   ) { }
 
@@ -47,6 +49,12 @@ export class AuthController {
   @Patch(':id')
   public async changeUserPassword(@Param('id') id: string, @Body() dto: UserPasswordDTO, @Res() res: Response) {
     return await this.authService.patchPassword(id, dto, res)
+  }
+
+  @Get('activate/:link')
+  public async activation(@Param('link') link: string, @Res() res: Response) {
+    await this.authService.activate(link, res)
+    return res.redirect(this.configService.getOrThrow<string>('CLIENT_URL'))
   }
 
   @ApiOperation({
