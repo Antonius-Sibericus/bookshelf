@@ -8,6 +8,12 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
+import AuthService from '../../services/AuthService'
+import { AxiosError } from 'axios'
+import type { DefaultResponseType } from '../../../types/defaultResponse.type'
+import type { AuthResponseType } from '../../../types/authTypes/authResponse.type'
+import { useAppDispatch } from '../../../redux/store.redux'
+import { setSignedUp, setUser } from '../../../redux/general/general.slice'
 
 const signupSchema = z.object({
     surname: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Фамилия не может быть длиннее 63 символов' }).regex(/^[a-zA-Zа-яА-Я]{1,63}$/, { message: 'Фамилия может содержать только буквы' }),
@@ -22,8 +28,9 @@ const signupSchema = z.object({
 type SignupValuesType = z.infer<typeof signupSchema>
 
 const SignupPage: FC = () => {
-    const { theme } = useSelector(selectorGeneral)
+    const { theme, isSignedUp, isActivated } = useSelector(selectorGeneral)
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
+    const dispatch = useAppDispatch()
 
     const {
         register,
@@ -36,11 +43,20 @@ const SignupPage: FC = () => {
 
     const onSubmit: SubmitHandler<SignupValuesType> = async data => {
         try {
-            await new Promise((resolve) => setTimeout(resolve, 500))
-            console.log(data)
+            const response = await AuthService.signup(data.surname, data.name, data.paternal ? data.paternal : '', data.email, data.password, data.role)
+            if (response.data as AuthResponseType) {
+                if (response.data.accessToken) {
+                    localStorage.setItem('accessToken', response.data.accessToken)
+                } else {
+                    throw new Error('Токен доступа не получен')
+                }
+                dispatch(setUser(response.data.user))
+                dispatch(setSignedUp(true))
+            }
         } catch (err) {
+            const customErrorData: DefaultResponseType = (err as AxiosError).response!.data as DefaultResponseType
             setError('root', {
-                message: 'Server Error'
+                message: customErrorData ? customErrorData.message : 'Непредвиденная ошибка. Обратитесь в поддержку'
             })
         }
     }
@@ -49,9 +65,12 @@ const SignupPage: FC = () => {
         <section className={styles.auth}>
             <div className={styles.container}>
                 <div className={styles.authHeading + ' ' + themeTernary}>
-                    Регистрация
+                    {isSignedUp ? 'Добро пожаловать!' : 'Регистрация'}
                 </div>
-                <form className={styles.authForm} onSubmit={handleSubmit(onSubmit)}>
+                <div className={styles.authHeading + ' ' + themeTernary}>
+                    {(isSignedUp && !isActivated) && 'Пройдите по ссылке, отправленной вам на почту для активации аккаунта'}
+                </div>
+                {!isSignedUp && <form className={styles.authForm} onSubmit={handleSubmit(onSubmit)}>
                     <div className={styles.authGroup}>
                         <label htmlFor="surname" className={styles.authLabel + ' ' + themeTernary}>Фамилия</label>
                         <input
@@ -151,11 +170,12 @@ const SignupPage: FC = () => {
                             ))}
                         </select>
                     </div>
+                    <div className={styles.mainError}>{errors.root ? errors.root.message : ''}</div>
                     <button className={styles.authButton + ' ' + themeTernary} disabled={isSubmitting}>
                         {isSubmitting ? 'В процессе...' : 'Зарегистрироваться'}
                     </button>
                     <p className={styles.authLink + ' ' + themeTernary}>Уже есть аккаунт? <Link className={themeTernary} to='/login'>Войдите</Link></p>
-                </form>
+                </form>}
             </div>
         </section>
     )

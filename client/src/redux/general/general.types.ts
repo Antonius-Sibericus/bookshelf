@@ -1,6 +1,10 @@
+import type { UserType } from "../../types/user.type"
+
 export type GeneralType = {
     theme: ColorThemeEnum,
-    isAuthed: boolean
+    isActivated: boolean,
+    isSignedUp: boolean,
+    user: UserType
 }
 
 export enum ColorThemeEnum {

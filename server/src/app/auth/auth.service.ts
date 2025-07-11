@@ -134,7 +134,7 @@ export class AuthService {
                     error: false,
                     message: `Пользователь ${user.surname + ' ' + user.name} успешно зарегистрирован`,
                     accessToken,
-                    userId: user.id
+                    user
                 })
         } catch (err) {
             console.error(err.message)
@@ -176,31 +176,23 @@ export class AuthService {
                     }`)
             }
 
-            const potentialUser = await this.prismaService.user.findUnique({
-                where: { email },
-                select: {
-                    id: true,
-                    name: true,
-                    paternal: true,
-                    password: true,
-                    isActivated: true,
-                    role: true
-                }
+            const user = await this.prismaService.user.findUnique({
+                where: { email }
             })
 
-            if (!potentialUser) { throw new NotFoundException(`Пользователя с E-Mail ${email} не найден. Корректно введите E-Mail`) }
+            if (!user) { throw new NotFoundException(`Пользователя с E-Mail ${email} не найден. Корректно введите E-Mail`) }
 
-            const isValidPassword = await verify(potentialUser.password, password)
+            const isValidPassword = await verify(user.password, password)
             if (!isValidPassword) { throw new UnauthorizedException('Корректно введите пароль') }
-            const accessToken = this.auth(res, potentialUser.id, email, potentialUser.role)
+            const accessToken = this.auth(res, user.id, email, user.role)
 
             return res
                 .status(HttpStatus.ACCEPTED)
                 .json({
                     error: false,
-                    message: `Вход выполен успешно. Добро пожаловать, ${potentialUser.name + ' ' + potentialUser.paternal}!`,
+                    message: `Вход выполен успешно. Добро пожаловать, ${user.name + ' ' + user.paternal}!`,
                     accessToken,
-                    userId: potentialUser.id
+                    user
                 })
         } catch (err) {
             console.error(err.message)
@@ -217,8 +209,7 @@ export class AuthService {
             if (!payload) { throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)') }
 
             const user = await this.prismaService.user.findUnique({
-                where: { id: payload.id },
-                select: { id: true, email: true, isActivated: true, role: true }
+                where: { id: payload.id }
             })
 
             if (!user) { throw new NotFoundException('Пользователь не найден, обновление токенов невозможно') }
@@ -231,7 +222,7 @@ export class AuthService {
                     error: false,
                     message: `Токены обновлены успешно`,
                     accessToken,
-                    userId: user.id
+                    user
                 })
         } catch (err) {
             console.error(err.message)
@@ -260,16 +251,7 @@ export class AuthService {
 
             const patchedUser = await this.prismaService.user.update({
                 where: { id },
-                data: { password: newPassword },
-                select: {
-                    id: true,
-                    surname: true,
-                    name: true,
-                    paternal: true,
-                    email: true,
-                    role: true,
-                    publisherOf: true
-                }
+                data: { password: newPassword }
             })
 
             if (!patchedUser) { throw new NotImplementedException('Не удалось обновить пароль') }

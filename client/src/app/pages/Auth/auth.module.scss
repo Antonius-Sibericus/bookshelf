@@ -51,6 +51,7 @@
 
                 .authSelect {
                     @include select;
+                    margin-bottom: 36px;
 
                     .authOption {
                         @include option;
@@ -58,8 +59,17 @@
                 }
             }
 
+            .mainError {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: red;
+                font-family: "Lora", sans-serif;
+                font-style: italic;
+                font-size: 24px;
+            }
+
             .authButton {
-                margin-top: 36px;
                 @include button;
             }
 
