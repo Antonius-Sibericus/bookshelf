@@ -1,12 +1,14 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import { ColorThemeEnum, type GeneralType } from './general.types'
+import { ColorThemeEnum, StatusEnum, type GeneralType } from './general.types'
 import { type UserType } from '../../types/user.type'
+import { fetchCurrentUser } from './general.async'
 
 const initialState: GeneralType = {
     theme: ColorThemeEnum.LIGHT,
     isActivated: false,
-    isSignedUp: false,
-    user: {} as UserType
+    isSignedUp: localStorage.getItem('accessToken') ? true : false,
+    currentUser: {} as UserType,
+    status: StatusEnum.LOADING
 }
 
 const generalSlice = createSlice({
@@ -21,25 +23,23 @@ const generalSlice = createSlice({
         },
         setSignedUp(state, action: PayloadAction<boolean>) {
             state.isSignedUp = action.payload
-        },
-        setUser(state, action: PayloadAction<UserType>) {
-            state.user = action.payload
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(fetchCurrentUser.pending, (state, action) => {
+            state.status = StatusEnum.LOADING,
+            state.currentUser = {} as UserType
+        }),
+        builder.addCase(fetchCurrentUser.rejected, (state, action) => {
+            state.status = StatusEnum.ERROR,
+            state.currentUser = {} as UserType
+        }),
+        builder.addCase(fetchCurrentUser.fulfilled, (state, action) => {
+            state.status = StatusEnum.SUCCESS,
+            state.currentUser = action.payload.user
+        })
     }
 })
 
-export const { setTheme, setActivated, setSignedUp, setUser } = generalSlice.actions
+export const { setTheme, setActivated, setSignedUp } = generalSlice.actions
 export default generalSlice.reducer
-
-// Здесь передать authService и функции логина, регистрации и т.д.
-
-// async login(email: string, password: string) {
-//      const response = await AuthService.login(email, password)
-//      localStorage.setItem('accessToken', response.data.accessToken)
-//      setAuth(true)
-//      setUserInfo(response.data.user)
-// } catch (err) {
-//      console.error(err.response?.data?.message)
-// }
-
-// Для логаутв установить дял пользователя пустой объект типа юзер, из локалсторадж удалить токен

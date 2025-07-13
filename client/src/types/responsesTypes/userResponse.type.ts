@@ -1,0 +1,7 @@
+import type { UserType } from "../user.type";
+
+export interface UserResponseType {
+    error: boolean,
+    message: string,
+    user: UserType
+}

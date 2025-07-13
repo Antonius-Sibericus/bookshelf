@@ -3,12 +3,17 @@ import { useSelector } from 'react-redux'
 import { selectorGeneral } from '../../../redux/general/general.selector'
 import { Link } from 'react-router-dom'
 import { ColorThemeEnum } from '../../../redux/general/general.types'
-
 import styles from './auth.module.scss'
-
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import AuthService from '../../services/auth.service'
+import type { AuthResponseType } from '../../../types/responsesTypes/authResponse.type'
+import { useAppDispatch } from '../../../redux/store.redux'
+import { setSignedUp } from '../../../redux/general/general.slice'
+import type { DefaultResponseType } from '../../../types/defaultResponse.type'
+import type { AxiosError } from 'axios'
+import { fetchCurrentUser } from '../../../redux/general/general.async'
 
 const loginSchema = z.object({
     email: z.email({ message: 'Введите почтовый адрес в корректном формате' }).max(63, { message: 'Почтовый адрес не должен быть длиннее 63 символов' }),
@@ -18,8 +23,9 @@ const loginSchema = z.object({
 type LoginValuesType = z.infer<typeof loginSchema>
 
 const LoginPage: FC = () => {
-    const { theme } = useSelector(selectorGeneral)
+    const { theme, currentUser } = useSelector(selectorGeneral)
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
+    const dispatch = useAppDispatch()
 
     const {
         register,
@@ -32,11 +38,31 @@ const LoginPage: FC = () => {
 
     const onSubmit: SubmitHandler<LoginValuesType> = async data => {
         try {
-            await new Promise((resolve) => setTimeout(resolve, 500))
-            console.log(data)
+            const result = await AuthService.login(data.email, data.password)
+            const response = result.data
+            if (response as AuthResponseType) {
+                if (response.accessToken) {
+                    localStorage.setItem('accessToken', response.accessToken)
+                } else {
+                    throw new Error('Токен доступа не получен')
+                }
+
+                const userId: string = response.user.id
+
+                if (userId) {
+                    dispatch(
+                        fetchCurrentUser(userId)
+                    )
+                    localStorage.setItem('userId', JSON.stringify(userId))
+                    dispatch(setSignedUp(true))
+                    console.log('from login', currentUser)
+                }
+            }
         } catch (err) {
+            console.log(err)
+            const customErrorData: DefaultResponseType = (err as AxiosError).response!.data as DefaultResponseType
             setError('root', {
-                message: 'Server Error'
+                message: customErrorData ? customErrorData.message : 'Непредвиденная ошибка. Обратитесь в поддержку'
             })
         }
     }
@@ -60,7 +86,7 @@ const LoginPage: FC = () => {
                             id='email'
                             name='email'
                             className={styles.authInput + ' ' + themeTernary}
-                            style={errors.email ? {'borderColor': 'red'} : {}}
+                            style={errors.email ? { 'borderColor': 'red' } : {}}
                         />
                         {errors.email && <span className={styles.authError}>{errors.email.message}</span>}
                     </div>
@@ -75,10 +101,11 @@ const LoginPage: FC = () => {
                             id='password'
                             name='password'
                             className={styles.authInput + ' ' + themeTernary}
-                            style={errors.password ? {'borderColor': 'red'} : {}}
+                            style={errors.password ? { 'borderColor': 'red' } : {}}
                         />
                         {errors.password && <span className={styles.authError}>{errors.password.message}</span>}
                     </div>
+                    {errors.root && <div className={styles.mainError}>{errors.root.message}</div>}
                     <button className={styles.authButton + ' ' + themeTernary} disabled={isSubmitting}>
                         {isSubmitting ? 'В процессе...' : 'Войти'}
                     </button>

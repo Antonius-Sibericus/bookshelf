@@ -37,7 +37,7 @@ export class AuthController {
     summary: 'Обновление токена',
     description: 'Генерирует новый токен доступа, а токен обновления записывает в Cookie'
   })
-  @Post('refresh')
+  @Get('refresh')
   public async refresh(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     return await this.authService.refresh(req, res)
   }

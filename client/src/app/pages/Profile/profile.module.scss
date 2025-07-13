@@ -12,6 +12,37 @@
         .profileHeading {
             @include head-lora-36;
             margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            @media screen and (max-width: 1023px) {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            a {
+                font-size: 15px;
+                text-decoration: none;
+                cursor: pointer;
+                border-bottom: 1px solid transparent;
+
+                &.light {
+                    color: $anchor-lt-color;
+
+                    &:hover {
+                        border-bottom: 1px solid $anchor-lt-color;
+                    }
+                }
+
+                &.dark {
+                    color: $anchor-d-color;
+
+                    &:hover {
+                        border-bottom: 1px solid $anchor-d-color;
+                    }
+                }
+            }
         }
 
         .profileContainer {
@@ -71,6 +102,23 @@
                             @include option;
                         }
                     }
+
+                    .profileError {
+                        font-size: 12px;
+                        padding: 3px;
+                        color: red;
+                        display: block;
+                    }
+                }
+
+                .mainError {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: red;
+                    font-family: "Lora", sans-serif;
+                    font-style: italic;
+                    font-size: 24px;
                 }
 
                 .profileButton {

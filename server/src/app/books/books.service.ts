@@ -15,7 +15,7 @@ export class BooksService {
         private readonly jwtService: JwtService
     ) { }
 
-    public async findAll(res: Response, cat: string, theme: string, title: Filters, year: Filters, page: string) {
+    public async findAll(res: Response, cat: string, theme: string, title: Filters, year: Filters, search: string, page: string) {
         try {
             const books = await this.prismaService.book.findMany({
                 skip: 6 * (+page - 1),
@@ -26,6 +26,9 @@ export class BooksService {
                     },
                     themeTag: {
                         contains: theme ? theme : ''
+                    },
+                    heading: {
+                        contains: search ? search : ''
                     }
                 },
                 select: {

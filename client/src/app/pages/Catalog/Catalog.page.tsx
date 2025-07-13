@@ -1,13 +1,32 @@
-import type { FC } from 'react'
+import { useEffect, useState, type FC } from 'react'
 import styles from './catalog.module.scss'
 import BookCard from '../../components/bookCard/BookCard.component'
 import { useSelector } from 'react-redux'
 import { selectorGeneral } from '../../../redux/general/general.selector'
 import { ColorThemeEnum } from '../../../redux/general/general.types'
+import BookSceleton from '../../components/bookCard/Sceleton.component'
+
+const testArray = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+const themesTestArray = ['AAAaaa', 'BBB bbb', 'CCC, ccc', 'DDD ddd']
 
 const CatalogPage: FC = () => {
     const { theme } = useSelector(selectorGeneral)
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
+
+    const [activeTheme, setActiveTheme] = useState<number>(0)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+
+    useEffect(() => {
+        const someFetch = async () => {
+            await new Promise(() => {
+                setTimeout(() => {
+                    setIsLoading(false)
+                }, 1000)
+            })
+        } 
+
+        someFetch()
+    }, [activeTheme])
 
     return (
         <section className={styles.catalog}>
@@ -25,28 +44,19 @@ const CatalogPage: FC = () => {
                                 </svg>
                             }
                         </div>
-                        {true &&
-                            <div className={styles.filterOptions}>
-                                <div className={styles.filterOption + ' ' + themeTernary}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        {true && <div className={styles.filterOptions}>
+                            {themesTestArray.map((themeTest, index) => (
+                                <div key={index} className={styles.filterOption + ' ' + themeTernary} onClick={() => setActiveTheme(index)}>
+                                    {activeTheme === index ? <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                         <path d="M64 80c-8.8 0-16 7.2-16 16l0 320c0 8.8 7.2 16 16 16l320 0c8.8 0 16-7.2 16-16l0-320c0-8.8-7.2-16-16-16L64 80zM0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zM337 209L209 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L303 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z" />
-                                    </svg>
-                                    <span>dcdcdcdc</span>
+                                    </svg> :
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                            <path d="M384 80c8.8 0 16 7.2 16 16l0 320c0 8.8-7.2 16-16 16L64 432c-8.8 0-16-7.2-16-16L48 96c0-8.8 7.2-16 16-16l320 0zM64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32z" />
+                                        </svg>}
+                                    <span>{themeTest}</span>
                                 </div>
-                                <div className={styles.filterOption + ' ' + themeTernary}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                        <path d="M64 80c-8.8 0-16 7.2-16 16l0 320c0 8.8 7.2 16 16 16l320 0c8.8 0 16-7.2 16-16l0-320c0-8.8-7.2-16-16-16L64 80zM0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zM337 209L209 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L303 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z" />
-                                    </svg>
-                                    <span>dcdcdcdc</span>
-                                </div>
-                                <div className={styles.filterOption + ' ' + themeTernary}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                        <path d="M64 80c-8.8 0-16 7.2-16 16l0 320c0 8.8 7.2 16 16 16l320 0c8.8 0 16-7.2 16-16l0-320c0-8.8-7.2-16-16-16L64 80zM0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zM337 209L209 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L303 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z" />
-                                    </svg>
-                                    <span>dcdcdcdc</span>
-                                </div>
-                            </div>
-                        }
+                            ))}
+                        </div>}
                     </div>
                     <div className={styles.filterBlock + ' ' + themeTernary}>
                         <div className={styles.filterHeading + ' ' + themeTernary}>
@@ -88,12 +98,11 @@ const CatalogPage: FC = () => {
                 <div className={styles.catalogBlock}>
                     <div className={styles.catalogHeading + ' ' + themeTernary}>Коллекция</div>
                     <div className={styles.catalogContainer}>
-                        <BookCard />
-                        <BookCard />
-                        <BookCard />
-                        <BookCard />
-                        <BookCard />
-                        <BookCard />
+                        {
+                            isLoading ?
+                                [...new Array(6)].map((_, index) => <BookSceleton key={index} />) :
+                                testArray.map((test, index) => <BookCard key={index} test={test} />)
+                        }
                     </div>
                     <div className={styles.catalogPagination}></div>
                 </div>

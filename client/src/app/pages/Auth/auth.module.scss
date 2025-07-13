@@ -51,12 +51,13 @@
 
                 .authSelect {
                     @include select;
-                    margin-bottom: 36px;
+                    margin-bottom: 18px;
 
                     .authOption {
                         @include option;
                     }
                 }
+
             }
 
             .mainError {
@@ -71,13 +72,14 @@
 
             .authButton {
                 @include button;
+                margin-top: 18px;
             }
 
             .authLink {
                 text-align: center;
 
                 a {
-                    font-size: 16px;
+                    font-size: 15px;
                     text-decoration: none;
                     cursor: pointer;
                     border-bottom: 1px solid transparent;

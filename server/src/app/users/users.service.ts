@@ -103,15 +103,6 @@ export class UsersService {
                     paternal: paternal ? paternal : oldData.paternal,
                     email: email ? email : oldData.email,
                     role: role ? role : oldData.role
-                },
-                select: {
-                    id: true,
-                    surname: true,
-                    name: true,
-                    paternal: true,
-                    email: true,
-                    role: true,
-                    publisherOf: true
                 }
             })
 
