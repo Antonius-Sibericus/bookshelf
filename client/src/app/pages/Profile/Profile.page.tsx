@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { selectorGeneral } from '../../../redux/general/general.selector'
 import { ColorThemeEnum } from '../../../redux/general/general.types'
 import AuthService from '../../services/auth.service'
-import type { DefaultResponseType } from '../../../types/defaultResponse.type'
+import type { DefaultResponseType } from '../../../types/responsesTypes/defaultResponse.type'
 import { setSignedUp } from '../../../redux/general/general.slice'
 import { z } from 'zod'
 import { useForm, type SubmitHandler } from 'react-hook-form'
@@ -19,8 +19,8 @@ import ChangePassword from './profileComponents/ChangePassword.component'
 import DeleteUserModal from './profileComponents/DeleteUserModal.component'
 
 const changeUserSchema = z.object({
-    surname: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Фамилия не может быть длиннее 63 символов' }).regex(/^[a-zA-Zа-яА-Я]{1,63}$/, { message: 'Фамилия может содержать только буквы' }),
-    name: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Имя не может быть длиннее 63 символов' }).regex(/^[a-zA-Zа-яА-Я]{1,63}$/, { message: 'Имя может содержать только буквы' }),
+    surname: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Фамилия не может быть длиннее 63 символов' }).regex(/^[a-zA-Zа-яёА-ЯЁ]{1,63}$/, { message: 'Фамилия может содержать только буквы' }),
+    name: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Имя не может быть длиннее 63 символов' }).regex(/^[a-zA-Zа-яёА-ЯЁ]{1,63}$/, { message: 'Имя может содержать только буквы' }),
     paternal: z.string().optional(),
     role: z.enum(UserRoles)
 })
@@ -110,6 +110,7 @@ const ProfilePage: FC = () => {
                                 name='surname'
                                 className={styles.profileInput + ' ' + themeTernary + ' ' + disabledeTernary}
                                 style={errors.surname ? { 'borderColor': 'red' } : {}}
+                                disabled={!userInfoEdit ? true : false}
                             />
                             {errors.surname && <span className={styles.profileError}>{errors.surname.message}</span>}
                         </div>
@@ -125,6 +126,7 @@ const ProfilePage: FC = () => {
                                 name='name'
                                 className={styles.profileInput + ' ' + themeTernary + ' ' + disabledeTernary}
                                 style={errors.name ? { 'borderColor': 'red' } : {}}
+                                disabled={!userInfoEdit ? true : false}
                             />
                             {errors.name && <span className={styles.profileError}>{errors.name.message}</span>}
                         </div>
@@ -140,6 +142,7 @@ const ProfilePage: FC = () => {
                                 name='paternal'
                                 className={styles.profileInput + ' ' + themeTernary + ' ' + disabledeTernary}
                                 style={errors.paternal ? { 'borderColor': 'red' } : {}}
+                                disabled={!userInfoEdit ? true : false}
                             />
                             {errors.paternal && <span className={styles.profileError}>{errors.paternal.message}</span>}
                         </div>
@@ -153,6 +156,7 @@ const ProfilePage: FC = () => {
                                 id="role"
                                 className={styles.profileSelect + ' ' + themeTernary + ' ' + disabledeTernary}
                                 style={errors.role ? { 'borderColor': 'red' } : {}}
+                                disabled={!userInfoEdit ? true : false}
                             >
                                 {Object.keys(UserRoles).map((item) => (
                                     <option

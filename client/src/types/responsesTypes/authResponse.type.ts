@@ -1,4 +1,4 @@
-import type { UserType } from "../user.type";
+import type { UserType } from '../entitiesTypes/user.type'
 
 export interface AuthResponseType {
     error: boolean,

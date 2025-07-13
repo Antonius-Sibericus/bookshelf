@@ -32,7 +32,7 @@ export class ThemeCreateDTO {
         example: 'textbooks',
         type: String
     })
-    @IsString({ message: 'Значение должно иметь строковый тип' })
-    @IsNotEmpty({ message: 'Поле не должно быть пустым' })
+    @IsString({ message: 'Значение "категория" должно иметь строковый тип' })
+    @IsNotEmpty({ message: 'Поле "категория" не должно быть пустым' })
     categoryTag: string
 }

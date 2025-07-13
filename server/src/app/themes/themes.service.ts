@@ -17,6 +17,7 @@ export class ThemesService {
                     id: true,
                     title: true,
                     tag: true,
+                    categoryTag: true,
                     category: true
                 }
             })
@@ -52,6 +53,7 @@ export class ThemesService {
                     id: true,
                     title: true,
                     tag: true,
+                    categoryTag: true,
                     category: true
                 }
             })

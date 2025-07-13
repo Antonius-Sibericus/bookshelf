@@ -1,0 +1,168 @@
+/* Workshop Page Styles */
+
+@import '../../../assets/styles/mixins';
+@import '../../../assets/styles/variables';
+
+.workshop {
+    @include section;
+
+    .container {
+        @include container;
+
+        .workshopHeading {
+            @include head-lora-36;
+        }
+
+        .workshopObserve {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 48px;
+            margin-bottom: 48px;
+
+            @media screen and (max-width: 767px) {
+                flex-direction: column;
+            }
+
+            .workshopObserveItem {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                align-items: start;
+                justify-content: start;
+                width: 100%;
+
+                @media screen and (max-width: 424px) {
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .workshopMediumHeading {
+                    @include head-lora-36;
+                    font-size: 27px;
+                    margin: 0;
+                }
+
+                .workshopItem {
+                    box-sizing: border-box;
+                    background-color: rgba(0, 255, 0, 0.1);
+                    padding: 6px 9px;
+                    border-radius: 6px;
+                    font-size: 15px;
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    &.light {
+                        border: 2px solid $anchor-lt-color;
+                    }
+
+                    &.dark {
+                        border: 2px solid $anchor-d-color;
+                    }
+
+                    a {
+                        color: rgb(192, 15, 71);
+                        border-bottom: 1px solid transparent;
+                        cursor: pointer;
+                        font-weight: 400;
+
+                        &:hover {
+                            border-bottom: 1px solid rgb(192, 15, 71);
+                        }
+
+                        &:active {
+                            font-weight: 500;
+                        }
+                    }
+                }
+            }
+        }
+
+        .workshopCreate {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 48px;
+
+            @media screen and (max-width: 1023px) {
+                flex-direction: column;
+            }
+
+            .workshopCreateItem {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                align-items: start;
+                justify-content: start;
+                width: 100%;
+
+                @media screen and (max-width: 424px) {
+                    align-items: center;
+                }
+
+                .workshopLabel {
+                    font-size: 24px;
+
+                    @media screen and (max-width: 899px) {
+                        font-size: 18px;
+                    }
+
+                    @media screen and (max-width: 767px) {
+                        text-align: center;
+                        font-size: 15px;
+                    }
+                }
+
+                .workshopInput {
+                    @include input;
+                    width: 75%;
+
+                    @media screen and (max-width: 767px) {
+                        width: 100%;
+                    }
+                }
+
+                .workshopSelect {
+                    @include select;
+
+                    .workshopOption {
+                        @include option;
+                    }
+                }
+
+                .workshopError {
+                    font-size: 12px;
+                    padding: 3px;
+                    color: red;
+                    display: block;
+                }
+
+                .workshopButton {
+                    @include button;
+                }
+
+                .mainError {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: red;
+                    font-family: "Lora", sans-serif;
+                    font-style: italic;
+                    font-size: 24px;
+                }
+
+                .mainSuccess {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: green;
+                    font-family: "Lora", sans-serif;
+                    font-style: italic;
+                    font-size: 24px;
+                }
+            }
+        }
+    }
+}

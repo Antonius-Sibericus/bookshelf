@@ -1,4 +1,4 @@
-import type { UserRoles } from "./user-roles.enum"
+import type { UserRoles } from '../user-roles.enum'
 
 export type UserType = {
     id: string,

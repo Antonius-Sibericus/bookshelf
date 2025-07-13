@@ -11,7 +11,7 @@ import AuthService from '../../services/auth.service'
 import type { AuthResponseType } from '../../../types/responsesTypes/authResponse.type'
 import { useAppDispatch } from '../../../redux/store.redux'
 import { setSignedUp } from '../../../redux/general/general.slice'
-import type { DefaultResponseType } from '../../../types/defaultResponse.type'
+import type { DefaultResponseType } from '../../../types/responsesTypes/defaultResponse.type'
 import type { AxiosError } from 'axios'
 import { fetchCurrentUser } from '../../../redux/general/general.async'
 

@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { ColorThemeEnum, StatusEnum, type GeneralType } from './general.types'
-import { type UserType } from '../../types/user.type'
+import { type UserType } from '../../types/entitiesTypes/user.type'
 import { fetchCurrentUser } from './general.async'
 
 const initialState: GeneralType = {

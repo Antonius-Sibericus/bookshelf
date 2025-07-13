@@ -1,4 +1,4 @@
-import { useState, type FC } from 'react'
+import { useEffect, useState, type FC } from 'react'
 import styles from './header.module.scss'
 import { Link, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -7,9 +7,13 @@ import { setTheme } from '../../../../redux/general/general.slice'
 import { selectorGeneral } from '../../../../redux/general/general.selector'
 import logo from '../../../../assets/images/logo-bookshelf.jpg'
 import { useAppDispatch } from '../../../../redux/store.redux'
+import { fetchCategories } from '../../../../redux/categories/categoriesRedux.async'
+import { selectorCategories } from '../../../../redux/categories/categoriesRedux.selector'
 
 const Header: FC = () => {
     const { theme, isSignedUp, currentUser } = useSelector(selectorGeneral)
+    const { categories } = useSelector(selectorCategories)
+    const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
     const dispatch = useAppDispatch()
 
     const changeTheme = () => {
@@ -18,9 +22,17 @@ const Header: FC = () => {
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-    const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
+    useEffect(() => {
+        const getCategories = async () => {
+            dispatch(
+                fetchCategories()
+            )
+        }
+        getCategories()
+    }, [])
 
     const location = useLocation()
+
     return (
         <header className={styles.header}>
             <div className={styles.container}>
@@ -36,6 +48,7 @@ const Header: FC = () => {
                                 <ul>
                                     <li><Link to='/' className={themeTernary}>Главная</Link></li>
                                     <li><Link to='/catalog' className={themeTernary}>Каталог</Link></li>
+                                    <li><Link to='/workshop' className={themeTernary}>Мастерская</Link></li>
                                 </ul>
                             </nav>
                         </div>
@@ -127,14 +140,10 @@ const Header: FC = () => {
                             <div className={styles.headerBottomMenu + ' ' + (isMenuOpen ? styles.open : styles.closed)}>
                                 <nav>
                                     <ul>
-                                        <li><Link to='/catalog' className={themeTernary}>Category</Link></li>
-                                        <li><Link to='/catalog' className={themeTernary}>Category</Link></li>
-                                        <li><Link to='/catalog' className={themeTernary}>Category</Link></li>
-                                        <li><Link to='/catalog' className={themeTernary}>Category</Link></li>
-                                        <li><Link to='/catalog' className={themeTernary}>Category</Link></li>
-                                        <li><Link to='/catalog' className={themeTernary}>Category</Link></li>
-                                        <li><Link to='/catalog' className={themeTernary}>Category</Link></li>
-                                        <li><Link to='/catalog' className={themeTernary}>Category</Link></li>
+                                        {categories.map(item => (
+                                            <li><Link to={`/catalog?cat=${item.tag}`} className={themeTernary}>{item.title}</Link></li>
+                                        ))
+                                        }
                                     </ul>
                                 </nav>
                             </div>

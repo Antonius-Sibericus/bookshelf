@@ -2,7 +2,7 @@ import type { AxiosResponse } from "axios"
 import type { AuthResponseType } from "../../types/responsesTypes/authResponse.type"
 import { api, $api } from "../axios"
 import type { UserRoles } from "../../types/user-roles.enum"
-import type { DefaultResponseType } from "../../types/defaultResponse.type"
+import type { DefaultResponseType } from "../../types/responsesTypes/defaultResponse.type"
 import type { UserResponseType } from "../../types/responsesTypes/userResponse.type"
 
 export default class AuthService {

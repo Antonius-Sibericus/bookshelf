@@ -50,6 +50,7 @@
                 border-bottom: 1px solid #c5c5c5;
                 font-family: "Montserrat", serif;
                 font-weight: 500;
+                gap: 18px;
 
                 @media screen and (max-width: 767px) {
                     flex-direction: column;
@@ -59,13 +60,23 @@
                 .headerTopMenu {
                     margin-left: 27px;
 
+                    @media screen and (max-width: 767px) {
+                        margin-left: 0;
+                    }
+
                     nav ul {
                         margin: 0;
                         padding: 0;
                         display: flex;
+                        gap: 18px;
+                        flex-wrap: wrap;
+
+                        @media screen and (max-width: 767px) {
+                            justify-content: center;
+                        }
 
                         li {
-                            margin-right: 40px;
+                            // margin-right: 40px;
                             list-style: none;
 
                             a {
@@ -108,13 +119,18 @@
                         font-size: 18px;
                         text-decoration: none;
                         margin-right: 21px;
-
+                        min-width: 154px;
+                        
                         &.light {
                             color: $text-lt-color
                         }
-
+                        
                         &.dark {
                             color: $text-d-color;
+                        }
+                        
+                        @media screen and (max-width: 499px) {
+                            margin-right: 0;
                         }
                     }
 
@@ -264,13 +280,13 @@
                         font-size: 15px;
                         box-sizing: border-box;
                         outline: none;
-                        
+
                         &.light {
                             border: 2px solid $text-lt-color;
                             background-color: $input-lt-color;
                             color: $text-lt-color;
                         }
-                        
+
                         &.dark {
                             border: 2px solid $text-d-color;
                             background-color: $input-d-color;

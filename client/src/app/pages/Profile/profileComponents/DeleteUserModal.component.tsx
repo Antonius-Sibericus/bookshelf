@@ -6,9 +6,9 @@ import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../../../redux/store.redux'
 import { setSignedUp } from '../../../../redux/general/general.slice'
 import UsersService from '../../../services/users.service'
-import type { UserType } from '../../../../types/user.type'
+import type { UserType } from '../../../../types/entitiesTypes/user.type'
 import type { UserResponseType } from '../../../../types/responsesTypes/userResponse.type'
-import type { DefaultResponseType } from '../../../../types/defaultResponse.type'
+import type { DefaultResponseType } from '../../../../types/responsesTypes/defaultResponse.type'
 
 type qaq = {
     setAreYouSure: (type: boolean) => void,
