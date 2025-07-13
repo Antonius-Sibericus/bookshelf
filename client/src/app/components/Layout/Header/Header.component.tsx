@@ -1,15 +1,16 @@
 import { useState, type FC } from 'react'
 import styles from './header.module.scss'
 import { Link, useLocation } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { ColorThemeEnum } from '../../../../redux/general/general.types'
 import { setTheme } from '../../../../redux/general/general.slice'
 import { selectorGeneral } from '../../../../redux/general/general.selector'
 import logo from '../../../../assets/images/logo-bookshelf.jpg'
+import { useAppDispatch } from '../../../../redux/store.redux'
 
 const Header: FC = () => {
-    const { theme, isSignedUp } = useSelector(selectorGeneral)
-    const dispatch = useDispatch()
+    const { theme, isSignedUp, currentUser } = useSelector(selectorGeneral)
+    const dispatch = useAppDispatch()
 
     const changeTheme = () => {
         dispatch(theme === ColorThemeEnum.LIGHT ? setTheme(ColorThemeEnum.DARK) : setTheme(ColorThemeEnum.LIGHT))
@@ -55,7 +56,7 @@ const Header: FC = () => {
                                     </a>
                                 }
                                 {isSignedUp ?
-                                    <Link to='/profile/1'>
+                                    <Link to={`/profile/${currentUser.id}`}>
                                         <svg className={themeTernary} fill='none' width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
                                             <path
                                                 d='M12.1207 12.78C12.0507 12.77 11.9607 12.77 11.8807 12.78C10.1207 12.72 8.7207 11.28 8.7207 9.50998C8.7207 7.69998 10.1807 6.22998 12.0007 6.22998C13.8107 6.22998 15.2807 7.69998 15.2807 9.50998C15.2707 11.28 13.8807 12.72 12.1207 12.78Z'
@@ -81,7 +82,7 @@ const Header: FC = () => {
                                     </Link>
                                 }
                                 {isSignedUp &&
-                                    <Link to='/profile/1/favorites'>
+                                    <Link to={`/profile/${currentUser.id}/favorites`}>
                                         <svg width='24' height='24' viewBox='0 0 24 24' fill={theme === ColorThemeEnum.LIGHT ? '#072e36' : '#229fb8'} xmlns='http://www.w3.org/2000/svg'>
                                             <path
                                                 d='M11.9997 20.846C11.7155 20.846 11.4405 20.8093 11.2113 20.7268C7.70967 19.526 2.14551 15.2635 2.14551 8.96596C2.14551 5.75763 4.73967 3.1543 7.92967 3.1543C9.47884 3.1543 10.9272 3.7593 11.9997 4.84096C13.0722 3.7593 14.5205 3.1543 16.0697 3.1543C19.2597 3.1543 21.8538 5.7668 21.8538 8.96596C21.8538 15.2726 16.2897 19.526 12.788 20.7268C12.5588 20.8093 12.2838 20.846 11.9997 20.846ZM7.92967 4.5293C5.50051 4.5293 3.52051 6.51846 3.52051 8.96596C3.52051 15.2268 9.54301 18.7101 11.6605 19.4343C11.8255 19.4893 12.183 19.4893 12.348 19.4343C14.4563 18.7101 20.488 15.236 20.488 8.96596C20.488 6.51846 18.508 4.5293 16.0788 4.5293C14.6855 4.5293 13.393 5.18013 12.5588 6.30763C12.3022 6.65596 11.7155 6.65596 11.4588 6.30763C10.6063 5.17096 9.32301 4.5293 7.92967 4.5293Z'
@@ -94,7 +95,7 @@ const Header: FC = () => {
                                     </svg>
                                 </a>
                                 {isSignedUp &&
-                                    <Link to='/profile/1/basket'>
+                                    <Link to={`/profile/${currentUser.id}/basket`}>
                                         <svg width='24' height='24' viewBox='0 0 24 24' fill={theme === ColorThemeEnum.LIGHT ? '#072e36' : '#229fb8'} xmlns='http://www.w3.org/2000/svg'>
                                             <path
                                                 d='M6.32507 7.31686C6.16673 7.31686 6.00007 7.2502 5.8834 7.13353C5.64173 6.89186 5.64173 6.49186 5.8834 6.2502L8.9084 3.2252C9.15007 2.98353 9.55007 2.98353 9.79173 3.2252C10.0334 3.46686 10.0334 3.86686 9.79173 4.10853L6.76673 7.13353C6.64173 7.2502 6.4834 7.31686 6.32507 7.31686Z'

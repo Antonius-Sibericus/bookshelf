@@ -23,4 +23,15 @@
         width: calc(100vw - 30px);
         margin: 15px auto;
     }
+
+    .greetings {
+        margin: 54px 0;
+        font-family: 'Lora', sans-serif;
+        font-size: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        align-items: center;
+        text-align: center;
+    }
 }

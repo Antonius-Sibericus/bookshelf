@@ -1,4 +1,4 @@
-import { type FC } from 'react'
+import { useState, type FC } from 'react'
 import styles from './profile.module.scss'
 import { UserRoles, UserRolesTranslations } from '../../../types/user-roles.enum'
 import { useSelector } from 'react-redux'
@@ -15,22 +15,27 @@ import UsersService from '../../services/users.service'
 import type { UserResponseType } from '../../../types/responsesTypes/userResponse.type'
 import { useAppDispatch } from '../../../redux/store.redux'
 import { fetchCurrentUser } from '../../../redux/general/general.async'
+import ChangePassword from './profileComponents/ChangePassword.component'
+import DeleteUserModal from './profileComponents/DeleteUserModal.component'
 
 const changeUserSchema = z.object({
     surname: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Фамилия не может быть длиннее 63 символов' }).regex(/^[a-zA-Zа-яА-Я]{1,63}$/, { message: 'Фамилия может содержать только буквы' }),
     name: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Имя не может быть длиннее 63 символов' }).regex(/^[a-zA-Zа-яА-Я]{1,63}$/, { message: 'Имя может содержать только буквы' }),
     paternal: z.string().optional(),
-    password: z.string().nonempty({ message: 'Обязательное поле' }).min(6, { message: 'Пароль не может быть короче 6 символов' }).max(12, { message: 'Пароль не может быть длиннее 12 символов' }).regex(/^[a-zA-Z0-9#$%&*@]{6,12}$/, { message: 'Пароль может содержать цифры, латинские буквы и специальные символы' }),
-    repeatPassword: z.string().nonempty({ message: 'Обязательное поле' }).min(6, { message: 'Пароль не может быть короче 6 символов' }).max(12, { message: 'Пароль не может быть длиннее 12 символов' }).regex(/^[a-zA-Z0-9#$%&*@]{6,12}$/, { message: 'Пароль может содержать цифры, латинские буквы и специальные символы' }),
     role: z.enum(UserRoles)
-}).refine(data => data.password === data.repeatPassword, { message: 'Пароли должны совпадать', path: ['repeatPassword'] })
+})
 
 type ChangeUserValuesType = z.infer<typeof changeUserSchema>
 
 const ProfilePage: FC = () => {
     const { theme, currentUser } = useSelector(selectorGeneral)
-    const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
     const dispatch = useAppDispatch()
+
+    const [userInfoEdit, setUserInfoEdit] = useState<boolean>(false)
+    const [areYouSure, setAreYouSure] = useState<boolean>(false)
+
+    const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
+    const disabledeTernary = userInfoEdit ? '' : styles.disabled
 
     const {
         register,
@@ -47,9 +52,13 @@ const ProfilePage: FC = () => {
             const response = result.data
 
             if (response as UserResponseType) {
-                dispatch(
-                    fetchCurrentUser(response.user.id)
-                )
+                const userId: string = response.user.id
+
+                if (userId) {
+                    dispatch(
+                        fetchCurrentUser(response.user.id)
+                    )
+                }
             }
         } catch (err) {
             const customErrorData: DefaultResponseType = (err as AxiosError).response!.data as DefaultResponseType
@@ -58,12 +67,14 @@ const ProfilePage: FC = () => {
             })
         }
     }
+
     const logout = async () => {
         localStorage.removeItem('accessToken')
         dispatch(setSignedUp(false))
         try {
             const result = await AuthService.logout()
             const response = result.data
+
             if (response as DefaultResponseType) {
                 console.log(response.message)
             }
@@ -74,10 +85,16 @@ const ProfilePage: FC = () => {
 
     return (
         <section className={styles.profile}>
+            {areYouSure &&
+                <DeleteUserModal setAreYouSure={setAreYouSure} currentUser={currentUser} />
+            }
             <div className={styles.container}>
                 <div className={styles.profileHeading + ' ' + themeTernary}>
                     <span>Добро пожаловать, {currentUser.name} {currentUser.paternal}!</span>
-                    <a className={themeTernary} onClick={logout}>Выйти</a>
+                    <div>
+                        <a className={themeTernary} onClick={logout}>Выйти</a>
+                        <a className={styles.deleteAcc + ' ' + themeTernary} onClick={() => setAreYouSure(true)}>Удалить аккаунт</a>
+                    </div>
                 </div>
                 <div className={styles.profileContainer}>
                     <form className={styles.profileForm} onSubmit={handleSubmit(onSubmitInfo)}>
@@ -87,11 +104,11 @@ const ProfilePage: FC = () => {
                             </label>
                             <input
                                 {...register('surname')}
-                                // defaultValue={user.surname}
+                                defaultValue={currentUser.surname}
                                 type="text"
                                 id='surname'
                                 name='surname'
-                                className={styles.profileInput + ' ' + themeTernary}
+                                className={styles.profileInput + ' ' + themeTernary + ' ' + disabledeTernary}
                                 style={errors.surname ? { 'borderColor': 'red' } : {}}
                             />
                             {errors.surname && <span className={styles.profileError}>{errors.surname.message}</span>}
@@ -102,11 +119,11 @@ const ProfilePage: FC = () => {
                             </label>
                             <input
                                 {...register('name')}
-                                // defaultValue={user.name}
+                                defaultValue={currentUser.name}
                                 type="text"
                                 id='name'
                                 name='name'
-                                className={styles.profileInput + ' ' + themeTernary}
+                                className={styles.profileInput + ' ' + themeTernary + ' ' + disabledeTernary}
                                 style={errors.name ? { 'borderColor': 'red' } : {}}
                             />
                             {errors.name && <span className={styles.profileError}>{errors.name.message}</span>}
@@ -117,42 +134,14 @@ const ProfilePage: FC = () => {
                             </label>
                             <input
                                 {...register('paternal')}
-                                // defaultValue={user.paternal}
+                                defaultValue={currentUser.paternal}
                                 type="text"
                                 id='paternal'
                                 name='paternal'
-                                className={styles.profileInput + ' ' + themeTernary}
+                                className={styles.profileInput + ' ' + themeTernary + ' ' + disabledeTernary}
                                 style={errors.paternal ? { 'borderColor': 'red' } : {}}
                             />
                             {errors.paternal && <span className={styles.profileError}>{errors.paternal.message}</span>}
-                        </div>
-                        <div className={styles.profileGroup}>
-                            <label htmlFor="password" className={styles.profileLabel + ' ' + themeTernary}>
-                                Пароль
-                            </label>
-                            <input
-                                {...register('password')}
-                                type="text"
-                                id='password'
-                                name='password'
-                                className={styles.profileInput + ' ' + themeTernary}
-                                style={errors.password ? { 'borderColor': 'red' } : {}}
-                            />
-                            {errors.password && <span className={styles.profileError}>{errors.password.message}</span>}
-                        </div>
-                        <div className={styles.profileGroup}>
-                            <label htmlFor="repeatPassword" className={styles.profileLabel + ' ' + themeTernary}>
-                                Повторите пароль
-                            </label>
-                            <input
-                                {...register('repeatPassword')}
-                                type="text"
-                                id='repeatPassword'
-                                name='repeatPassword'
-                                className={styles.profileInput + ' ' + themeTernary}
-                                style={errors.repeatPassword ? { 'borderColor': 'red' } : {}}
-                            />
-                            {errors.repeatPassword && <span className={styles.profileError}>{errors.repeatPassword.message}</span>}
                         </div>
                         <div className={styles.profileGroup}>
                             <label htmlFor="role" className={styles.profileLabel + ' ' + themeTernary}>
@@ -162,10 +151,10 @@ const ProfilePage: FC = () => {
                                 {...register('role')}
                                 name="role"
                                 id="role"
-                                className={styles.profileSelect + ' ' + themeTernary}
+                                className={styles.profileSelect + ' ' + themeTernary + ' ' + disabledeTernary}
                                 style={errors.role ? { 'borderColor': 'red' } : {}}
                             >
-                                {(Object.keys(UserRoles)).map((item) => (
+                                {Object.keys(UserRoles).map((item) => (
                                     <option
                                         selected={currentUser.role === item ? true : false}
                                         key={item}
@@ -179,11 +168,20 @@ const ProfilePage: FC = () => {
                             {errors.role && <span className={styles.profileError}>{errors.role.message}</span>}
                         </div>
                         {errors.root && <div className={styles.mainError}>{errors.root.message}</div>}
+                        {userInfoEdit &&
+                            <button
+                                type='submit'
+                                className={styles.profileButton + ' ' + themeTernary}
+                            >
+                                {isSubmitting ? 'Данные обрабатываются...' : 'Сохранить профиль'}
+                            </button>
+                        }
                         <button
-                            type='submit'
+                            type='button'
                             className={styles.profileButton + ' ' + themeTernary}
+                            onClick={() => setUserInfoEdit(prev => !prev)}
                         >
-                            {isSubmitting ? 'Данные обрабатываются...' : 'Сохранить профиль'}
+                            {userInfoEdit ? 'Готово' : 'Изменить профиль'}
                         </button>
                     </form>
                     {/* <div className={styles.profilePassword}>
@@ -211,6 +209,7 @@ const ProfilePage: FC = () => {
                         </div>
                         <button className={styles.profileButton + ' ' + themeTernary}>Сохранить пароль</button>
                     </div> */}
+                    <ChangePassword />
                 </div>
             </div>
         </section>
