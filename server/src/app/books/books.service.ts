@@ -18,7 +18,7 @@ export class BooksService {
     public async findAll(res: Response, cat: string, theme: string, title: Filters, year: Filters, search: string, page: string) {
         try {
             const books = await this.prismaService.book.findMany({
-                skip: 6 * (+page - 1),
+                skip: page ? 6 * (+page - 1) : 0,
                 take: 6,
                 where: {
                     categoryTag: {

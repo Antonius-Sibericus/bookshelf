@@ -120,15 +120,15 @@
                         text-decoration: none;
                         margin-right: 21px;
                         min-width: 154px;
-                        
+
                         &.light {
                             color: $text-lt-color
                         }
-                        
+
                         &.dark {
                             color: $text-d-color;
                         }
-                        
+
                         @media screen and (max-width: 499px) {
                             margin-right: 0;
                         }
@@ -294,18 +294,49 @@
                         }
                     }
 
-                    &::after {
-                        content: "";
-                        background-image: url("images/search.png");
-                        background-size: cover;
+                    .search {
                         position: absolute;
-                        width: 16px;
-                        height: 16px;
                         left: 15px;
-                        top: 12px;
+                        top: calc(50% - 7.5px);
+                        width: 15px;
+                        height: 15px;
+                        opacity: 0.5;
+
+                        &.light {
+                            fill: $text-lt-color;
+                        }
+
+                        &.dark {
+                            fill: $text-d-color;
+                        }
+                    }
+
+                    .clear {
+                        position: absolute;
+                        right: 15px;
+                        top: calc(50% - 7.5px);
+                        width: 15px;
+                        height: 15px;
+                        opacity: 0.5;
+                        cursor: pointer;
+
+                        &:hover {
+                            opacity: 0.8;
+                        }
+
+                        &:active {
+                            opacity: 1;
+                        }
+
+                        &.light {
+                            fill: $text-lt-color;
+                        }
+
+                        &.dark {
+                            fill: $text-d-color;
+                        }
                     }
                 }
-
             }
         }
     }

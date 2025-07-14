@@ -9,7 +9,7 @@
     border-radius: 3px;
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: space-between;
     align-items: start;
     gap: 9px;
 
@@ -24,6 +24,9 @@
         font-size: 21px;
         color: $text-lt-color;
         line-height: 1;
+        max-width: 255px;
+        min-height: 66px;
+        overflow: hidden;
     }
 
     .bookAuthor {
@@ -46,32 +49,41 @@
         }
     }
 
-    .bookButton {
-        @include small-button;
+    .buttonCont {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
         width: 100%;
-        
-        &.bookButtonToFav {
-            border: 1px solid $fav-button-color;
-            background-color: $fav-button-color;
-            color: $fav-button-anticolor;
-        }
-        
-        &.bookButtonInFav {
-            border: 1px solid $fav-button-color;
-            background-color: $fav-button-anticolor;
-            color: $fav-button-color;
-        }
-        
-        &.bookButtonToBas {
-            border: 1px solid $bas-button-color;
-            background-color: $bas-button-color;
-            color: $bas-button-anticolor;
-        }
-        
-        &.bookButtonInBas {
-            border: 1px solid $bas-button-color;
-            background-color: $bas-button-anticolor;
-            color: $bas-button-color;
+
+        .bookButton {
+            @include small-button;
+            width: 100%;
+
+            &.bookButtonToFav {
+                border: 1px solid $fav-button-color;
+                background-color: $fav-button-color;
+                color: $fav-button-anticolor;
+            }
+
+            &.bookButtonInFav {
+                border: 1px solid $fav-button-color;
+                background-color: $fav-button-anticolor;
+                color: $fav-button-color;
+            }
+
+            &.bookButtonToBas {
+                border: 1px solid $bas-button-color;
+                background-color: $bas-button-color;
+                color: $bas-button-anticolor;
+            }
+
+            &.bookButtonInBas {
+                border: 1px solid $bas-button-color;
+                background-color: $bas-button-anticolor;
+                color: $bas-button-color;
+            }
         }
     }
 }

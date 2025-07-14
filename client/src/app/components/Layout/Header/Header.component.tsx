@@ -1,4 +1,4 @@
-import { useEffect, useState, type FC } from 'react'
+import { useCallback, useEffect, useRef, useState, type ChangeEvent, type FC } from 'react'
 import styles from './header.module.scss'
 import { Link, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -9,12 +9,34 @@ import logo from '../../../../assets/images/logo-bookshelf.jpg'
 import { useAppDispatch } from '../../../../redux/store.redux'
 import { fetchCategories } from '../../../../redux/categoriesAndThemes/categoriesAndThemes.async'
 import { selectorCategoriesAndThemes } from '../../../../redux/categoriesAndThemes/categoriesAndThemes.selector'
+import { setCategoryFilter, setSearchFilter } from '../../../../redux/filter/filter.slice'
+import debounce from 'lodash.debounce'
 
 const Header: FC = () => {
     const { theme, isSignedUp, currentUser } = useSelector(selectorGeneral)
     const { categories } = useSelector(selectorCategoriesAndThemes)
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
     const dispatch = useAppDispatch()
+
+    const [searchValue, setSearchValue] = useState<string>('')
+    const inputRef = useRef<HTMLInputElement>(null)
+
+    const onClickClear = () => {
+        dispatch(setSearchFilter(''));
+        setSearchValue('');
+        inputRef.current?.focus();
+    }
+
+    const updateSearchValue = useCallback(
+        debounce(
+            (str: string) => dispatch(setSearchFilter(str)), 250
+        ), []
+    )
+
+    const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(e.target.value)
+        updateSearchValue(e.target.value)
+    }
 
     const changeTheme = () => {
         dispatch(theme === ColorThemeEnum.LIGHT ? setTheme(ColorThemeEnum.DARK) : setTheme(ColorThemeEnum.LIGHT))
@@ -140,14 +162,24 @@ const Header: FC = () => {
                                 <nav>
                                     <ul>
                                         {categories.map(item => (
-                                            <li key={item.id}><Link to={`/catalog?cat=${item.tag}`} className={themeTernary}>{item.title}</Link></li>
+                                            <li onClick={() => dispatch(setCategoryFilter(item.tag))} key={item.id}><Link to={`/catalog`} className={themeTernary}>{item.title}</Link></li>
                                         ))
                                         }
                                     </ul>
                                 </nav>
                             </div>
                             <div className={styles.headerBottomSearch}>
-                                <input type='text' placeholder='Начните искать' className={themeTernary} />
+                                <input type='text' placeholder='Начните искать' className={themeTernary} ref={inputRef} value={searchValue} onChange={onChangeInput} />
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className={styles.search + ' ' + themeTernary}>
+                                    <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+                                </svg>
+                                <svg
+                                    onClick={onClickClear}
+                                    className={styles.clear}
+                                    viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z" />
+                                </svg>
                             </div>
                         </div>
                     }

@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { CategoriesAndThemesType } from './categoriesAndThemes.type'
+import type { CategoriesAndThemesType } from './categoriesAndThemes.types'
 import type { CategoryType } from '../../types/entitiesTypes/category.type'
 import { StatusEnum } from '../general/general.types'
 import { fetchCategories, fetchThemes } from './categoriesAndThemes.async'

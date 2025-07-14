@@ -15,14 +15,14 @@ import BooksService from '../../../services/books.service'
 import type { BookResponseType } from '../../../../types/responsesTypes/bookResponse.type'
 
 const createBookSchema = z.object({
-    heading: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Название не может быть длиннее 63 символов' }).regex(/^[a-zA-Zа-яёА-ЯЁ\s]{1,63}$/, { message: 'Название может содержать только буквы' }),
-    tag: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Тэг не может быть длиннее 63 символов' }).regex(/^[a-zA-Z-]{1,63}$/, { message: 'Тэг может содержать только латинские буквы' }),
+    heading: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Название не может быть длиннее 63 символов' }).regex(/^[-.,a-zA-Zа-яёА-ЯЁ\s0-9]{1,63}$/, { message: 'Название может содержать только буквы и цифры' }),
+    tag: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Тэг не может быть длиннее 63 символов' }).regex(/^[0-9a-zA-Z-]{1,63}$/, { message: 'Тэг может содержать только латинские буквы' }),
     author: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Имя не может быть длиннее 63 символов' }).regex(/^[a-zA-Zа-яёА-ЯЁ\s]{1,63}$/, { message: 'Имя автора может содержать только буквы' }),
-    description: z.string().nonempty({ message: 'Обязательное поле' }).max(1023, { message: 'Описание не может быть длиннее 1023 символов' }).regex(/^[a-zA-Zа-яёА-ЯЁ0-9\s]{1,1023}$/, { message: 'Описание может содержать только буквы и цифры' }),
-    pages: z.number(),
+    description: z.string().nonempty({ message: 'Обязательное поле' }).max(1023, { message: 'Описание не может быть длиннее 1023 символов' }).regex(/^[-.,:;a-zA-Zа-яёА-ЯЁ0-9\s]{1,1023}$/, { message: 'Описание может содержать только буквы и цифры' }),
+    pages: z.number({ message: 'Обязательное поле' }).positive({ message: 'Обязательное поле' }),
     isInStock: z.boolean(),
-    year: z.number(),
-    isbn: z.number(),
+    year: z.number({ message: 'Обязательное поле' }).positive({ message: 'Обязательное поле' }).min(1300, { message: 'Введите правильный год' }),
+    isbn: z.number({ message: 'Обязательное поле' }).positive({ message: 'Обязательное поле' }),
     isSoftCover: z.boolean(),
     categoryTag: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Тэг не может быть длиннее 63 символов' }).regex(/^[a-zA-Z-]{1,63}$/, { message: 'Тэг может содержать только латинские буквы' }),
     themeTag: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Тэг не может быть длиннее 63 символов' }).regex(/^[a-zA-Z-]{1,63}$/, { message: 'Тэг может содержать только латинские буквы' })
@@ -204,22 +204,25 @@ const CreateBook: FC = () => {
                 </select>
                 {errors.categoryTag && <span className={styles.workshopError}>{errors.categoryTag.message}</span>}
             </div>
-            {cat && <div className={styles.createBookGroup}>
-                <label htmlFor="themeTag" className={styles.workshopLabel + ' ' + themeTernary}>Выбрать тему</label>
-                <select
-                    {...register('themeTag')}
-                    name="themeTag"
-                    id="themeTag"
-                    className={styles.workshopSelect + ' ' + themeTernary}
-                    style={errors.themeTag ? { 'borderColor': 'red' } : {}}
-                >
-                    {filteredThemes.map(item => (
-                        <option key={item.id} value={item.tag} className={styles.workshopOption + ' ' + themeTernary}>{item.title}</option>
-                    ))
-                    }
-                </select>
-                {errors.themeTag && <span className={styles.workshopError}>{errors.themeTag.message}</span>}
-            </div>}
+            {
+                cat &&
+                <div className={styles.createBookGroup}>
+                    <label htmlFor="themeTag" className={styles.workshopLabel + ' ' + themeTernary}>Выбрать тему</label>
+                    <select
+                        {...register('themeTag')}
+                        name="themeTag"
+                        id="themeTag"
+                        className={styles.workshopSelect + ' ' + themeTernary}
+                        style={errors.themeTag ? { 'borderColor': 'red' } : {}}
+                    >
+                        {filteredThemes.map(item => (
+                            <option key={item.id} value={item.tag} className={styles.workshopOption + ' ' + themeTernary}>{item.title}</option>
+                        ))
+                        }
+                    </select>
+                    {errors.themeTag && <span className={styles.workshopError}>{errors.themeTag.message}</span>}
+                </div>
+            }
             <div className={styles.checkbox}>
                 <input
                     {...register('isInStock')}
@@ -254,7 +257,7 @@ const CreateBook: FC = () => {
                 type='submit'
                 className={styles.workshopButton + ' ' + themeTernary}
             >
-                {isSubmitting ? 'Данные обрабатываются...' : 'Сохранить профиль'}
+                {isSubmitting ? 'Данные обрабатываются...' : 'Добавить книгу'}
             </button>
         </form>
     )
