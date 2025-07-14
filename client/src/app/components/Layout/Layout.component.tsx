@@ -14,13 +14,14 @@ const Layout: FC = () => {
         <div className={styles.wrapper + ' ' + (theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark)}>
             <Header />
             {
-                currentUser.isActivated ?
-                    <Outlet /> :
-                    <div className={styles.greetings}>
-                        <span>Добро пожаловать!</span>
-                        <span>Мы отправили ссылку вам на почту</span>
-                        <span>Перейдите по ней, чтобы активировать аккаунт</span>
-                    </div>
+                // currentUser.isActivated ?
+                    <Outlet /> 
+                    // :
+                    // <div className={styles.greetings}>
+                    //     <span>Добро пожаловать!</span>
+                    //     <span>Мы отправили ссылку вам на почту</span>
+                    //     <span>Перейдите по ней, чтобы активировать аккаунт</span>
+                    // </div>
             }
             <Footer />
         </div>

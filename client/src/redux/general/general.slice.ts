@@ -5,7 +5,7 @@ import { fetchCurrentUser } from './general.async'
 
 const initialState: GeneralType = {
     theme: ColorThemeEnum.LIGHT,
-    isActivated: false,
+    // isActivated: false,
     isSignedUp: localStorage.getItem('accessToken') ? true : false,
     currentUser: {} as UserType,
     status: StatusEnum.LOADING
@@ -18,9 +18,9 @@ const generalSlice = createSlice({
         setTheme(state, action: PayloadAction<ColorThemeEnum>) {
             state.theme = action.payload
         },
-        setActivated(state, action: PayloadAction<boolean>) {
-            state.isActivated = action.payload
-        },
+        // setActivated(state, action: PayloadAction<boolean>) {
+        //     state.isActivated = action.payload
+        // },
         setSignedUp(state, action: PayloadAction<boolean>) {
             state.isSignedUp = action.payload
         }
@@ -41,5 +41,6 @@ const generalSlice = createSlice({
     }
 })
 
-export const { setTheme, setActivated, setSignedUp } = generalSlice.actions
+export const { setTheme, setSignedUp } = generalSlice.actions
+// export const { setTheme, setActivated, setSignedUp } = generalSlice.actions
 export default generalSlice.reducer

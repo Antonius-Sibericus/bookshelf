@@ -41,6 +41,28 @@
                     @include head-lora-36;
                     font-size: 27px;
                     margin: 0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 12px;
+                    cursor: pointer;
+
+                    &.light {
+                        svg {
+                            fill: $text-lt-color;
+                        }
+                    }
+
+                    &.dark {
+                        svg {
+                            fill: $text-d-color;
+                        }
+                    }
+
+                    svg {
+                        height: 27px;
+                        width: 27px;
+                    }
                 }
 
                 .workshopItem {
@@ -102,65 +124,101 @@
                     align-items: center;
                 }
 
-                .workshopLabel {
-                    font-size: 24px;
+            }
+        }
 
-                    @media screen and (max-width: 899px) {
-                        font-size: 18px;
-                    }
+        .workshopLabel {
+            font-size: 24px;
 
-                    @media screen and (max-width: 767px) {
-                        text-align: center;
-                        font-size: 15px;
-                    }
-                }
+            @media screen and (max-width: 899px) {
+                font-size: 18px;
+            }
 
-                .workshopInput {
-                    @include input;
-                    width: 75%;
+            @media screen and (max-width: 767px) {
+                text-align: center;
+                font-size: 15px;
+            }
+        }
 
-                    @media screen and (max-width: 767px) {
-                        width: 100%;
-                    }
-                }
+        .workshopInput {
+            @include input;
+            width: 75%;
+            
+            @media screen and (max-width: 767px) {
+                width: 100%;
+            }
+        }
+        
+        .workshopSelect {
+            @include select;
+            width: 75%;
 
-                .workshopSelect {
-                    @include select;
+            .workshopOption {
+                @include option;
+            }
+        }
 
-                    .workshopOption {
-                        @include option;
-                    }
-                }
+        .workshopError {
+            font-size: 12px;
+            padding: 3px;
+            color: red;
+            display: block;
+        }
 
-                .workshopError {
-                    font-size: 12px;
-                    padding: 3px;
-                    color: red;
-                    display: block;
-                }
+        .workshopButton {
+            @include button;
+        }
 
-                .workshopButton {
-                    @include button;
-                }
+        .mainError {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: red;
+            font-family: "Lora", sans-serif;
+            font-style: italic;
+            font-size: 24px;
+        }
 
-                .mainError {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    color: red;
-                    font-family: "Lora", sans-serif;
-                    font-style: italic;
-                    font-size: 24px;
-                }
+        .mainSuccess {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: green;
+            font-family: "Lora", sans-serif;
+            font-style: italic;
+            font-size: 24px;
+            cursor: pointer;
+        }
 
-                .mainSuccess {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    color: green;
-                    font-family: "Lora", sans-serif;
-                    font-style: italic;
-                    font-size: 24px;
+        .createBookForm {
+            margin-top: 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+
+            .createBookGroup {
+                display: flex;
+                flex-direction: column;
+                gap: 9px;
+                width: 75%;
+            }
+
+            button {
+                max-width: 300px;
+            }
+
+            .checkbox {
+                display: flex;
+                flex-direction: row;
+                justify-content: start;
+                align-items: center;
+                gap: 15px;
+
+                input {
+                    width: auto;
+                    margin: 0;
+                    padding: 0;
                 }
             }
         }

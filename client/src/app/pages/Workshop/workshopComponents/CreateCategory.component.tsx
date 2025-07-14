@@ -1,4 +1,4 @@
-import { useState, type FC } from 'react'
+import { useEffect, useState, type FC } from 'react'
 import styles from '../workshop.module.scss'
 import { z } from 'zod'
 import { useSelector } from 'react-redux'
@@ -10,6 +10,8 @@ import type { DefaultResponseType } from '../../../../types/responsesTypes/defau
 import type { AxiosError } from 'axios'
 import CategoriesService from '../../../services/categories.service'
 import type { CategoryResponseType } from '../../../../types/responsesTypes/categoryResponse.type'
+import { useAppDispatch } from '../../../../redux/store.redux'
+import { fetchCategories } from '../../../../redux/categoriesAndThemes/categoriesAndThemes.async'
 
 const createCategorySchema = z.object({
     categoryTitle: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Название не может быть длиннее 63 символов' }).regex(/^[a-zA-Zа-яёА-ЯЁ]{1,63}$/, { message: 'Название может содержать только буквы' }),
@@ -21,6 +23,7 @@ type CreateCategoryValuesType = z.infer<typeof createCategorySchema>
 const CreateCategory: FC = () => {
     const { theme } = useSelector(selectorGeneral)
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
+    const dispatch = useAppDispatch()
 
     const [created, setCreated] = useState<boolean>(false)
 
@@ -32,6 +35,15 @@ const CreateCategory: FC = () => {
     } = useForm<CreateCategoryValuesType>({
         resolver: zodResolver(createCategorySchema)
     })
+
+    useEffect(() => {
+        const getCategories = async () => {
+            dispatch(
+                fetchCategories()
+            )
+        }
+        getCategories()
+    }, [created])
 
     const onSubmit: SubmitHandler<CreateCategoryValuesType> = async data => {
         try {
@@ -73,7 +85,7 @@ const CreateCategory: FC = () => {
             />
             {errors.categoryTag && <span className={styles.workshopError}>{errors.categoryTag.message}</span>}
             {errors.root && <div className={styles.mainError}>{errors.root.message}</div>}
-            {created && <div className={styles.mainSuccess}>Категория создана</div>}
+            {!errors.root && created && <div className={styles.mainSuccess} onClick={() => setCreated(false)}>Категория создана (закрыть)</div>}
             <button className={styles.workshopButton + ' ' + themeTernary}>{isSubmitting ? 'Загрузка...' : 'Добавить категорию'}</button>
         </form>
     )

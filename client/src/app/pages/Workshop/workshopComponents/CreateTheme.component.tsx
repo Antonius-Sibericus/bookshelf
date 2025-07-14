@@ -8,13 +8,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ColorThemeEnum } from '../../../../redux/general/general.types'
 import type { DefaultResponseType } from '../../../../types/responsesTypes/defaultResponse.type'
 import type { AxiosError } from 'axios'
-import CategoriesService from '../../../services/categories.service'
-import type { CategoryResponseType } from '../../../../types/responsesTypes/categoryResponse.type'
 import ThemesService from '../../../services/themes.service'
 import type { ThemeResponseType } from '../../../../types/responsesTypes/themeResponse.type'
 import { useAppDispatch } from '../../../../redux/store.redux'
-import { fetchCategories } from '../../../../redux/categories/categoriesRedux.async'
-import { selectorCategories } from '../../../../redux/categories/categoriesRedux.selector'
+import { fetchThemes } from '../../../../redux/categoriesAndThemes/categoriesAndThemes.async'
+import { selectorCategoriesAndThemes } from '../../../../redux/categoriesAndThemes/categoriesAndThemes.selector'
 
 const createThemeSchema = z.object({
     themeTitle: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Название не может быть длиннее 63 символов' }).regex(/^[a-zA-Zа-яёА-ЯЁ]{1,63}$/, { message: 'Название может содержать только буквы' }),
@@ -26,7 +24,7 @@ type CreateThemeValuesType = z.infer<typeof createThemeSchema>
 
 const CreateTheme: FC = () => {
     const { theme } = useSelector(selectorGeneral)
-    const { statusCat, categories } = useSelector(selectorCategories)
+    const { categories } = useSelector(selectorCategoriesAndThemes)
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
     const dispatch = useAppDispatch()
 
@@ -42,13 +40,13 @@ const CreateTheme: FC = () => {
     })
 
     useEffect(() => {
-        const getCategories = async () => {
+        const getThemes = async () => {
             dispatch(
-                fetchCategories()
+                fetchThemes()
             )
         }
-        getCategories()
-    }, [])
+        getThemes()
+    }, [created])
 
     const onSubmit: SubmitHandler<CreateThemeValuesType> = async data => {
         try {
@@ -101,7 +99,7 @@ const CreateTheme: FC = () => {
             />
             {errors.themeTag && <span className={styles.workshopError}>{errors.themeTag.message}</span>}
             {errors.root && <div className={styles.mainError}>{errors.root.message}</div>}
-            {created && <div className={styles.mainSuccess}>Тема создана</div>}
+            {!errors.root && created && <div className={styles.mainSuccess} onClick={() => setCreated(false)}>Тема создана (закрыть)</div>}
             <button className={styles.workshopButton + ' ' + themeTernary}>{isSubmitting ? 'Загрузка...' : 'Добавить тему'}</button>
         </form>
     )

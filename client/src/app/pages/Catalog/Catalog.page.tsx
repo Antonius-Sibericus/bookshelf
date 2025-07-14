@@ -16,6 +16,10 @@ const CatalogPage: FC = () => {
     const [activeTheme, setActiveTheme] = useState<number>(0)
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
+    const [themesOpen, setThemesOpen] = useState<boolean>(false)
+    const [yearOpen, setYearOpen] = useState<boolean>(false)
+    const [headingOpen, setHeadingOpen] = useState<boolean>(false)
+
     useEffect(() => {
         const someFetch = async () => {
             await new Promise(() => {
@@ -23,7 +27,7 @@ const CatalogPage: FC = () => {
                     setIsLoading(false)
                 }, 1000)
             })
-        } 
+        }
 
         someFetch()
     }, [activeTheme])
@@ -33,9 +37,9 @@ const CatalogPage: FC = () => {
             <div className={styles.container}>
                 <div className={styles.filtersBlock + ' ' + themeTernary}>
                     <div className={styles.filterBlock + ' ' + themeTernary}>
-                        <div className={styles.filterHeading + ' ' + themeTernary}>
+                        <div className={styles.filterHeading + ' ' + themeTernary} onClick={() => setThemesOpen(prev => !prev)}>
                             Темы
-                            {true ?
+                            {themesOpen ?
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                     <path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" />
                                 </svg> :
@@ -44,24 +48,26 @@ const CatalogPage: FC = () => {
                                 </svg>
                             }
                         </div>
-                        {true && <div className={styles.filterOptions}>
-                            {themesTestArray.map((themeTest, index) => (
-                                <div key={index} className={styles.filterOption + ' ' + themeTernary} onClick={() => setActiveTheme(index)}>
-                                    {activeTheme === index ? <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                        <path d="M64 80c-8.8 0-16 7.2-16 16l0 320c0 8.8 7.2 16 16 16l320 0c8.8 0 16-7.2 16-16l0-320c0-8.8-7.2-16-16-16L64 80zM0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zM337 209L209 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L303 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z" />
-                                    </svg> :
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                            <path d="M384 80c8.8 0 16 7.2 16 16l0 320c0 8.8-7.2 16-16 16L64 432c-8.8 0-16-7.2-16-16L48 96c0-8.8 7.2-16 16-16l320 0zM64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32z" />
-                                        </svg>}
-                                    <span>{themeTest}</span>
-                                </div>
-                            ))}
-                        </div>}
+                        {themesOpen &&
+                            <div className={styles.filterOptions}>
+                                {themesTestArray.map((themeTest, index) => (
+                                    <div key={index} className={styles.filterOption + ' ' + themeTernary} onClick={() => setActiveTheme(index)}>
+                                        {activeTheme === index ? <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                            <path d="M64 80c-8.8 0-16 7.2-16 16l0 320c0 8.8 7.2 16 16 16l320 0c8.8 0 16-7.2 16-16l0-320c0-8.8-7.2-16-16-16L64 80zM0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zM337 209L209 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L303 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z" />
+                                        </svg> :
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                <path d="M384 80c8.8 0 16 7.2 16 16l0 320c0 8.8-7.2 16-16 16L64 432c-8.8 0-16-7.2-16-16L48 96c0-8.8 7.2-16 16-16l320 0zM64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32z" />
+                                            </svg>}
+                                        <span>{themeTest}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        }
                     </div>
                     <div className={styles.filterBlock + ' ' + themeTernary}>
-                        <div className={styles.filterHeading + ' ' + themeTernary}>
+                        <div className={styles.filterHeading + ' ' + themeTernary} onClick={() => setYearOpen(prev => !prev)}>
                             Год
-                            {true ?
+                            {yearOpen ?
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                     <path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" />
                                 </svg> :
@@ -70,16 +76,18 @@ const CatalogPage: FC = () => {
                                 </svg>
                             }
                         </div>
-                        <select name="yearFilter" id="yearFilter" className={styles.filterSelect + ' ' + themeTernary}>
-                            <option value="">По умолчанию</option>
-                            <option value="asc">Сначала старые</option>
-                            <option value="desc">Сначала новые</option>
-                        </select>
+                        {yearOpen &&
+                            <select name="yearFilter" id="yearFilter" className={styles.filterSelect + ' ' + themeTernary}>
+                                <option value="">По умолчанию</option>
+                                <option value="asc">Сначала старые</option>
+                                <option value="desc">Сначала новые</option>
+                            </select>
+                        }
                     </div>
                     <div className={styles.filterBlock + ' ' + themeTernary}>
-                        <div className={styles.filterHeading + ' ' + themeTernary}>
+                        <div className={styles.filterHeading + ' ' + themeTernary} onClick={() => setHeadingOpen(prev => !prev)}>
                             Название
-                            {true ?
+                            {headingOpen ?
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                     <path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" />
                                 </svg> :
@@ -88,11 +96,13 @@ const CatalogPage: FC = () => {
                                 </svg>
                             }
                         </div>
-                        <select name="headingFilter" id="headingFilter" className={styles.filterSelect + ' ' + themeTernary}>
-                            <option value="">По умолчанию</option>
-                            <option value="asc">От А до Я</option>
-                            <option value="desc">От Я до А</option>
-                        </select>
+                        {headingOpen &&
+                            <select name="headingFilter" id="headingFilter" className={styles.filterSelect + ' ' + themeTernary}>
+                                <option value="">По умолчанию</option>
+                                <option value="asc">От А до Я</option>
+                                <option value="desc">От Я до А</option>
+                            </select>
+                        }
                     </div>
                 </div>
                 <div className={styles.catalogBlock}>

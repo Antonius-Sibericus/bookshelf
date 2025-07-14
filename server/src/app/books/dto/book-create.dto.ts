@@ -42,12 +42,12 @@ export class BookCreateDTO {
         name: 'Описание книги',
         description: 'Описание книги, которое будет подставлено в информации о книге',
         example: 'Великое произведение великого императора о стоической философии...',
-        maxLength: 63,
+        maxLength: 1023,
         type: String
     })
     @IsString({ message: 'Значение должно иметь строковый тип' })
     @IsNotEmpty({ message: 'Поле не должно быть пустым' })
-    @MaxLength(1023, { message: 'Значение не должно быть длиннее 63 символов' })
+    @MaxLength(1023, { message: 'Значение не должно быть длиннее 1023 символов' })
     description: string
 
     @ApiProperty({

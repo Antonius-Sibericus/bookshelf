@@ -7,12 +7,12 @@ import { setTheme } from '../../../../redux/general/general.slice'
 import { selectorGeneral } from '../../../../redux/general/general.selector'
 import logo from '../../../../assets/images/logo-bookshelf.jpg'
 import { useAppDispatch } from '../../../../redux/store.redux'
-import { fetchCategories } from '../../../../redux/categories/categoriesRedux.async'
-import { selectorCategories } from '../../../../redux/categories/categoriesRedux.selector'
+import { fetchCategories } from '../../../../redux/categoriesAndThemes/categoriesAndThemes.async'
+import { selectorCategoriesAndThemes } from '../../../../redux/categoriesAndThemes/categoriesAndThemes.selector'
 
 const Header: FC = () => {
     const { theme, isSignedUp, currentUser } = useSelector(selectorGeneral)
-    const { categories } = useSelector(selectorCategories)
+    const { categories } = useSelector(selectorCategoriesAndThemes)
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
     const dispatch = useAppDispatch()
 
@@ -55,7 +55,6 @@ const Header: FC = () => {
                         <div className={styles.headerPhoneAndActions}>
                             <a className={styles.headerTopPhone + ' ' + themeTernary} href='tel:+375299182888'>8 (800) 555-35-35</a>
                             <div className={styles.headerTopActions}>
-
                                 {theme === ColorThemeEnum.LIGHT ?
                                     <a onClick={changeTheme}>
                                         <svg fill='#011a1f' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
@@ -141,7 +140,7 @@ const Header: FC = () => {
                                 <nav>
                                     <ul>
                                         {categories.map(item => (
-                                            <li><Link to={`/catalog?cat=${item.tag}`} className={themeTernary}>{item.title}</Link></li>
+                                            <li key={item.id}><Link to={`/catalog?cat=${item.tag}`} className={themeTernary}>{item.title}</Link></li>
                                         ))
                                         }
                                     </ul>
