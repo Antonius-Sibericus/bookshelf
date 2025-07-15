@@ -10,7 +10,7 @@ import { useAppDispatch } from '../../../../redux/store.redux'
 import { setCategoryFilter } from '../../../../redux/filter/filter.slice'
 
 const Footer: FC = () => {
-    const { theme } = useSelector(selectorGeneral)
+    const { theme, currentUser } = useSelector(selectorGeneral)
     const { categories } = useSelector(selectorCategoriesAndThemes)
     const dispatch = useAppDispatch()
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
@@ -34,6 +34,7 @@ const Footer: FC = () => {
                     <Link to='/' className={themeTernary}>Главная</Link>
                     <Link to='/catalog' className={themeTernary}>Каталог</Link>
                     <Link to='/workshop' className={themeTernary}>Мастерская</Link>
+                    <Link to={`/profile/${currentUser.id}/published`} className={themeTernary}>Опубликованное</Link>
                 </div>
                 <div className={styles.footerColumn + ' ' + styles.footerNav}>
                     <h6 className={themeTernary}>Категории</h6>

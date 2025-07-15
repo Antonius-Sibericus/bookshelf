@@ -92,6 +92,7 @@ const Header: FC = () => {
                                     <li><Link to='/' className={themeTernary}>Главная</Link></li>
                                     <li><Link to='/catalog' className={themeTernary}>Каталог</Link></li>
                                     <li><Link to='/workshop' className={themeTernary}>Мастерская</Link></li>
+                                    <li><Link to={`/profile/${currentUser.id}/published`} className={themeTernary}>Опубликованное</Link></li>
                                 </ul>
                             </nav>
                         </div>

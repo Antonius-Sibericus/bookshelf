@@ -32,16 +32,8 @@ const CatalogPage: FC = () => {
     const [headingOpen, setHeadingOpen] = useState<boolean>(false)
 
     useEffect(() => {
-        const getCategoriesAndThemes = async () => {
-            dispatch(
-                fetchCategories()
-            )
-
-            dispatch(
-                fetchThemes()
-            )
-        }
-        getCategoriesAndThemes()
+        dispatch(fetchCategories())
+        dispatch(fetchThemes())
     }, [])
 
     useEffect(() => {

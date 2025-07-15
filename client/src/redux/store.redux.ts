@@ -7,6 +7,7 @@ import books from './books/books.slice'
 import favorites from './favorites/favorites.slice'
 import published from './published/published.slice'
 import basket from './basket/basket.slice'
+import users from './users/users.slice'
 
 export const store = configureStore({
     reducer: {
@@ -16,7 +17,8 @@ export const store = configureStore({
         books,
         favorites,
         published,
-        basket
+        basket,
+        users
     }
 });
 

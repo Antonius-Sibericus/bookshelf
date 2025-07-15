@@ -1,14 +1,26 @@
-import type { FC } from 'react'
+import { useEffect, type FC } from 'react'
 import styles from './personal.module.scss'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { selectorGeneral } from '../../../redux/general/general.selector'
 import { ColorThemeEnum } from '../../../redux/general/general.types'
 import PersonalCard from '../../components/personalCard/PersonalCard.component'
+import { selectorPublished } from '../../../redux/published/published.selector'
+import { useAppDispatch } from '../../../redux/store.redux'
+import { fetchPublished } from '../../../redux/published/published.async'
+import { fetchCategories, fetchThemes } from '../../../redux/categoriesAndThemes/categoriesAndThemes.async'
 
 const PublishedPage: FC = () => {
     const { theme, currentUser } = useSelector(selectorGeneral)
+    const { published } = useSelector(selectorPublished)
+    const dispatch = useAppDispatch()
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
+
+    useEffect(() => {
+        dispatch(fetchPublished())
+        dispatch(fetchCategories())
+        dispatch(fetchThemes())
+    }, [])
 
     return (
         <section className={styles.personal}>
@@ -18,7 +30,9 @@ const PublishedPage: FC = () => {
                     <Link className={themeTernary} to={`/profile/${currentUser.id}`}>Вернуться в профиль</Link>
                 </div>
                 <div className={styles.personalContent}>
-                    <PersonalCard />
+                    {published.map(item => (
+                        <PersonalCard key={item.id} {...item} />
+                    ))}
                 </div>
             </div>
         </section>

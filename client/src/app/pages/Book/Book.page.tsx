@@ -15,32 +15,35 @@ import { selectorBasket } from '../../../redux/basket/basket.selector'
 import FavoritesService from '../../services/favorites.service'
 import { fetchFavorites } from '../../../redux/favorites/favorites.async'
 import { selectorFavorites } from '../../../redux/favorites/favorites.selector'
+import { selectorUsers } from '../../../redux/users/users.selector'
+import { fetchCategories, fetchThemes } from '../../../redux/categoriesAndThemes/categoriesAndThemes.async'
 
 const BookPage: FC = () => {
     const { categories, themes } = useSelector(selectorCategoriesAndThemes)
     const { basket } = useSelector(selectorBasket)
     const { favorites } = useSelector(selectorFavorites)
+    const { users } = useSelector(selectorUsers)
     const params = useParams()
     const dispatch = useAppDispatch()
     const [isInBasket, setIsInBasket] = useState<boolean>(false)
     const [isInFavorites, setIsInFavorites] = useState<boolean>(false)
     const [currentBook, setCurrentBook] = useState<BookType>({} as BookType)
-
+    
     useEffect(() => {
         const getBook = async () => {
             if (params.bookTag) {
                 const result = await BooksService.getOneBook(params.bookTag)
                 const response = result.data
-
+                
                 if (response as BookResponseType) {
                     setCurrentBook(response.book)
                 }
             }
         }
-
+        
         getBook()
     }, [])
-
+    
     useEffect(() => {
         setIsInFavorites(favorites.find(item => item.tag === currentBook.tag) ? true : false)
         setIsInBasket(basket.find(item => item.tag === currentBook.tag) ? true : false)
@@ -140,6 +143,14 @@ const BookPage: FC = () => {
                         <div className={styles.bookPageEntry}>
                             <span className={styles.bookPageChar}>Тема: </span>
                             <span className={styles.bookPageValue}>{themes.find(item => item.tag === currentBook.themeTag)?.title}</span>
+                        </div>
+                        <div className={styles.bookPageEntry}>
+                            <span className={styles.bookPageChar}>Публикатор: </span>
+                            <span className={styles.bookPageValue}>
+                                {users.find(item => item.id === currentBook.publisherId)?.surname + ' '}
+                                {users.find(item => item.id === currentBook.publisherId)?.name + ' '}
+                                {users.find(item => item.id === currentBook.publisherId)?.paternal}
+                            </span>
                         </div>
                         <div className={styles.bookPageActions}>
                             {
