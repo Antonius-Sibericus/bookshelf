@@ -11,10 +11,17 @@ import { fetchCategories } from '../../../../redux/categoriesAndThemes/categorie
 import { selectorCategoriesAndThemes } from '../../../../redux/categoriesAndThemes/categoriesAndThemes.selector'
 import { setCategoryFilter, setSearchFilter } from '../../../../redux/filter/filter.slice'
 import debounce from 'lodash.debounce'
+import { fetchBasket } from '../../../../redux/basket/basket.async'
+import { selectorBasket } from '../../../../redux/basket/basket.selector'
+import { selectorFavorites } from '../../../../redux/favorites/favorites.selector'
+import { fetchFavorites } from '../../../../redux/favorites/favorites.async'
 
 const Header: FC = () => {
     const { theme, isSignedUp, currentUser } = useSelector(selectorGeneral)
     const { categories } = useSelector(selectorCategoriesAndThemes)
+    const { basket } = useSelector(selectorBasket)
+    const { favorites } = useSelector(selectorFavorites)
+
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
     const dispatch = useAppDispatch()
 
@@ -51,6 +58,20 @@ const Header: FC = () => {
             )
         }
         getCategories()
+
+        const getBasket = async () => {
+            dispatch(
+                fetchBasket()
+            )
+        }
+        getBasket()
+
+        const getFavs = async () => {
+            dispatch(
+                fetchFavorites()
+            )
+        }
+        getFavs()
     }, [])
 
     const location = useLocation()
@@ -115,6 +136,11 @@ const Header: FC = () => {
                                         </svg>
                                     </Link>
                                 }
+                                <a onClick={() => setIsMenuOpen(prevState => !prevState)} className={styles.headerBurger}>
+                                    <svg width='24' height='24' fill={theme === ColorThemeEnum.LIGHT ? '#072e36' : '#229fb8'} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                        <path d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z" />
+                                    </svg>
+                                </a>
                                 {isSignedUp &&
                                     <Link to={`/profile/${currentUser.id}/favorites`}>
                                         <svg width='24' height='24' viewBox='0 0 24 24' fill={theme === ColorThemeEnum.LIGHT ? '#072e36' : '#229fb8'} xmlns='http://www.w3.org/2000/svg'>
@@ -122,12 +148,8 @@ const Header: FC = () => {
                                                 d='M11.9997 20.846C11.7155 20.846 11.4405 20.8093 11.2113 20.7268C7.70967 19.526 2.14551 15.2635 2.14551 8.96596C2.14551 5.75763 4.73967 3.1543 7.92967 3.1543C9.47884 3.1543 10.9272 3.7593 11.9997 4.84096C13.0722 3.7593 14.5205 3.1543 16.0697 3.1543C19.2597 3.1543 21.8538 5.7668 21.8538 8.96596C21.8538 15.2726 16.2897 19.526 12.788 20.7268C12.5588 20.8093 12.2838 20.846 11.9997 20.846ZM7.92967 4.5293C5.50051 4.5293 3.52051 6.51846 3.52051 8.96596C3.52051 15.2268 9.54301 18.7101 11.6605 19.4343C11.8255 19.4893 12.183 19.4893 12.348 19.4343C14.4563 18.7101 20.488 15.236 20.488 8.96596C20.488 6.51846 18.508 4.5293 16.0788 4.5293C14.6855 4.5293 13.393 5.18013 12.5588 6.30763C12.3022 6.65596 11.7155 6.65596 11.4588 6.30763C10.6063 5.17096 9.32301 4.5293 7.92967 4.5293Z'
                                             />
                                         </svg>
+                                        <span className={themeTernary}>{favorites.length}</span>
                                     </Link>}
-                                <a onClick={() => setIsMenuOpen(prevState => !prevState)} className={styles.headerBurger}>
-                                    <svg width='24' height='24' fill={theme === ColorThemeEnum.LIGHT ? '#072e36' : '#229fb8'} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                        <path d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z" />
-                                    </svg>
-                                </a>
                                 {isSignedUp &&
                                     <Link to={`/profile/${currentUser.id}/basket`}>
                                         <svg width='24' height='24' viewBox='0 0 24 24' fill={theme === ColorThemeEnum.LIGHT ? '#072e36' : '#229fb8'} xmlns='http://www.w3.org/2000/svg'>
@@ -150,7 +172,7 @@ const Header: FC = () => {
                                                 d='M14.4083 20.9581H9.38329C6.39996 20.9581 5.73329 19.1831 5.47496 17.6415L4.29996 10.4331C4.24162 10.0915 4.47496 9.7748 4.81662 9.71646C5.15829 9.65813 5.47496 9.89146 5.53329 10.2331L6.70829 17.4331C6.94996 18.9081 7.44996 19.7081 9.38329 19.7081H14.4083C16.55 19.7081 16.7916 18.9581 17.0666 17.5081L18.4666 10.2165C18.5333 9.87479 18.8583 9.6498 19.2 9.7248C19.5416 9.79146 19.7583 10.1165 19.6916 10.4581L18.2916 17.7498C17.9666 19.4415 17.425 20.9581 14.4083 20.9581Z'
                                             />
                                         </svg>
-                                        <span className={themeTernary}>4</span>
+                                        <span className={themeTernary}>{basket.length}</span>
                                     </Link>}
                             </div>
                         </div>
@@ -163,8 +185,7 @@ const Header: FC = () => {
                                     <ul>
                                         {categories.map(item => (
                                             <li onClick={() => dispatch(setCategoryFilter(item.tag))} key={item.id}><Link to={`/catalog`} className={themeTernary}>{item.title}</Link></li>
-                                        ))
-                                        }
+                                        ))}
                                     </ul>
                                 </nav>
                             </div>

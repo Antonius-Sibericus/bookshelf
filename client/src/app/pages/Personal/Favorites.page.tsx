@@ -5,22 +5,40 @@ import PersonalCard from '../../components/personalCard/PersonalCard.component'
 import { useSelector } from 'react-redux'
 import { selectorGeneral } from '../../../redux/general/general.selector'
 import { ColorThemeEnum } from '../../../redux/general/general.types'
+import { selectorFavorites } from '../../../redux/favorites/favorites.selector'
+import { useAppDispatch } from '../../../redux/store.redux'
+import FavoritesService from '../../services/favorites.service'
+import type { BookResponseType } from '../../../types/responsesTypes/bookResponse.type'
+import { fetchFavorites } from '../../../redux/favorites/favorites.async'
 
 const FavoritesPage: FC = () => {
-    const { theme } = useSelector(selectorGeneral)
+    const { theme, currentUser } = useSelector(selectorGeneral)
+    const { favorites } = useSelector(selectorFavorites)
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
+    const dispath = useAppDispatch()
+
+    const removeFromFav = async (tag: string) => {
+        const result = await FavoritesService.removeFavorite(tag)
+        const response = result.data
+
+        if (response as BookResponseType) {
+            console.log('success')
+        }
+
+        dispath(fetchFavorites())
+    }
 
     return (
         <section className={styles.personal}>
             <div className={styles.container}>
                 <div className={styles.personalHeading}>
                     <span>Избранное</span>
-                    <Link className={themeTernary} to='/profile/1'>Вернуться в профиль</Link>
+                    <Link className={themeTernary} to={`/profile/${currentUser.id}`}>Вернуться в профиль</Link>
                 </div>
                 <div className={styles.personalContent}>
-                    <PersonalCard />
-                    <PersonalCard />
-                    <PersonalCard />
+                    {favorites.map(item => (
+                        <PersonalCard key={item.id} {...item} remove={(bookTag: string) => removeFromFav(bookTag)} />
+                    ))}
                 </div>
             </div>
         </section>

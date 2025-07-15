@@ -4,13 +4,19 @@ import general from './general/general.slice'
 import filter from './filter/filter.slice'
 import categoriesAndThemes from './categoriesAndThemes/categoriesAndThemes.slice'
 import books from './books/books.slice'
+import favorites from './favorites/favorites.slice'
+import published from './published/published.slice'
+import basket from './basket/basket.slice'
 
 export const store = configureStore({
     reducer: {
         general,
         filter,
         categoriesAndThemes,
-        books
+        books,
+        favorites,
+        published,
+        basket
     }
 });
 

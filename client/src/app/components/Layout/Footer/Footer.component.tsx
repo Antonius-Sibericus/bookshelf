@@ -5,9 +5,14 @@ import { ColorThemeEnum } from '../../../../redux/general/general.types'
 import { selectorGeneral } from '../../../../redux/general/general.selector'
 import { useSelector } from 'react-redux'
 import logo from '../../../../assets/images/logo-bookshelf.jpg'
+import { selectorCategoriesAndThemes } from '../../../../redux/categoriesAndThemes/categoriesAndThemes.selector'
+import { useAppDispatch } from '../../../../redux/store.redux'
+import { setCategoryFilter } from '../../../../redux/filter/filter.slice'
 
 const Footer: FC = () => {
     const { theme } = useSelector(selectorGeneral)
+    const { categories } = useSelector(selectorCategoriesAndThemes)
+    const dispatch = useAppDispatch()
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
 
     return (
@@ -28,17 +33,13 @@ const Footer: FC = () => {
                     <h6 className={themeTernary}>Навигация</h6>
                     <Link to='/' className={themeTernary}>Главная</Link>
                     <Link to='/catalog' className={themeTernary}>Каталог</Link>
+                    <Link to='/workshop' className={themeTernary}>Мастерская</Link>
                 </div>
                 <div className={styles.footerColumn + ' ' + styles.footerNav}>
                     <h6 className={themeTernary}>Категории</h6>
-                    <Link to='/catalog' className={themeTernary}>Category</Link>
-                    <Link to='/catalog' className={themeTernary}>Category</Link>
-                    <Link to='/catalog' className={themeTernary}>Category</Link>
-                    <Link to='/catalog' className={themeTernary}>Category</Link>
-                    <Link to='/catalog' className={themeTernary}>Category</Link>
-                    <Link to='/catalog' className={themeTernary}>Category</Link>
-                    <Link to='/catalog' className={themeTernary}>Category</Link>
-                    <Link to='/catalog' className={themeTernary}>Category</Link>
+                    {categories.map(item => (
+                        <Link onClick={() => dispatch(setCategoryFilter(item.tag))} key={item.id} to={`/catalog`} className={themeTernary}>{item.title}</Link>
+                    ))}
                 </div>
             </div>
         </footer>

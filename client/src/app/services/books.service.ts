@@ -9,6 +9,10 @@ export default class BooksService {
         return await api.get<BooksResponseType>(`/books?cat=${cat}&theme=${theme}&title=${title}&year=${year}&page=${page}&search=${search}`)
     }
 
+    public static async getOneBook(tag: string): Promise<AxiosResponse<BookResponseType>> {
+        return await api.get<BookResponseType>(`/books/${tag}`)
+    }
+
     public static async createBook(
         heading: string, tag: string, author: string, description: string, pages: number, isInStock: boolean, year: number, isbn: number, isSoftCover: boolean, categoryTag: string, themeTag: string): Promise<AxiosResponse<BookResponseType>> {
         return await $api.post<BookResponseType>('/books', {
