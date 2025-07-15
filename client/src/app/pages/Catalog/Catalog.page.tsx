@@ -54,7 +54,7 @@ const CatalogPage: FC = () => {
     const [cat, setCat] = useState<string | null>(categoryQuery ? categoryQuery : null)
     const filteredThemes = cat ? themes.filter(item => item.categoryTag === cat) : themes
     const preparedBooks = books.map((item: BookType) => <BookCard key={item.tag} {...item} />)
-    const skeletons = [...new Array(6).map((item, index) => <BookSceleton key={index} />)]
+    const skeletons = [...new Array(6).map((item, index) => <BookSceleton key={index || item} />)]
 
     const settingCategory = (catTag: string) => {
         dispatch(setCategoryFilter(categoryQuery === catTag ? '' : catTag))

@@ -16,7 +16,6 @@ import FavoritesService from '../../services/favorites.service'
 import { fetchFavorites } from '../../../redux/favorites/favorites.async'
 import { selectorFavorites } from '../../../redux/favorites/favorites.selector'
 import { selectorUsers } from '../../../redux/users/users.selector'
-import { fetchCategories, fetchThemes } from '../../../redux/categoriesAndThemes/categoriesAndThemes.async'
 
 const BookPage: FC = () => {
     const { categories, themes } = useSelector(selectorCategoriesAndThemes)

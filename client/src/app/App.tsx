@@ -13,7 +13,6 @@ import type { AuthResponseType } from '../types/responsesTypes/authResponse.type
 import { fetchCurrentUser } from '../redux/general/general.async'
 import { useAppDispatch } from '../redux/store.redux'
 import { fetchUsers } from '../redux/users/users.async'
-import { fetchCategories, fetchThemes } from '../redux/categoriesAndThemes/categoriesAndThemes.async'
 
 function App() {
   const { theme } = useSelector(selectorGeneral)
