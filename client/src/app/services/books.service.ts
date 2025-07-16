@@ -29,4 +29,23 @@ export default class BooksService {
             themeTag
         })
     }
+
+    public static async updateBook(tag: string, heading: string, author: string, description: string, pages: number, isInStock: boolean, year: number, isbn: number, isSoftCover: boolean, categoryTag: string, themeTag: string): Promise<AxiosResponse<BookResponseType>> {
+        return await $api.put<BookResponseType>(`/books/${tag}`, {
+            heading,
+            author,
+            description,
+            pages,
+            isInStock,
+            year,
+            isbn,
+            isSoftCover,
+            categoryTag,
+            themeTag
+        })
+    }
+
+    public static async deleteBook(tag: string): Promise<AxiosResponse<BookResponseType>> {
+        return await $api.delete<BookResponseType>(`/books/${tag}`)
+    }
 }

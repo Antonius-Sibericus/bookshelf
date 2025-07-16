@@ -1,1 +1,110 @@
 /* BookEdit Page Styles */
+
+@import '../../../assets/styles/mixins';
+@import '../../../assets/styles/variables';
+
+.edit {
+    @include section;
+
+    .container {
+        @include container;
+
+        .editHeading {
+            @include head-lora-36;
+            margin-bottom: 24px;
+        }
+
+        .editForm {
+            margin-top: 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+
+            .editGroup {
+                display: flex;
+                flex-direction: column;
+                gap: 9px;
+                width: 75%;
+
+                .editLabel {
+                    font-size: 24px;
+
+                    @media screen and (max-width: 899px) {
+                        font-size: 18px;
+                    }
+
+                    @media screen and (max-width: 767px) {
+                        text-align: center;
+                        font-size: 15px;
+                    }
+                }
+
+                .editInput {
+                    @include input;
+                    width: 75%;
+
+                    @media screen and (max-width: 767px) {
+                        width: 100%;
+                    }
+                }
+
+                .editSelect {
+                    @include select;
+                    width: 75%;
+
+                    .editOption {
+                        @include option;
+                    }
+                }
+
+                .editError {
+                    font-size: 12px;
+                    padding: 3px;
+                    color: red;
+                    display: block;
+                }
+            }
+
+            button {
+                @include button;
+                max-width: 300px;
+            }
+
+            .checkbox {
+                display: flex;
+                flex-direction: row;
+                justify-content: start;
+                align-items: center;
+                gap: 15px;
+
+                input {
+                    width: auto;
+                    margin: 0;
+                    padding: 0;
+                }
+            }
+
+            .mainError {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: red;
+                font-family: "Lora", sans-serif;
+                font-style: italic;
+                font-size: 24px;
+            }
+
+            .mainSuccess {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: green;
+                font-family: "Lora", sans-serif;
+                font-style: italic;
+                font-size: 24px;
+                cursor: pointer;
+            }
+        }
+    }
+}
