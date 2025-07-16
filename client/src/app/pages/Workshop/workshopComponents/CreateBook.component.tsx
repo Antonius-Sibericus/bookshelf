@@ -25,7 +25,8 @@ const createBookSchema = z.object({
     isbn: z.number({ message: 'Обязательное поле' }).positive({ message: 'Обязательное поле' }),
     isSoftCover: z.boolean(),
     categoryTag: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Тэг не может быть длиннее 63 символов' }).regex(/^[a-zA-Z-]{1,63}$/, { message: 'Тэг может содержать только латинские буквы' }),
-    themeTag: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Тэг не может быть длиннее 63 символов' }).regex(/^[a-zA-Z-]{1,63}$/, { message: 'Тэг может содержать только латинские буквы' })
+    themeTag: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Тэг не может быть длиннее 63 символов' }).regex(/^[a-zA-Z-]{1,63}$/, { message: 'Тэг может содержать только латинские буквы' }),
+    image: z.instanceof(FileList)
 })
 
 type CreateBookValuesType = z.infer<typeof createBookSchema>
@@ -50,7 +51,7 @@ const CreateBook: FC = () => {
 
     const onSubmit: SubmitHandler<CreateBookValuesType> = async data => {
         try {
-            const result = await BooksService.createBook(data.heading, data.tag, data.author, data.description, data.pages, data.isInStock, data.year, data.isbn, data.isSoftCover, data.categoryTag, data.themeTag)
+            const result = await BooksService.createBook(data.heading, data.tag, data.author, data.description, data.pages, data.isInStock, data.year, data.isbn, data.isSoftCover, data.categoryTag, data.themeTag, data.image[0])
             const response = result.data
 
             if (response as BookResponseType) {
@@ -250,6 +251,20 @@ const CreateBook: FC = () => {
                     Мягкая обложка
                 </label>
                 {errors.isSoftCover && <span className={styles.workshopError}>{errors.isSoftCover.message}</span>}
+            </div>
+            <div className={styles.createBookGroup}>
+                <label htmlFor="image" className={styles.workshopLabel + ' ' + themeTernary}>
+                    Обложка
+                </label>
+                <input
+                    {...register('image')}
+                    type="file"
+                    id='image'
+                    name='image'
+                    className={styles.workshopInput + ' ' + themeTernary}
+                    style={errors.isSoftCover ? { 'borderColor': 'red' } : {}}
+                />
+                {errors.image && <span className={styles.workshopError}>{errors.image.message}</span>}
             </div>
             {errors.root && <div className={styles.mainError}>{errors.root.message}</div>}
             {!errors.root && created && <div className={styles.mainSuccess} onClick={() => setCreated(false)}>Книга добавлена (закрыть)</div>}

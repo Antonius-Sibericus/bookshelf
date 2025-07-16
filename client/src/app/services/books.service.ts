@@ -14,7 +14,8 @@ export default class BooksService {
     }
 
     public static async createBook(
-        heading: string, tag: string, author: string, description: string, pages: number, isInStock: boolean, year: number, isbn: number, isSoftCover: boolean, categoryTag: string, themeTag: string): Promise<AxiosResponse<BookResponseType>> {
+        heading: string, tag: string, author: string, description: string, pages: number, isInStock: boolean, year: number, isbn: number, isSoftCover: boolean, categoryTag: string, themeTag: string, image: File): Promise<AxiosResponse<BookResponseType>> {
+            console.log(image)
         return await $api.post<BookResponseType>('/books', {
             heading,
             tag,
@@ -26,7 +27,8 @@ export default class BooksService {
             isbn,
             isSoftCover,
             categoryTag,
-            themeTag
+            themeTag,
+            image
         })
     }
 

@@ -1,4 +1,4 @@
-import { useState, type FC } from 'react'
+import { useEffect, useState, type FC } from 'react'
 import styles from './profile.module.scss'
 import { UserRoles, UserRolesTranslations } from '../../../types/user-roles.enum'
 import { useSelector } from 'react-redux'
@@ -39,12 +39,20 @@ const ProfilePage: FC = () => {
 
     const {
         register,
+        setValue,
         handleSubmit,
         setError,
         formState: { errors, isSubmitting }
     } = useForm<ChangeUserValuesType>({
         resolver: zodResolver(changeUserSchema)
     })
+
+    useEffect(() => {
+        setValue('surname', currentUser.surname, { shouldTouch: true, shouldDirty: true})
+        setValue('name', currentUser.name, { shouldTouch: true, shouldDirty: true})
+        setValue('paternal', currentUser.paternal, { shouldTouch: true, shouldDirty: true})
+        setValue('role', currentUser.role, { shouldTouch: true, shouldDirty: true})
+    }, [currentUser])
 
     const onSubmitInfo: SubmitHandler<ChangeUserValuesType> = async data => {
         try {
@@ -104,7 +112,6 @@ const ProfilePage: FC = () => {
                             </label>
                             <input
                                 {...register('surname')}
-                                defaultValue={currentUser.surname}
                                 type="text"
                                 id='surname'
                                 name='surname'
@@ -120,7 +127,6 @@ const ProfilePage: FC = () => {
                             </label>
                             <input
                                 {...register('name')}
-                                defaultValue={currentUser.name}
                                 type="text"
                                 id='name'
                                 name='name'
@@ -136,7 +142,6 @@ const ProfilePage: FC = () => {
                             </label>
                             <input
                                 {...register('paternal')}
-                                defaultValue={currentUser.paternal}
                                 type="text"
                                 id='paternal'
                                 name='paternal'
@@ -160,7 +165,6 @@ const ProfilePage: FC = () => {
                             >
                                 {Object.keys(UserRoles).map((item) => (
                                     <option
-                                        selected={currentUser.role === item ? true : false}
                                         key={item}
                                         value={item}
                                         className={styles.profileOption + ' ' + themeTernary}
@@ -188,31 +192,6 @@ const ProfilePage: FC = () => {
                             {userInfoEdit ? 'Готово' : 'Изменить профиль'}
                         </button>
                     </form>
-                    {/* <div className={styles.profilePassword}>
-                        <div className={styles.profileGroup}>
-                            <label htmlFor="password" className={styles.profileLabel + ' ' + themeTernary}>
-                                Пароль
-                            </label>
-                            <input
-                                type="text"
-                                id='password'
-                                name='password'
-                                className={styles.profileInput + ' ' + themeTernary}
-                            />
-                        </div>
-                        <div className={styles.profileGroup}>
-                            <label htmlFor="repeatPassword" className={styles.profileLabel + ' ' + themeTernary}>
-                                Повторите пароль
-                            </label>
-                            <input
-                                type="text"
-                                id='repeatPassword'
-                                name='repeatPassword'
-                                className={styles.profileInput + ' ' + themeTernary}
-                            />
-                        </div>
-                        <button className={styles.profileButton + ' ' + themeTernary}>Сохранить пароль</button>
-                    </div> */}
                     <ChangePassword />
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common'
 import { BooksService } from './books.service'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { BookCreateDTO } from './dto/book-create.dto'
@@ -6,6 +6,7 @@ import { Request, Response } from 'express'
 import { Filters } from 'src/types/filters.enum'
 import { BookUpdateDTO } from './dto/book-update.dto'
 import { AuthGuard } from 'src/guards/auth.guard'
+import { FileInterceptor } from '@nestjs/platform-express'
 
 @ApiTags('Книги')
 @Controller('books')
@@ -38,8 +39,9 @@ export class BooksController {
     description: 'Формирует запись о книге по переданным данным'
   })
   @Post()
-  public async createBook(@Req() req: Request, @Body() dto: BookCreateDTO, @Res() res: Response) {
-    return await this.booksService.create(req, dto, res)
+  @UseInterceptors(FileInterceptor('image'))
+  public async createBook(@Req() req: Request, @Body() dto: BookCreateDTO, @UploadedFile() image: any,  @Res() res: Response) {
+    return await this.booksService.create(req, dto, image, res)
   }
 
   @UseGuards(AuthGuard)
@@ -48,8 +50,9 @@ export class BooksController {
     description: 'Редактирует запись о книге по переданной инфвормации'
   })
   @Put(':tag')
-  public async updateTheme(@Req() req: Request, @Param('tag') tag: string, @Body() dto: BookUpdateDTO, @Res() res: Response) {
-    return await this.booksService.update(req, tag, dto, res)
+  @UseInterceptors(FileInterceptor('image'))
+  public async updateTheme(@Req() req: Request, @Param('tag') tag: string, @Body() dto: BookUpdateDTO, @UploadedFile() image: Express.Multer.File, @Res() res: Response) {
+    return await this.booksService.update(req, tag, dto, image, res)
   }
 
   @UseGuards(AuthGuard)

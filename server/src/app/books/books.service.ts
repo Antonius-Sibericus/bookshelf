@@ -7,12 +7,14 @@ import { BookUpdateDTO } from './dto/book-update.dto'
 import { JwtPayload } from 'src/types/jwt.interface'
 import { JwtService } from '@nestjs/jwt'
 import { UserRoles } from 'src/types/user-roles.enum'
+import { FilesService } from 'src/files/files.service'
 
 @Injectable()
 export class BooksService {
     constructor(
         private readonly prismaService: PrismaService,
-        private readonly jwtService: JwtService
+        private readonly jwtService: JwtService,
+        private readonly fileService: FilesService
     ) { }
 
     public async findAll(res: Response, cat: string, theme: string, title: Filters, year: Filters, search: string, page: string) {
@@ -101,7 +103,7 @@ export class BooksService {
         }
     }
 
-    public async create(req: Request, dto: BookCreateDTO, res: Response) {
+    public async create(req: Request, dto: BookCreateDTO, image: any, res: Response) {
         try {
             const refreshToken = req.cookies['refreshToken']
             if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
@@ -172,6 +174,8 @@ export class BooksService {
                 throw new NotFoundException(`Темы с тэгом ${themeTag} не существует`)
             }
 
+            const fileName = await this.fileService.createFile(image, tag)
+
             const book = await this.prismaService.book.create({
                 data: {
                     heading,
@@ -221,7 +225,7 @@ export class BooksService {
         }
     }
 
-    public async update(req: Request, tag: string, dto: BookUpdateDTO, res: Response) {
+    public async update(req: Request, tag: string, dto: BookUpdateDTO, image: any, res: Response) {
         try {
             const refreshToken = req.cookies['refreshToken']
             if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
@@ -297,6 +301,8 @@ export class BooksService {
             if (!potentialTheme) {
                 throw new NotFoundException(`Темы с тэгом ${themeTag} не существует`)
             }
+
+            const fileName = await this.fileService.createFile(image, tag)
 
             const updatedBook = await this.prismaService.book.update({
                 where: {

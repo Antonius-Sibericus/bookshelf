@@ -10,12 +10,12 @@ import type { UserType } from '../../../../types/entitiesTypes/user.type'
 import type { UserResponseType } from '../../../../types/responsesTypes/userResponse.type'
 import type { DefaultResponseType } from '../../../../types/responsesTypes/defaultResponse.type'
 
-type qaq = {
+type deleteUserModalProps = {
     setAreYouSure: (type: boolean) => void,
     currentUser: UserType
 }
 
-const DeleteUserModal: FC<qaq> = ({ setAreYouSure, currentUser }) => {
+const DeleteUserModal: FC<deleteUserModalProps> = ({ setAreYouSure, currentUser }) => {
     const { theme } = useSelector(selectorGeneral)
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
 

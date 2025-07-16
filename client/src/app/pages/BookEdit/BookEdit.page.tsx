@@ -80,7 +80,6 @@ const BookEditPage: FC = () => {
         }
 
         getBook()
-
     }, [])
     
     useEffect(() => {

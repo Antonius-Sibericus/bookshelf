@@ -28,6 +28,54 @@
         border: 2px solid $anchor-d-color;
     }
 
+    .modalWrapper {
+        background-color: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .modalContainer {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            gap: 27px;
+            border-radius: 6px;
+            padding: 12px;
+
+            &.light {
+                background-color: $main-lt-color;
+                border: 2px solid $text-lt-color;
+            }
+
+            &.dark {
+                background-color: $main-d-color;
+                border: 2px solid $text-d-color;
+            }
+
+            button {
+                @include button;
+                width: 100%;
+                color: rgb(217, 217, 217);
+
+                &.deleteButton {
+                    background-color: rgb(161, 32, 66);
+                }
+
+                &.cancelButton {
+                    background-color: rgb(28, 197, 101);
+                }
+            }
+
+        }
+    }
+
     .personalCardImage {
         width: 120px;
         display: flex;

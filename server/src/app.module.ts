@@ -14,6 +14,9 @@ import { APP_GUARD } from '@nestjs/core'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
 import { getJwtConfig } from './config/jwt.config'
+import { FilesModule } from './files/files.module'
+import * as path from 'path'
+import { ServeStaticModule } from '@nestjs/serve-static'
 
 @Module({
   imports: [
@@ -32,6 +35,10 @@ import { getJwtConfig } from './config/jwt.config'
       useFactory: getJwtConfig,
       inject: [ConfigService]
     }),
+    FilesModule,
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve(__dirname, 'static')
+    })
   ],
   controllers: [AppController],
   providers: [AppService],
