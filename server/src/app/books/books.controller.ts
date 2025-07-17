@@ -40,7 +40,7 @@ export class BooksController {
   })
   @Post()
   @UseInterceptors(FileInterceptor('image'))
-  public async createBook(@Req() req: Request, @Body() dto: BookCreateDTO, @UploadedFile() image: any,  @Res() res: Response) {
+  public async createBook(@Req() req: Request, @Body() dto: BookCreateDTO, @UploadedFile() image: Express.Multer.File,  @Res() res: Response) {
     return await this.booksService.create(req, dto, image, res)
   }
 

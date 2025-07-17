@@ -103,7 +103,7 @@ export class BooksService {
         }
     }
 
-    public async create(req: Request, dto: BookCreateDTO, image: any, res: Response) {
+    public async create(req: Request, dto: BookCreateDTO, image: Express.Multer.File, res: Response) {
         try {
             const refreshToken = req.cookies['refreshToken']
             if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
@@ -182,11 +182,11 @@ export class BooksService {
                     tag,
                     author,
                     description,
-                    pages,
-                    isInStock,
-                    year,
-                    isbn,
-                    isSoftCover,
+                    pages: JSON.parse(pages),
+                    isInStock: JSON.parse(isInStock),
+                    year: JSON.parse(year),
+                    isbn: JSON.parse(isbn),
+                    isSoftCover: JSON.parse(isSoftCover),
                     publisherId: userId,
                     categoryTag,
                     themeTag
@@ -302,7 +302,8 @@ export class BooksService {
                 throw new NotFoundException(`Темы с тэгом ${themeTag} не существует`)
             }
 
-            const fileName = await this.fileService.createFile(image, tag)
+            const removedImage = await this.fileService.removeFile(tag)
+            const addedImage = await this.fileService.createFile(image, tag)
 
             const updatedBook = await this.prismaService.book.update({
                 where: {
@@ -312,11 +313,11 @@ export class BooksService {
                     heading: heading ? heading : oldData.heading,
                     author: author ? author : oldData.author,
                     description: description ? description : oldData.description,
-                    pages: pages ? pages : oldData.pages,
-                    isInStock: isInStock !== undefined ? isInStock : oldData.isInStock,
-                    year: year ? year : oldData.year,
-                    isbn: isbn ? isbn : oldData.isbn,
-                    isSoftCover: isSoftCover !== undefined ? isSoftCover : oldData.isSoftCover,
+                    pages: pages ? JSON.parse(pages) : oldData.pages,
+                    isInStock: isInStock !== undefined ? JSON.parse(isInStock) : oldData.isInStock,
+                    year: year ? JSON.parse(year) : oldData.year,
+                    isbn: isbn ? JSON.parse(isbn) : oldData.isbn,
+                    isSoftCover: isSoftCover !== undefined ? JSON.parse(isSoftCover) : oldData.isSoftCover,
                     categoryTag: categoryTag ? categoryTag : oldData.categoryTag,
                     themeTag: themeTag ? themeTag : oldData.themeTag
                 }
@@ -393,6 +394,8 @@ export class BooksService {
             if (!deletedBook) {
                 throw new NotImplementedException('Не удалось создать таблицу (отношение)')
             }
+
+            const removedImage = await this.fileService.removeFile(tag)
 
             const updatedPublished = await this.prismaService.published.update({
                 where: {

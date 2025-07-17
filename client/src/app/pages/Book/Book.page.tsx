@@ -112,7 +112,7 @@ const BookPage: FC = () => {
                 <div className={styles.bookPageAuthor}>{currentBook.author}</div>
                 <div className={styles.bookMainContent}>
                     <div className={styles.bookPageImage}>
-                        <img src={image} alt="image" />
+                        <img src={`${import.meta.env.VITE_API_URL}/${currentBook.tag}.png`} alt="image" />
                     </div>
                     <div className={styles.bookPageInfo}>
                         <div className={styles.bookPageEntry}>

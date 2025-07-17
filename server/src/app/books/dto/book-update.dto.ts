@@ -41,8 +41,9 @@ export class BookUpdateDTO {
         example: 457,
         type: Number
     })
-    @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
-    pages?: number
+    // @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
+    pages?: string
+    // pages?: number
 
     @ApiProperty({
         name: 'В наличии',
@@ -50,8 +51,9 @@ export class BookUpdateDTO {
         example: true,
         type: Boolean
     })
-    @IsBoolean({ message: 'Значение должно иметь булев тип' })
-    isInStock?: boolean
+    // @IsBoolean({ message: 'Значение должно иметь булев тип' })
+    isInStock?: string
+    // isInStock?: boolean
 
     @ApiProperty({
         name: 'Год выпуска',
@@ -59,8 +61,9 @@ export class BookUpdateDTO {
         example: 2025,
         type: Number
     })
-    @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
-    year?: number
+    // @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
+    year?: string
+    // year?: number
 
     @ApiProperty({
         name: 'ISBN',
@@ -68,8 +71,9 @@ export class BookUpdateDTO {
         example: 9992158107,
         type: Number
     })
-    @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
-    isbn?: number
+    // @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
+    isbn?: string
+    // isbn?: number
 
     @ApiProperty({
         name: 'Мягкая обложка',
@@ -77,8 +81,9 @@ export class BookUpdateDTO {
         example: true,
         type: Boolean
     })
-    @IsBoolean({ message: 'Значение должно иметь булев тип' })
-    isSoftCover?: boolean
+    // @IsBoolean({ message: 'Значение должно иметь булев тип' })
+    isSoftCover?: string
+    // isSoftCover?: boolean
 
     @ApiProperty({
         name: 'Категория книги (тэг)',

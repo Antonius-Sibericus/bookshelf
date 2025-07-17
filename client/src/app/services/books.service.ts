@@ -15,36 +15,63 @@ export default class BooksService {
 
     public static async createBook(
         heading: string, tag: string, author: string, description: string, pages: number, isInStock: boolean, year: number, isbn: number, isSoftCover: boolean, categoryTag: string, themeTag: string, image: File): Promise<AxiosResponse<BookResponseType>> {
-            console.log(image)
-        return await $api.post<BookResponseType>('/books', {
-            heading,
-            tag,
-            author,
-            description,
-            pages,
-            isInStock,
-            year,
-            isbn,
-            isSoftCover,
-            categoryTag,
-            themeTag,
-            image
-        })
+        const formData = new FormData()
+        formData.append('heading', heading)
+        formData.append('tag', tag)
+        formData.append('author', author)
+        formData.append('description', description)
+        formData.append('pages', JSON.stringify(pages))
+        formData.append('isInStock', JSON.stringify(isInStock))
+        formData.append('year', JSON.stringify(year))
+        formData.append('isbn', JSON.stringify(isbn))
+        formData.append('isSoftCover', JSON.stringify(isSoftCover))
+        formData.append('categoryTag', categoryTag)
+        formData.append('themeTag', themeTag)
+        formData.append('image', image)
+        return await $api.post<BookResponseType>('/books', formData)
+        // return await $api.post<BookResponseType>('/books', {
+        //     heading,
+        //     tag,
+        //     author,
+        //     description,
+        //     pages,
+        //     isInStock,
+        //     year,
+        //     isbn,
+        //     isSoftCover,
+        //     categoryTag,
+        //     themeTag,
+        //     image
+        // })
     }
 
-    public static async updateBook(tag: string, heading: string, author: string, description: string, pages: number, isInStock: boolean, year: number, isbn: number, isSoftCover: boolean, categoryTag: string, themeTag: string): Promise<AxiosResponse<BookResponseType>> {
-        return await $api.put<BookResponseType>(`/books/${tag}`, {
-            heading,
-            author,
-            description,
-            pages,
-            isInStock,
-            year,
-            isbn,
-            isSoftCover,
-            categoryTag,
-            themeTag
-        })
+    public static async updateBook(tag: string, heading: string, author: string, description: string, pages: number, isInStock: boolean, year: number, isbn: number, isSoftCover: boolean, categoryTag: string, themeTag: string, image: File): Promise<AxiosResponse<BookResponseType>> {
+        const formData = new FormData()
+        formData.append('heading', heading)
+        formData.append('tag', tag)
+        formData.append('author', author)
+        formData.append('description', description)
+        formData.append('pages', JSON.stringify(pages))
+        formData.append('isInStock', JSON.stringify(isInStock))
+        formData.append('year', JSON.stringify(year))
+        formData.append('isbn', JSON.stringify(isbn))
+        formData.append('isSoftCover', JSON.stringify(isSoftCover))
+        formData.append('categoryTag', categoryTag)
+        formData.append('themeTag', themeTag)
+        formData.append('image', image)
+        return await $api.put<BookResponseType>(`/books/${tag}`, formData)
+        // return await $api.put<BookResponseType>(`/books/${tag}`, {
+        //     heading,
+        //     author,
+        //     description,
+        //     pages,
+        //     isInStock,
+        //     year,
+        //     isbn,
+        //     isSoftCover,
+        //     categoryTag,
+        //     themeTag
+        // })
     }
 
     public static async deleteBook(tag: string): Promise<AxiosResponse<BookResponseType>> {

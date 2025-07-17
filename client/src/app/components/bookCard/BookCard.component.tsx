@@ -88,7 +88,7 @@ const BookCard: FC<BookType> = (props) => {
             <div className={styles.bookHeading}>{heading}</div>
             <div className={styles.bookAuthor}>{author} ({year})</div>
             <Link to={`/catalog/book/${tag}`}>
-                <div className={styles.bookImage} style={{ 'backgroundImage': '' }}>asdfg</div>
+                <div className={styles.bookImage} style={{ 'backgroundImage': `url(${import.meta.env.VITE_API_URL}/${tag}.png)` }}></div>
             </Link>
             <div className={styles.buttonCont}>
                 {

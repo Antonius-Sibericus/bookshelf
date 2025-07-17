@@ -30,7 +30,7 @@ const PersonalCard: FC<props> = (props) => {
             }
             <Link to={`/catalog/book/${tag}`}>
                 <div className={styles.personalCardImage}>
-                    <img src={image} alt="image" />
+                    <img src={`${import.meta.env.VITE_API_URL}/${tag}.png`} alt="image" />
                 </div>
             </Link>
             <div className={styles.personalCardDescription}>

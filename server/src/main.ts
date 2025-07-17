@@ -15,7 +15,7 @@ async function bootstrap() {
   app.use(cookieParser())
   app.useGlobalPipes(new ValidationPipe())
   setUpSwagger(app)
-  app.use(fileupload())
+  // app.use(fileupload())
   await app.listen(process.env.PORT || port, () => console.log('Server is running on port ' + port))
 }
 bootstrap()

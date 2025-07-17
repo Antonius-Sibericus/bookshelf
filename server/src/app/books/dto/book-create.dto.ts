@@ -56,9 +56,10 @@ export class BookCreateDTO {
         example: 457,
         type: Number
     })
-    @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
+    // @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
     @IsNotEmpty({ message: 'Поле не должно быть пустым' })
-    pages: number
+    pages: string
+    // pages: number
 
     @ApiProperty({
         name: 'В наличии',
@@ -66,9 +67,10 @@ export class BookCreateDTO {
         example: true,
         type: Boolean
     })
-    @IsBoolean({ message: 'Значение должно иметь булев тип' })
+    // @IsBoolean({ message: 'Значение должно иметь булев тип' })
     @IsNotEmpty({ message: 'Поле не должно быть пустым' })
-    isInStock: boolean
+    isInStock: string
+    // isInStock: boolean
 
     @ApiProperty({
         name: 'Год выпуска',
@@ -76,9 +78,10 @@ export class BookCreateDTO {
         example: 2025,
         type: Number
     })
-    @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
+    // @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
     @IsNotEmpty({ message: 'Поле не должно быть пустым' })
-    year: number
+    year: string
+    // year: number
 
     @ApiProperty({
         name: 'ISBN',
@@ -86,9 +89,10 @@ export class BookCreateDTO {
         example: 9992158107,
         type: Number
     })
-    @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
+    // @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
     @IsNotEmpty({ message: 'Поле не должно быть пустым' })
-    isbn: number
+    isbn: string
+    // isbn: number
 
     @ApiProperty({
         name: 'Мягкая обложка',
@@ -96,9 +100,10 @@ export class BookCreateDTO {
         example: true,
         type: Boolean
     })
-    @IsBoolean({ message: 'Значение должно иметь булев тип' })
+    // @IsBoolean({ message: 'Значение должно иметь булев тип' })
     @IsNotEmpty({ message: 'Поле не должно быть пустым' })
-    isSoftCover: boolean
+    isSoftCover: string
+    // isSoftCover: boolean
 
     @ApiProperty({
         name: 'Категория книги (тэг)',

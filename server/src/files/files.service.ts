@@ -4,7 +4,7 @@ import * as fs from 'fs'
 
 @Injectable()
 export class FilesService {
-    public async createFile(file: any, tag: string): Promise<string> {
+    public async createFile(file: Express.Multer.File, tag: string): Promise<string> {
         try {
             const fileName = tag + '.png'
             const filePath = path.resolve(__dirname, '..', 'static')
@@ -17,6 +17,17 @@ export class FilesService {
             return fileName
         } catch (error) {
             throw new HttpException('Ошибка при записи файла', HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    public async removeFile(tag: string): Promise<string> {
+        try {
+            const fileName = tag + '.png'
+            const filePath = path.resolve(__dirname, '..', 'static')
+            fs.unlinkSync(path.join(filePath, fileName))
+            return fileName
+        } catch (err) {
+            throw new HttpException('Ошибка при удалении файла', err)
         }
     }
 }
