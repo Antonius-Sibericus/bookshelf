@@ -1,7 +1,7 @@
-import type { AxiosResponse } from "axios";
-import { $api, api } from "../axios";
-import type { ThemesResponseType } from "../../types/responsesTypes/themesResponse.type";
-import type { ThemeResponseType } from "../../types/responsesTypes/themeResponse.type";
+import type { AxiosResponse } from 'axios'
+import { $api, api } from '../axios'
+import type { ThemesResponseType } from '../../types/responsesTypes/themesResponse.type'
+import type { ThemeResponseType } from '../../types/responsesTypes/themeResponse.type'
 
 export default class ThemesService {
     public static async getAllThemes(): Promise<AxiosResponse<ThemesResponseType>> {

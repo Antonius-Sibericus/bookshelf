@@ -61,7 +61,6 @@ const SignupPage: FC = () => {
                     )
                     localStorage.setItem('userId', JSON.stringify(userId))
                     dispatch(setSignedUp(true))
-                    console.log('from signup', currentUser)
                 }
             }
         } catch (err) {

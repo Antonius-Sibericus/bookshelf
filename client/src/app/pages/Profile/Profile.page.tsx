@@ -17,6 +17,7 @@ import { useAppDispatch } from '../../../redux/store.redux'
 import { fetchCurrentUser } from '../../../redux/general/general.async'
 import ChangePassword from './profileComponents/ChangePassword.component'
 import DeleteUserModal from './profileComponents/DeleteUserModal.component'
+import { useNavigate } from 'react-router-dom'
 
 const changeUserSchema = z.object({
     surname: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Фамилия не может быть длиннее 63 символов' }).regex(/^[a-zA-Zа-яёА-ЯЁ]{1,63}$/, { message: 'Фамилия может содержать только буквы' }),
@@ -30,9 +31,11 @@ type ChangeUserValuesType = z.infer<typeof changeUserSchema>
 const ProfilePage: FC = () => {
     const { theme, currentUser } = useSelector(selectorGeneral)
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const [userInfoEdit, setUserInfoEdit] = useState<boolean>(false)
     const [areYouSure, setAreYouSure] = useState<boolean>(false)
+    const [updated, setUpdated] = useState<string | null>(null)
 
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
     const disabledeTernary = userInfoEdit ? '' : styles.disabled
@@ -61,15 +64,15 @@ const ProfilePage: FC = () => {
 
             if (response as UserResponseType) {
                 const userId: string = response.user.id
+                setUpdated(response.message)
 
                 if (userId) {
-                    dispatch(
-                        fetchCurrentUser(response.user.id)
-                    )
+                    dispatch(fetchCurrentUser(response.user.id))
                 }
             }
         } catch (err) {
-            const customErrorData: DefaultResponseType = (err as AxiosError).response!.data as DefaultResponseType
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.log(err)
             setError('root', {
                 message: customErrorData ? customErrorData.message : 'Непредвиденная ошибка. Обратитесь в поддержку'
             })
@@ -86,6 +89,8 @@ const ProfilePage: FC = () => {
             if (response as DefaultResponseType) {
                 console.log(response.message)
             }
+
+            navigate('/login')
         } catch (err) {
             console.error((err as DefaultResponseType)?.message || err)
         }
@@ -176,6 +181,7 @@ const ProfilePage: FC = () => {
                             {errors.role && <span className={styles.profileError}>{errors.role.message}</span>}
                         </div>
                         {errors.root && <div className={styles.mainError}>{errors.root.message}</div>}
+                        {!errors.root && updated && <div className={styles.mainSuccess} onClick={() => setUpdated(null)}>{updated} (закрыть)</div>}
                         {userInfoEdit &&
                             <button
                                 type='submit'

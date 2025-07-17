@@ -15,8 +15,8 @@ import { fetchThemes } from '../../../../redux/categoriesAndThemes/categoriesAnd
 import { selectorCategoriesAndThemes } from '../../../../redux/categoriesAndThemes/categoriesAndThemes.selector'
 
 const createThemeSchema = z.object({
-    themeTitle: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Название не может быть длиннее 63 символов' }).regex(/^[a-zA-Zа-яёА-ЯЁ]{1,63}$/, { message: 'Название может содержать только буквы' }),
-    themeTag: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Тэг не может быть длиннее 63 символов' }).regex(/^[a-zA-Z]{1,63}$/, { message: 'Тэг может содержать только латинские буквы' }),
+    themeTitle: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Название не может быть длиннее 63 символов' }).regex(/^[-a-zA-Zа-яёА-ЯЁ]{1,63}$/, { message: 'Название может содержать только буквы' }),
+    themeTag: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Тэг не может быть длиннее 63 символов' }).regex(/^[-a-zA-Z]{1,63}$/, { message: 'Тэг может содержать только латинские буквы' }),
     categoryTag: z.string()
 })
 
@@ -28,7 +28,7 @@ const CreateTheme: FC = () => {
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
     const dispatch = useAppDispatch()
 
-    const [created, setCreated] = useState<boolean>(false)
+    const [created, setCreated] = useState<string | null>(null)
 
     const {
         register,
@@ -54,7 +54,7 @@ const CreateTheme: FC = () => {
             const response = result.data
 
             if (response as ThemeResponseType) {
-                setCreated(true)
+                setCreated(response.message)
             }
         } catch (err) {
             const customErrorData: DefaultResponseType = (err as AxiosError).response!.data as DefaultResponseType
@@ -99,7 +99,7 @@ const CreateTheme: FC = () => {
             />
             {errors.themeTag && <span className={styles.workshopError}>{errors.themeTag.message}</span>}
             {errors.root && <div className={styles.mainError}>{errors.root.message}</div>}
-            {!errors.root && created && <div className={styles.mainSuccess} onClick={() => setCreated(false)}>Тема создана (закрыть)</div>}
+            {!errors.root && created && <div className={styles.mainSuccess} onClick={() => setCreated(null)}>{created} (закрыть)</div>}
             <button className={styles.workshopButton + ' ' + themeTernary}>{isSubmitting ? 'Загрузка...' : 'Добавить тему'}</button>
         </form>
     )

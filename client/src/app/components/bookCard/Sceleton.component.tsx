@@ -1,9 +1,7 @@
 import ContentLoader from 'react-content-loader'
-import styles from './bookCard.module.scss'
 
 const BookSceleton = () => (
     <ContentLoader
-        // className={styles.bookBlock}
         speed={2}
         width={260}
         height={475}

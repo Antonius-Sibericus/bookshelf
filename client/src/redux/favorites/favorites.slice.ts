@@ -18,11 +18,11 @@ const favoritesSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchFavorites.pending, (state, action) => {
+        builder.addCase(fetchFavorites.pending, (state) => {
             state.status = StatusEnum.LOADING,
             state.favorites = [] as BookType[]
         }),
-        builder.addCase(fetchFavorites.rejected, (state, action) => {
+        builder.addCase(fetchFavorites.rejected, (state) => {
             state.status = StatusEnum.ERROR,
             state.favorites = [] as BookType[]
         }),

@@ -9,10 +9,12 @@ import { selectorCategoriesAndThemes } from '../../../redux/categoriesAndThemes/
 import { useAppDispatch } from '../../../redux/store.redux'
 import { fetchCategories, fetchThemes } from '../../../redux/categoriesAndThemes/categoriesAndThemes.async'
 import CreateBook from './workshopComponents/CreateBook.component'
+import { UserRoles } from '../../../types/user-roles.enum'
+import { fetchCurrentUser } from '../../../redux/general/general.async'
 
 const WorkshopPage: FC = () => {
     const { theme, currentUser } = useSelector(selectorGeneral)
-    const { status, categories, themes } = useSelector(selectorCategoriesAndThemes)
+    const { categories, themes } = useSelector(selectorCategoriesAndThemes)
     const dispatch = useAppDispatch()
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
 
@@ -21,13 +23,9 @@ const WorkshopPage: FC = () => {
 
     useEffect(() => {
         const getCategoriesAndThemes = async () => {
-            dispatch(
-                fetchCategories()
-            )
-
-            dispatch(
-                fetchThemes()
-            )
+            dispatch(fetchCategories())
+            dispatch(fetchThemes())
+            dispatch(fetchCurrentUser(currentUser.id))
         }
         getCategoriesAndThemes()
     }, [])
@@ -47,13 +45,12 @@ const WorkshopPage: FC = () => {
                                     <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
                                 </svg>
                             }
-                            Список категорий
+                            Список категорий {catOpen ? ' (Скрыть)' : ' (Открыть список)'}
                         </h3>
                         {catOpen &&
                             categories.map(item => (
                                 <div key={item.id} className={styles.workshopItem + ' ' + themeTernary}>
                                     <span>{item.title}</span>
-                                    {/* <a className={styles.deleteItem}>Удалить</a> */}
                                 </div>
                             ))
                         }
@@ -68,23 +65,28 @@ const WorkshopPage: FC = () => {
                                     <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
                                 </svg>
                             }
-                            Список категорий
+                            Список тем {themesOpen ? ' (Скрыть)' : ' (Открыть список)'}
                         </h3>
                         {themesOpen &&
                             themes.map(item => (
                                 <div key={item.id} className={styles.workshopItem + ' ' + themeTernary}>
                                     <span>{item.title} ({item.category?.title})</span>
-                                    {/* <a className={styles.deleteItem}>Удалить</a> */}
                                 </div>
                             ))
                         }
                     </div>
                 </div>
-                <div className={styles.workshopCreate}>
-                    <CreateCategory />
-                    <CreateTheme />
-                </div>
-                <CreateBook />
+                {
+                    currentUser.role === UserRoles.READER ?
+                        <div className={styles.workshopCreate}>
+                            <h3 className={styles.workshopHeading}>Поменяйте вашу роль на "Публикатора", чтобы получить возможность создавать новые категории и темы, а также добавлять книги!</h3>
+                        </div> :
+                        <div className={styles.workshopCreate}>
+                            <CreateCategory />
+                            <CreateTheme />
+                        </div>
+                }
+                {currentUser.role !== UserRoles.READER && <CreateBook />}
             </div>
         </section>
     )

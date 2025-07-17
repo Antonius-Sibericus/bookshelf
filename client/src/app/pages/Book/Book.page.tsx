@@ -1,5 +1,4 @@
 import { useEffect, useState, type FC } from 'react'
-import image from '../../../assets/images/example.png'
 import styles from './book.module.scss'
 import BooksService from '../../services/books.service'
 import { useParams } from 'react-router-dom'
@@ -16,8 +15,10 @@ import FavoritesService from '../../services/favorites.service'
 import { fetchFavorites } from '../../../redux/favorites/favorites.async'
 import { selectorFavorites } from '../../../redux/favorites/favorites.selector'
 import { selectorUsers } from '../../../redux/users/users.selector'
+import { selectorGeneral } from '../../../redux/general/general.selector'
 
 const BookPage: FC = () => {
+    const { isSignedUp } = useSelector(selectorGeneral)
     const { categories, themes } = useSelector(selectorCategoriesAndThemes)
     const { basket } = useSelector(selectorBasket)
     const { favorites } = useSelector(selectorFavorites)
@@ -27,22 +28,23 @@ const BookPage: FC = () => {
     const [isInBasket, setIsInBasket] = useState<boolean>(false)
     const [isInFavorites, setIsInFavorites] = useState<boolean>(false)
     const [currentBook, setCurrentBook] = useState<BookType>({} as BookType)
-    
+    const [isCheckingAuth, setIsCheckingAuth] = useState<boolean>(false)
+
     useEffect(() => {
         const getBook = async () => {
             if (params.bookTag) {
                 const result = await BooksService.getOneBook(params.bookTag)
                 const response = result.data
-                
+
                 if (response as BookResponseType) {
                     setCurrentBook(response.book)
                 }
             }
         }
-        
+
         getBook()
     }, [])
-    
+
     useEffect(() => {
         setIsInFavorites(favorites.find(item => item.tag === currentBook.tag) ? true : false)
         setIsInBasket(basket.find(item => item.tag === currentBook.tag) ? true : false)
@@ -162,9 +164,9 @@ const BookPage: FC = () => {
                                     </button> :
                                     <button
                                         className={styles.bookButton + ' ' + styles.bookButtonToFav}
-                                        onClick={() => addToFav(currentBook.tag)}
+                                        onClick={isSignedUp ? () => addToFav(currentBook.tag) : () => setIsCheckingAuth(prev => !prev)}
                                     >
-                                        В избранное
+                                        {isCheckingAuth ? 'Войдите в аккаунт' : 'В избранное'}
                                     </button>
                             }
                             {
@@ -177,9 +179,9 @@ const BookPage: FC = () => {
                                     </button> :
                                     <button
                                         className={styles.bookButton + ' ' + styles.bookButtonToBas}
-                                        onClick={() => addToCart(currentBook.tag)}
+                                        onClick={isSignedUp ? () => addToCart(currentBook.tag) : () => setIsCheckingAuth(prev => !prev)}
                                     >
-                                        В корзину
+                                        {isCheckingAuth ? 'Войдите в аккаунт' : 'В корзину'}
                                     </button>
                             }
                         </div>

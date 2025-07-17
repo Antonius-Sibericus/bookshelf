@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren, SetStateAction } from 'react'
+import type { FC } from 'react'
 import styles from '../profile.module.scss'
 import { ColorThemeEnum } from '../../../../redux/general/general.types'
 import { selectorGeneral } from '../../../../redux/general/general.selector'

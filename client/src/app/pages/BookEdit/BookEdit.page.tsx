@@ -7,7 +7,6 @@ import { selectorCategoriesAndThemes } from '../../../redux/categoriesAndThemes/
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import type { DefaultResponseType } from '../../../types/responsesTypes/defaultResponse.type'
 import type { AxiosError } from 'axios'
-import { useAppDispatch } from '../../../redux/store.redux'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import BooksService from '../../services/books.service'
@@ -35,8 +34,7 @@ const BookEditPage: FC = () => {
     const { theme } = useSelector(selectorGeneral)
     const { categories, themes } = useSelector(selectorCategoriesAndThemes)
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
-    const [updated, setUpdated] = useState<boolean>(false)
-    const dispatch = useAppDispatch()
+    const [updated, setUpdated] = useState<string | null>(null)
     const params = useParams()
     const [currentBook, setCurrentBook] = useState<BookType>({} as BookType)
 
@@ -58,7 +56,7 @@ const BookEditPage: FC = () => {
             const response = result.data
 
             if (response as BookResponseType) {
-                setUpdated(true)
+                setUpdated(response.message)
             }
         } catch (err) {
             const customErrorData: DefaultResponseType = (err as AxiosError).response!.data as DefaultResponseType
@@ -293,7 +291,7 @@ const BookEditPage: FC = () => {
                         {errors.image && <span className={styles.editError}>{errors.image.message}</span>}
                     </div>
                     {errors.root && <div className={styles.mainError}>{errors.root.message}</div>}
-                    {!errors.root && updated && <div className={styles.mainSuccess} onClick={() => setUpdated(false)}>Книга обновлена (закрыть)</div>}
+                    {!errors.root && updated && <div className={styles.mainSuccess} onClick={() => setUpdated(null)}>{updated} (закрыть)</div>}
                     <button
                         type='submit'
                         className={styles.editButton + ' ' + themeTernary}

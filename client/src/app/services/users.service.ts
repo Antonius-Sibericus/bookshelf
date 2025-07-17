@@ -1,8 +1,8 @@
-import type { AxiosResponse } from "axios";
-import { $api, api } from "../axios";
-import type { UserResponseType } from "../../types/responsesTypes/userResponse.type";
-import type { UserRoles } from "../../types/user-roles.enum";
-import type { UsersResponseType } from "../../types/responsesTypes/usersResponse.type";
+import type { AxiosResponse } from 'axios'
+import { $api, api } from '../axios'
+import type { UserResponseType } from '../../types/responsesTypes/userResponse.type'
+import type { UserRoles } from '../../types/user-roles.enum'
+import type { UsersResponseType } from '../../types/responsesTypes/usersResponse.type'
 
 export default class UsersService {
     public static async getAllUsers(): Promise<AxiosResponse<UsersResponseType>> {

@@ -1,4 +1,4 @@
-import type { ThemeType } from "./theme.type"
+import type { ThemeType } from './theme.type'
 
 export type CategoryType = {
     title: string,

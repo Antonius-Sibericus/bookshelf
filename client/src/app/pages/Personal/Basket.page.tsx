@@ -22,7 +22,7 @@ const BasketPage: FC = () => {
         const response = result.data
 
         if (response as BooksResponseType) {
-            console.log('success')
+            console.log(response.message)
         }
 
         dispatch(fetchBasket())

@@ -93,7 +93,7 @@ export class UsersService {
                 throw new NotFoundException(`ТПользователь с ID ${id} не найден`)
             }
 
-            const updatedUser = await this.prismaService.user.update({
+            const user = await this.prismaService.user.update({
                 where: {
                     id
                 },
@@ -106,7 +106,7 @@ export class UsersService {
                 }
             })
 
-            if (!updatedUser) {
+            if (!user) {
                 throw new NotImplementedException('Не удалось обновить информацию о пользователе')
             }
 
@@ -114,8 +114,8 @@ export class UsersService {
                 .status(HttpStatus.OK)
                 .json({
                     error: false,
-                    message: `Информация о пользователе ${updatedUser.surname + ' ' + updatedUser.name} успешно обновлена`,
-                    updatedUser
+                    message: `Информация о пользователе ${user.surname + ' ' + user.name} успешно обновлена`,
+                    user
                 })
         } catch (err) {
             console.error(err.message)
@@ -154,7 +154,7 @@ export class UsersService {
             
             this.authService.setCookie(res, 'refreshToken', new Date(0))
 
-            const deletedUser = await this.prismaService.user.delete({
+            const user = await this.prismaService.user.delete({
                 where: {
                     id
                 }
@@ -164,8 +164,8 @@ export class UsersService {
                 .status(HttpStatus.OK)
                 .json({
                     error: false,
-                    message: `Пользователь ${deletedUser.surname + ' ' + deletedUser.name} успешно удален`,
-                    deletedUser
+                    message: `Пользователь ${user.surname + ' ' + user.name} успешно удален`,
+                    user
                 })
         } catch (err) {
             console.error(err.message)

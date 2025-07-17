@@ -16,7 +16,7 @@ export class FilesService {
             fs.writeFileSync(path.join(filePath, fileName), file.buffer)
             return fileName
         } catch (error) {
-            throw new HttpException('Ошибка при записи файла', HttpStatus.INTERNAL_SERVER_ERROR)
+            throw new HttpException('Файл не получен', HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
@@ -24,6 +24,11 @@ export class FilesService {
         try {
             const fileName = tag + '.png'
             const filePath = path.resolve(__dirname, '..', 'static')
+
+            if (!fs.existsSync(path.join(filePath, fileName))) {
+                return fileName
+            }
+
             fs.unlinkSync(path.join(filePath, fileName))
             return fileName
         } catch (err) {

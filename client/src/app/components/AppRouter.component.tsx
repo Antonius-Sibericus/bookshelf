@@ -18,7 +18,7 @@ export default function AppRouter() {
                 {publicRoutes.map(({ path, element }) =>
                     <Route key={path} path={path} element={element} />
                 )}
-                <Route path={signupPath} element={!isSignedUp ? <SignupPage /> : <Navigate to={mainPath} />} /> ,
+                <Route path={signupPath} element={<SignupPage />} />,
                 <Route path={loginPath} element={!isSignedUp ? <LoginPage /> : <Navigate to={mainPath} />} /> ,
                 <Route path="*" element={<Navigate to="/404" replace />} />
             </Route>

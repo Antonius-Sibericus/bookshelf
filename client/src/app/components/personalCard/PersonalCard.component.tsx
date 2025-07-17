@@ -1,6 +1,5 @@
 import { useState, type FC } from 'react'
 import styles from './personalCard.module.scss'
-import image from '../../../assets/images/example.png'
 import { useSelector } from 'react-redux'
 import { selectorGeneral } from '../../../redux/general/general.selector'
 import { ColorThemeEnum } from '../../../redux/general/general.types'
@@ -26,7 +25,6 @@ const PersonalCard: FC<props> = (props) => {
         <div className={styles.personalCard + ' ' + themeTernary}>
             {areYouSure &&
                 <DeleteBookModal setAreYouSure={setAreYouSure} tag={tag} />
-                // <DeleteBookModal setAreYouSure={setAreYouSure} tag={tag} remove={remove} />
             }
             <Link to={`/catalog/book/${tag}`}>
                 <div className={styles.personalCardImage}>

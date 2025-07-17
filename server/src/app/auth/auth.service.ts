@@ -250,19 +250,19 @@ export class AuthService {
 
             const newPassword = await hash(password)
 
-            const patchedUser = await this.prismaService.user.update({
+            const user = await this.prismaService.user.update({
                 where: { id },
                 data: { password: newPassword }
             })
 
-            if (!patchedUser) { throw new NotImplementedException('Не удалось обновить пароль') }
+            if (!user) { throw new NotImplementedException('Не удалось обновить пароль') }
 
             return res
                 .status(HttpStatus.OK)
                 .json({
                     error: false,
-                    message: `Пароль пользователя ${patchedUser.surname + ' ' + patchedUser.name} успешно обновлен`,
-                    patchedUser
+                    message: `Пароль пользователя ${user.surname + ' ' + user.name} успешно обновлен`,
+                    user
                 })
         } catch (err) {
             console.error(err.message)

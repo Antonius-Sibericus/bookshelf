@@ -3,7 +3,6 @@ import type { BasketType } from './basket.types'
 import { StatusEnum } from '../general/general.types'
 import type { BookType } from '../../types/entitiesTypes/book.type'
 import { fetchBasket } from './basket.async'
-import type { BooksResponseType } from '../../types/responsesTypes/booksResponse.type'
 
 const initialState: BasketType = {
     status: StatusEnum.LOADING,
@@ -19,11 +18,11 @@ const basketSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchBasket.pending, (state, action) => {
+        builder.addCase(fetchBasket.pending, (state) => {
             state.status = StatusEnum.LOADING,
             state.basket = [] as BookType[]
         }),
-        builder.addCase(fetchBasket.rejected, (state, action) => {
+        builder.addCase(fetchBasket.rejected, (state) => {
             state.status = StatusEnum.ERROR,
             state.basket = [] as BookType[]
         }),

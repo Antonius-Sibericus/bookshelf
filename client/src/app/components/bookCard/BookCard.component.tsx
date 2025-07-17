@@ -12,19 +12,29 @@ import FavoritesService from '../../services/favorites.service'
 import { useSelector } from 'react-redux'
 import { selectorBasket } from '../../../redux/basket/basket.selector'
 import { selectorFavorites } from '../../../redux/favorites/favorites.selector'
+import { selectorGeneral } from '../../../redux/general/general.selector'
+import { fetchPublished } from '../../../redux/published/published.async'
 
 const BookCard: FC<BookType> = (props) => {
     const dispatch = useAppDispatch()
+    const { isSignedUp } = useSelector(selectorGeneral)
     const { basket } = useSelector(selectorBasket)
     const { favorites } = useSelector(selectorFavorites)
     const [isInBasket, setIsInBasket] = useState(false)
     const [isInFavorites, setIsInFavorites] = useState(false)
+    const [isCheckingAuth, setIsCheckingAuth] = useState<boolean>(false)
     const { heading, tag, author, year } = props
 
     useEffect(() => {
         setIsInFavorites(favorites.find(item => item.tag === tag) ? true : false)
         setIsInBasket(basket.find(item => item.tag === tag) ? true : false)
     }, [])
+    
+    useEffect(() => {
+        dispatch(fetchPublished())
+        dispatch(fetchBasket())
+        dispatch(fetchFavorites())
+    }, [isSignedUp])
 
     const addToCart = async (tag: string) => {
         try {
@@ -94,6 +104,7 @@ const BookCard: FC<BookType> = (props) => {
                 {
                     isInFavorites ?
                         <button
+                            disabled={!isSignedUp}
                             className={styles.bookButton + ' ' + styles.bookButtonInFav}
                             onClick={() => deleteFromFav(tag)}
                         >
@@ -101,14 +112,15 @@ const BookCard: FC<BookType> = (props) => {
                         </button> :
                         <button
                             className={styles.bookButton + ' ' + styles.bookButtonToFav}
-                            onClick={() => addToFav(tag)}
+                            onClick={isSignedUp ? () => addToFav(tag) : () => setIsCheckingAuth(prev => !prev)}
                         >
-                            В избранное
+                            {isCheckingAuth ? 'Войдите в аккаунт' : 'В избранное'}
                         </button>
                 }
                 {
                     isInBasket ?
                         <button
+                            disabled={!isSignedUp}
                             className={styles.bookButton + ' ' + styles.bookButtonInBas}
                             onClick={() => deleteFromCart(tag)}
                         >
@@ -116,9 +128,9 @@ const BookCard: FC<BookType> = (props) => {
                         </button> :
                         <button
                             className={styles.bookButton + ' ' + styles.bookButtonToBas}
-                            onClick={() => addToCart(tag)}
+                            onClick={isSignedUp ? () => addToCart(tag) : () => setIsCheckingAuth(prev => !prev)}
                         >
-                            В корзину
+                            {isCheckingAuth ? 'Войдите в аккаунт' : 'В корзину'}
                         </button>
                 }
             </div>

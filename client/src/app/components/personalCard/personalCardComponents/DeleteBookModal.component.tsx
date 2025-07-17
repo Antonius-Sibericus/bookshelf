@@ -1,4 +1,4 @@
-import { useEffect, useRef, type FC, type RefObject } from 'react'
+import { useRef, type FC } from 'react'
 import styles from '../personalCard.module.scss'
 import { useAppDispatch } from '../../../../redux/store.redux'
 import { useSelector } from 'react-redux'
@@ -28,7 +28,7 @@ const DeleteBookModal: FC<deleteBookModalProps> = ({ setAreYouSure, tag }) => {
             const response = result.data
 
             if (response as BookResponseType) {
-                console.log('dccdcdc')
+                console.log(response.message)
             }
 
             dispatch(fetchPublished())

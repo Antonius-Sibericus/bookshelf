@@ -13,9 +13,12 @@ import type { AuthResponseType } from '../types/responsesTypes/authResponse.type
 import { fetchCurrentUser } from '../redux/general/general.async'
 import { useAppDispatch } from '../redux/store.redux'
 import { fetchUsers } from '../redux/users/users.async'
+import { fetchPublished } from '../redux/published/published.async'
+import { fetchBasket } from '../redux/basket/basket.async'
+import { fetchFavorites } from '../redux/favorites/favorites.async'
 
 function App() {
-  const { theme } = useSelector(selectorGeneral)
+  const { theme, isSignedUp } = useSelector(selectorGeneral)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -54,6 +57,12 @@ function App() {
     }
     dispatch(fetchUsers())
   }, [])
+
+  useEffect(() => {
+    dispatch(fetchPublished())
+    dispatch(fetchBasket())
+    dispatch(fetchFavorites())
+  }, [isSignedUp])
 
   useEffect(() => {
     if (theme === ColorThemeEnum.LIGHT) { document.body.style.backgroundColor = '#1cadc9' } else { document.body.style.backgroundColor = '#072e36' }

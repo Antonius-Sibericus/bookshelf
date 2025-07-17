@@ -18,11 +18,11 @@ const publishedSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchPublished.pending, (state, action) => {
+        builder.addCase(fetchPublished.pending, (state) => {
             state.status = StatusEnum.LOADING,
             state.published = [] as BookType[]
         }),
-        builder.addCase(fetchPublished.rejected, (state, action) => {
+        builder.addCase(fetchPublished.rejected, (state) => {
             state.status = StatusEnum.ERROR,
             state.published = [] as BookType[]
         }),

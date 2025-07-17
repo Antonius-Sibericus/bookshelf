@@ -8,9 +8,10 @@ import logo from '../../../../assets/images/logo-bookshelf.jpg'
 import { selectorCategoriesAndThemes } from '../../../../redux/categoriesAndThemes/categoriesAndThemes.selector'
 import { useAppDispatch } from '../../../../redux/store.redux'
 import { setCategoryFilter } from '../../../../redux/filter/filter.slice'
+import { loginPath, signupPath } from '../../../../utils/consts.utils'
 
 const Footer: FC = () => {
-    const { theme, currentUser } = useSelector(selectorGeneral)
+    const { theme, currentUser, isSignedUp } = useSelector(selectorGeneral)
     const { categories } = useSelector(selectorCategoriesAndThemes)
     const dispatch = useAppDispatch()
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
@@ -33,8 +34,8 @@ const Footer: FC = () => {
                     <h6 className={themeTernary}>Навигация</h6>
                     <Link to='/' className={themeTernary}>Главная</Link>
                     <Link to='/catalog' className={themeTernary}>Каталог</Link>
-                    <Link to='/workshop' className={themeTernary}>Мастерская</Link>
-                    <Link to={`/profile/${currentUser.id}/published`} className={themeTernary}>Опубликованное</Link>
+                    <Link to={currentUser.isActivated && isSignedUp ? '/workshop' : isSignedUp && !currentUser.isActivated ? `${signupPath}` : `${loginPath}`} className={themeTernary}>Мастерская</Link>
+                    <Link to={currentUser.isActivated && isSignedUp ? `/profile/${currentUser.id}/published` : isSignedUp && !currentUser.isActivated ? `${signupPath}` : `${loginPath}`} className={themeTernary}>Опубликованное</Link>
                 </div>
                 <div className={styles.footerColumn + ' ' + styles.footerNav}>
                     <h6 className={themeTernary}>Категории</h6>

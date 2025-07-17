@@ -15,6 +15,7 @@ import { fetchBasket } from '../../../../redux/basket/basket.async'
 import { selectorBasket } from '../../../../redux/basket/basket.selector'
 import { selectorFavorites } from '../../../../redux/favorites/favorites.selector'
 import { fetchFavorites } from '../../../../redux/favorites/favorites.async'
+import { loginPath, signupPath } from '../../../../utils/consts.utils'
 
 const Header: FC = () => {
     const { theme, isSignedUp, currentUser } = useSelector(selectorGeneral)
@@ -91,8 +92,8 @@ const Header: FC = () => {
                                 <ul>
                                     <li><Link to='/' className={themeTernary}>Главная</Link></li>
                                     <li><Link to='/catalog' className={themeTernary}>Каталог</Link></li>
-                                    <li><Link to='/workshop' className={themeTernary}>Мастерская</Link></li>
-                                    <li><Link to={`/profile/${currentUser.id}/published`} className={themeTernary}>Опубликованное</Link></li>
+                                    <li><Link to={currentUser.isActivated && isSignedUp ? '/workshop' : isSignedUp && !currentUser.isActivated ? `${signupPath}` : `${loginPath}`} className={themeTernary}>Мастерская</Link></li>
+                                    <li><Link to={currentUser.isActivated && isSignedUp ? `/profile/${currentUser.id}/published` : isSignedUp && !currentUser.isActivated ? `${signupPath}` : `${loginPath}`} className={themeTernary}>Опубликованное</Link></li>
                                 </ul>
                             </nav>
                         </div>
@@ -111,7 +112,7 @@ const Header: FC = () => {
                                         </svg>
                                     </a>
                                 }
-                                {isSignedUp ?
+                                {currentUser.isActivated && isSignedUp ?
                                     <Link to={`/profile/${currentUser.id}`}>
                                         <svg className={themeTernary} fill='none' width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
                                             <path
@@ -125,7 +126,7 @@ const Header: FC = () => {
                                                 strokeWidth='1.3' strokeLinecap='round' strokeLinejoin='round' />
                                         </svg>
                                     </Link> :
-                                    <Link to='/login'>
+                                    <Link to={isSignedUp ? '/signup' : '/login'}>
                                         <svg className={themeTernary} width='23' height='23' viewBox='0 0 23 23' fill='none' xmlns='http://www.w3.org/2000/svg'>
                                             <path
                                                 d='M8.5293 7.24498C8.82638 3.79498 10.5993 2.38623 14.4805 2.38623H14.6051C18.8889 2.38623 20.6043 4.10165 20.6043 8.3854V14.6337C20.6043 18.9175 18.8889 20.6329 14.6051 20.6329H14.4805C10.628 20.6329 8.85513 19.2433 8.53888 15.8508'
@@ -142,7 +143,7 @@ const Header: FC = () => {
                                         <path d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z" />
                                     </svg>
                                 </a>
-                                {isSignedUp &&
+                                {currentUser.isActivated && isSignedUp &&
                                     <Link to={`/profile/${currentUser.id}/favorites`}>
                                         <svg width='24' height='24' viewBox='0 0 24 24' fill={theme === ColorThemeEnum.LIGHT ? '#072e36' : '#229fb8'} xmlns='http://www.w3.org/2000/svg'>
                                             <path
@@ -151,7 +152,7 @@ const Header: FC = () => {
                                         </svg>
                                         <span className={themeTernary}>{favorites.length}</span>
                                     </Link>}
-                                {isSignedUp &&
+                                {currentUser.isActivated && isSignedUp &&
                                     <Link to={`/profile/${currentUser.id}/basket`}>
                                         <svg width='24' height='24' viewBox='0 0 24 24' fill={theme === ColorThemeEnum.LIGHT ? '#072e36' : '#229fb8'} xmlns='http://www.w3.org/2000/svg'>
                                             <path
@@ -190,7 +191,7 @@ const Header: FC = () => {
                                     </ul>
                                 </nav>
                             </div>
-                            <div className={styles.headerBottomSearch}>
+                            {location.pathname.startsWith('/catalog') && !location.pathname.includes('book') && <div className={styles.headerBottomSearch}>
                                 <input type='text' placeholder='Начните искать' className={themeTernary} ref={inputRef} value={searchValue} onChange={onChangeInput} />
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className={styles.search + ' ' + themeTernary}>
                                     <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
@@ -202,7 +203,7 @@ const Header: FC = () => {
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z" />
                                 </svg>
-                            </div>
+                            </div>}
                         </div>
                     }
                 </div>

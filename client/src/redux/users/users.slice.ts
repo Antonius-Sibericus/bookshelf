@@ -18,11 +18,11 @@ const usersSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchUsers.pending, (state, action) => {
+        builder.addCase(fetchUsers.pending, (state) => {
             state.status = StatusEnum.LOADING,
             state.users = [] as UserType[]
         }),
-        builder.addCase(fetchUsers.rejected, (state, action) => {
+        builder.addCase(fetchUsers.rejected, (state) => {
             state.status = StatusEnum.ERROR,
             state.users = [] as UserType[]
         }),

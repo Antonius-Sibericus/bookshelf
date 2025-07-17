@@ -1,7 +1,7 @@
-import type { AxiosResponse } from "axios";
-import type { CategoriesResponseType } from "../../types/responsesTypes/categoriesResponse.type";
-import { $api, api } from "../axios";
-import type { CategoryResponseType } from "../../types/responsesTypes/categoryResponse.type";
+import type { AxiosResponse } from 'axios'
+import type { CategoriesResponseType } from '../../types/responsesTypes/categoriesResponse.type'
+import { $api, api } from '../axios'
+import type { CategoryResponseType } from '../../types/responsesTypes/categoryResponse.type'
 
 export default class CategoriesService {
     public static async getAllCategories(): Promise<AxiosResponse<CategoriesResponseType>> {

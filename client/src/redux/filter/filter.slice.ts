@@ -1,6 +1,6 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
-import { Filters } from "../../types/filters.enum"
-import type { SearchValuesType } from "./filter.types"
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { Filters } from '../../types/filters.enum'
+import type { SearchValuesType } from './filter.types'
 
 const initialState: SearchValuesType = {
     categoryQuery: '',

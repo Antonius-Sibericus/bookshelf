@@ -1,7 +1,7 @@
 import { type FC } from 'react'
 import { useSelector } from 'react-redux'
 import { selectorGeneral } from '../../../redux/general/general.selector'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ColorThemeEnum } from '../../../redux/general/general.types'
 import styles from './auth.module.scss'
 import { useForm, type SubmitHandler } from 'react-hook-form'
@@ -23,9 +23,10 @@ const loginSchema = z.object({
 type LoginValuesType = z.infer<typeof loginSchema>
 
 const LoginPage: FC = () => {
-    const { theme, currentUser } = useSelector(selectorGeneral)
+    const { theme } = useSelector(selectorGeneral)
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const {
         register,
@@ -46,16 +47,17 @@ const LoginPage: FC = () => {
                 } else {
                     throw new Error('Токен доступа не получен')
                 }
-
+                
                 const userId: string = response.user.id
-
+                
                 if (userId) {
                     dispatch(
                         fetchCurrentUser(userId)
                     )
                     localStorage.setItem('userId', JSON.stringify(userId))
                     dispatch(setSignedUp(true))
-                    console.log('from login', currentUser)
+                    
+                    navigate('/')
                 }
             }
         } catch (err) {

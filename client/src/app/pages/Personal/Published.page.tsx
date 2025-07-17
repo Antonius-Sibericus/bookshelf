@@ -9,10 +9,6 @@ import { selectorPublished } from '../../../redux/published/published.selector'
 import { useAppDispatch } from '../../../redux/store.redux'
 import { fetchPublished } from '../../../redux/published/published.async'
 import { fetchCategories, fetchThemes } from '../../../redux/categoriesAndThemes/categoriesAndThemes.async'
-import BooksService from '../../services/books.service'
-import type { BookResponseType } from '../../../types/responsesTypes/bookResponse.type'
-import { fetchFavorites } from '../../../redux/favorites/favorites.async'
-import { fetchBasket } from '../../../redux/basket/basket.async'
 
 const PublishedPage: FC = () => {
     const { theme, currentUser } = useSelector(selectorGeneral)
@@ -26,23 +22,6 @@ const PublishedPage: FC = () => {
         dispatch(fetchThemes())
     }, [])
 
-    // const deleteBook = async (tag: string) => {
-    //     try {
-    //         const result = await BooksService.deleteBook(tag)
-    //         const response = result.data
-
-    //         if (response as BookResponseType) {
-    //             console.log('dccdcdc')
-    //         }
-
-    //         dispatch(fetchPublished())
-    //         dispatch(fetchFavorites())
-    //         dispatch(fetchBasket())
-    //     } catch (err) {
-    //         console.log(err)
-    //     }
-    // }
-
     return (
         <section className={styles.personal}>
             <div className={styles.container}>
@@ -53,7 +32,6 @@ const PublishedPage: FC = () => {
                 <div className={styles.personalContent}>
                     {published.map(item => (
                         <PersonalCard key={item.id} {...item} />
-                        // <PersonalCard key={item.id} {...item} remove={(bookTag: string) => deleteBook(bookTag)} />
                     ))}
                 </div>
             </div>

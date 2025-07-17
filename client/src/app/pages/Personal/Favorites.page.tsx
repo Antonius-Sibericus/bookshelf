@@ -22,7 +22,7 @@ const FavoritesPage: FC = () => {
         const response = result.data
 
         if (response as BookResponseType) {
-            console.log('success')
+            console.log(response.message)
         }
 
         dispath(fetchFavorites())

@@ -2,7 +2,6 @@ import type { UserType } from '../../types/entitiesTypes/user.type'
 
 export type GeneralType = {
   theme: ColorThemeEnum,
-  // isActivated: boolean,
   isSignedUp: boolean,
   currentUser: UserType,
   status: StatusEnum

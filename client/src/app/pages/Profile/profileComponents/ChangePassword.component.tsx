@@ -1,4 +1,3 @@
-
 import { useState, type FC } from 'react'
 import styles from '../profile.module.scss'
 import { useSelector } from 'react-redux'
@@ -23,6 +22,7 @@ const ChangePassword: FC = () => {
     const { theme, currentUser } = useSelector(selectorGeneral)
 
     const [userPasswordEdit, setUserPasswordEdit] = useState<boolean>(false)
+    const [updated, setUpdated] = useState<string | null>(null)
 
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
     const disabledeTernary = userPasswordEdit ? '' : styles.disabled
@@ -42,7 +42,7 @@ const ChangePassword: FC = () => {
             const response = result.data
 
             if (response as UserResponseType) {
-                console.log(response)
+                setUpdated(response.message)
             }
         } catch (err) {
             const customErrorData: DefaultResponseType = (err as AxiosError).response!.data as DefaultResponseType
@@ -85,6 +85,7 @@ const ChangePassword: FC = () => {
                 {errors.repeatPassword && <span className={styles.profileError}>{errors.repeatPassword.message}</span>}
             </div>
             {errors.root && <div className={styles.mainError}>{errors.root.message}</div>}
+            {!errors.root && updated && <div className={styles.mainSuccess} onClick={() => setUpdated(null)}>{updated} (закрыть)</div>}
             {userPasswordEdit &&
                 <button
                     type='submit'

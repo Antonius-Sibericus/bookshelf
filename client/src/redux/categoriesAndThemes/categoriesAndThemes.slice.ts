@@ -20,11 +20,11 @@ const categoriesSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchCategories.pending, (state, action) => {
+        builder.addCase(fetchCategories.pending, (state) => {
             state.status = StatusEnum.LOADING,
             state.categories = [] as CategoryType[]
         }),
-        builder.addCase(fetchCategories.rejected, (state, action) => {
+        builder.addCase(fetchCategories.rejected, (state) => {
             state.status = StatusEnum.ERROR,
             state.categories = [] as CategoryType[]
         }),
@@ -32,11 +32,11 @@ const categoriesSlice = createSlice({
             state.status = StatusEnum.SUCCESS,
             state.categories = action.payload.categories
         }),
-        builder.addCase(fetchThemes.pending, (state, action) => {
+        builder.addCase(fetchThemes.pending, (state) => {
             state.status = StatusEnum.LOADING,
             state.themes = [] as ThemeType[]
         }),
-        builder.addCase(fetchThemes.rejected, (state, action) => {
+        builder.addCase(fetchThemes.rejected, (state) => {
             state.status = StatusEnum.ERROR,
             state.themes = [] as ThemeType[]
         }),

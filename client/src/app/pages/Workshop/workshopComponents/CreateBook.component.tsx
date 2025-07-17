@@ -1,4 +1,4 @@
-import { useEffect, useState, type FC } from 'react'
+import { useState, type FC } from 'react'
 import styles from '../workshop.module.scss'
 import { z } from 'zod'
 import { useSelector } from 'react-redux'
@@ -10,7 +10,6 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { DefaultResponseType } from '../../../../types/responsesTypes/defaultResponse.type'
 import type { AxiosError } from 'axios'
-import { fetchCategories, fetchThemes } from '../../../../redux/categoriesAndThemes/categoriesAndThemes.async'
 import BooksService from '../../../services/books.service'
 import type { BookResponseType } from '../../../../types/responsesTypes/bookResponse.type'
 
@@ -32,9 +31,9 @@ const createBookSchema = z.object({
 type CreateBookValuesType = z.infer<typeof createBookSchema>
 
 const CreateBook: FC = () => {
-    const { theme, currentUser } = useSelector(selectorGeneral)
+    const { theme } = useSelector(selectorGeneral)
     const { categories, themes } = useSelector(selectorCategoriesAndThemes)
-    const [created, setCreated] = useState<boolean>(false)
+    const [created, setCreated] = useState<string | null>(null)
 
     const dispatch = useAppDispatch()
 
@@ -55,7 +54,7 @@ const CreateBook: FC = () => {
             const response = result.data
 
             if (response as BookResponseType) {
-                setCreated(true)
+                setCreated(response.message)
             }
         } catch (err) {
             const customErrorData: DefaultResponseType = (err as AxiosError).response!.data as DefaultResponseType
@@ -261,13 +260,14 @@ const CreateBook: FC = () => {
                     type="file"
                     id='image'
                     name='image'
+                    required
                     className={styles.workshopInput + ' ' + themeTernary}
                     style={errors.isSoftCover ? { 'borderColor': 'red' } : {}}
                 />
                 {errors.image && <span className={styles.workshopError}>{errors.image.message}</span>}
             </div>
             {errors.root && <div className={styles.mainError}>{errors.root.message}</div>}
-            {!errors.root && created && <div className={styles.mainSuccess} onClick={() => setCreated(false)}>Книга добавлена (закрыть)</div>}
+            {!errors.root && created && <div className={styles.mainSuccess} onClick={() => setCreated(null)}>{created} (закрыть)</div>}
             <button
                 type='submit'
                 className={styles.workshopButton + ' ' + themeTernary}

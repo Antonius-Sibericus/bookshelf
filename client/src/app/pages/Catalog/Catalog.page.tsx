@@ -37,18 +37,14 @@ const CatalogPage: FC = () => {
     }, [])
 
     useEffect(() => {
-        const getBooks = async () => {
-            dispatch(fetchBooks({
-                cat: categoryQuery,
-                theme: themeQuery,
-                title: titleQuery,
-                year: yearQuery,
-                page: pageQuery,
-                search: searchQuery
-            }))
-        }
-
-        getBooks()
+        dispatch(fetchBooks({
+            cat: categoryQuery,
+            theme: themeQuery,
+            title: titleQuery,
+            year: yearQuery,
+            page: pageQuery,
+            search: searchQuery
+        }))
     }, [categoryQuery, themeQuery, titleQuery, yearQuery, pageQuery, searchQuery])
 
     const [cat, setCat] = useState<string | null>(categoryQuery ? categoryQuery : null)

@@ -8,21 +8,12 @@ import { selectorGeneral } from '../../../redux/general/general.selector'
 import { ColorThemeEnum } from '../../../redux/general/general.types'
 
 const Layout: FC = () => {
-    const { theme, currentUser } = useSelector(selectorGeneral)
+    const { theme } = useSelector(selectorGeneral)
 
     return (
         <div className={styles.wrapper + ' ' + (theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark)}>
             <Header />
-            {
-                // currentUser.isActivated ?
-                    <Outlet /> 
-                    // :
-                    // <div className={styles.greetings}>
-                    //     <span>Добро пожаловать!</span>
-                    //     <span>Мы отправили ссылку вам на почту</span>
-                    //     <span>Перейдите по ней, чтобы активировать аккаунт</span>
-                    // </div>
-            }
+            <Outlet />
             <Footer />
         </div>
     )
