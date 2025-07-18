@@ -55,6 +55,7 @@ const ProfilePage: FC = () => {
         setValue('name', currentUser.name, { shouldTouch: true, shouldDirty: true})
         setValue('paternal', currentUser.paternal, { shouldTouch: true, shouldDirty: true})
         setValue('role', currentUser.role, { shouldTouch: true, shouldDirty: true})
+        console.log(currentUser.id)
     }, [currentUser])
 
     const onSubmitInfo: SubmitHandler<ChangeUserValuesType> = async data => {

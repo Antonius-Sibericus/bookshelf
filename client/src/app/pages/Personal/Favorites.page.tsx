@@ -39,7 +39,7 @@ const FavoritesPage: FC = () => {
         <section className={styles.personal}>
             <div className={styles.container}>
                 <div className={styles.personalHeading}>
-                    <span>Избранное</span>
+                    <span>Избранное ({favorites.length} книг{favorites.length % 10 === 1 ? 'а' : favorites.length % 10 === 2 ? 'и' : favorites.length % 10 === 3 ? 'и' : favorites.length % 10 === 4 ? 'и' : ''})</span>
                     <Link className={themeTernary} to={`/profile/${currentUser.id}`}>Вернуться в профиль</Link>
                 </div>
                 <div className={styles.personalContent}>

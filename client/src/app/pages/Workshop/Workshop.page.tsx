@@ -76,15 +76,14 @@ const WorkshopPage: FC = () => {
                         }
                     </div>
                 </div>
-                {
-                    currentUser.role === UserRoles.READER ?
-                        <div className={styles.workshopCreate}>
-                            <h3 className={styles.workshopHeading}>Поменяйте вашу роль на 'Публикатора', чтобы получить возможность создавать новые категории и темы, а также добавлять книги!</h3>
-                        </div> :
-                        <div className={styles.workshopCreate}>
-                            <CreateCategory />
-                            <CreateTheme />
-                        </div>
+                {currentUser.role === UserRoles.READER ?
+                    <div className={styles.workshopCreate}>
+                        <h3 className={styles.workshopHeading}>Поменяйте вашу роль на 'Публикатора', чтобы получить возможность создавать новые категории и темы, а также добавлять книги!</h3>
+                    </div> :
+                    <div className={styles.workshopCreate}>
+                        <CreateCategory />
+                        <CreateTheme />
+                    </div>
                 }
                 {currentUser.role !== UserRoles.READER && <CreateBook />}
             </div>

@@ -18,9 +18,6 @@ export class AuthGuard implements CanActivate {
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest() as Request
 
-        // const tokenHeader = request.headers['Authorization']
-        // if (!tokenHeader) { throw new UnauthorizedException('Токен доступа не действителен или не найден') }
-
         const accessToken = this.extractTokenFromHeader(request)
         if (!accessToken) { throw new UnauthorizedException('Токен доступа не действителен или не найден') }
 
@@ -30,7 +27,6 @@ export class AuthGuard implements CanActivate {
             })
             if (!userData) { throw new UnauthorizedException('Токен доступа не действителен или не найден') }
             request['user'] = userData
-            console.log(request['user'])
 
             const roles = this.reflector.get(Roles, context.getHandler())
 

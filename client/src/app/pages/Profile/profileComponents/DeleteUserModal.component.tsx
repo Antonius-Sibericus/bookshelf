@@ -23,15 +23,15 @@ const DeleteUserModal: FC<deleteUserModalProps> = ({ setAreYouSure, currentUser 
     const dispatch = useAppDispatch()
 
     const deleteUser = async () => {
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('userId')
-        dispatch(setSignedUp(false))
         try {
             const result = await UsersService.deleteUser(currentUser.id)
             const response = result.data
-
+            
             if (response as UserResponseType) {
                 console.log(response.message)
+                localStorage.removeItem('accessToken')
+                localStorage.removeItem('userId')
+                dispatch(setSignedUp(false))
             }
         } catch (err) {
             const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType

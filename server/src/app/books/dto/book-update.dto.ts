@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsBoolean, IsNumber, IsString, MaxLength } from 'class-validator'
+import { IsOptional, IsString, MaxLength } from 'class-validator'
 
 export class BookUpdateDTO {
     @ApiProperty({
@@ -10,6 +10,7 @@ export class BookUpdateDTO {
         type: String
     })
     @IsString({ message: 'Значение должно иметь строковый тип' })
+    @IsOptional()
     @MaxLength(63, { message: 'Значение не должно быть длиннее 63 символов' })
     heading?: string
 
@@ -21,6 +22,7 @@ export class BookUpdateDTO {
         type: String
     })
     @IsString({ message: 'Значение должно иметь строковый тип' })
+    @IsOptional()
     @MaxLength(63, { message: 'Значение не должно быть длиннее 63 символов' })
     author?: string
 
@@ -32,6 +34,7 @@ export class BookUpdateDTO {
         type: String
     })
     @IsString({ message: 'Значение должно иметь строковый тип' })
+    @IsOptional()
     @MaxLength(1023, { message: 'Значение не должно быть длиннее 63 символов' })
     description?: string
 
@@ -41,9 +44,9 @@ export class BookUpdateDTO {
         example: 457,
         type: Number
     })
-    // @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
+    @IsString({ message: 'Значение должно иметь строковый тип' })
+    @IsOptional()
     pages?: string
-    // pages?: number
 
     @ApiProperty({
         name: 'В наличии',
@@ -51,9 +54,9 @@ export class BookUpdateDTO {
         example: true,
         type: Boolean
     })
-    // @IsBoolean({ message: 'Значение должно иметь булев тип' })
+    @IsString({ message: 'Значение должно иметь строковый тип' })
+    @IsOptional()
     isInStock?: string
-    // isInStock?: boolean
 
     @ApiProperty({
         name: 'Год выпуска',
@@ -61,9 +64,9 @@ export class BookUpdateDTO {
         example: 2025,
         type: Number
     })
-    // @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
+    @IsString({ message: 'Значение должно иметь строковый тип' })
+    @IsOptional()
     year?: string
-    // year?: number
 
     @ApiProperty({
         name: 'ISBN',
@@ -71,9 +74,9 @@ export class BookUpdateDTO {
         example: 9992158107,
         type: Number
     })
-    // @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
+    @IsString({ message: 'Значение должно иметь строковый тип' })
+    @IsOptional()
     isbn?: string
-    // isbn?: number
 
     @ApiProperty({
         name: 'Мягкая обложка',
@@ -81,9 +84,9 @@ export class BookUpdateDTO {
         example: true,
         type: Boolean
     })
-    // @IsBoolean({ message: 'Значение должно иметь булев тип' })
+    @IsString({ message: 'Значение должно иметь строковый тип' })
+    @IsOptional()
     isSoftCover?: string
-    // isSoftCover?: boolean
 
     @ApiProperty({
         name: 'Категория книги (тэг)',
@@ -93,6 +96,7 @@ export class BookUpdateDTO {
         type: String
     })
     @IsString({ message: 'Значение должно иметь строковый тип' })
+    @IsOptional()
     @MaxLength(63, { message: 'Значение не должно быть длиннее 63 символов' })
     categoryTag?: string
 
@@ -104,6 +108,7 @@ export class BookUpdateDTO {
         type: String
     })
     @IsString({ message: 'Значение должно иметь строковый тип' })
+    @IsOptional()
     @MaxLength(63, { message: 'Значение не должно быть длиннее 63 символов' })
     themeTag?: string
 }

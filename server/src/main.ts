@@ -3,7 +3,6 @@ import { AppModule } from './app.module'
 import { ValidationPipe } from '@nestjs/common'
 import * as cookieParser from 'cookie-parser'
 import { setUpSwagger } from './utils/swagger.util'
-import fileupload from 'express-fileupload'
 
 async function bootstrap() {
   const port = 3000
@@ -15,7 +14,6 @@ async function bootstrap() {
   app.use(cookieParser())
   app.useGlobalPipes(new ValidationPipe())
   setUpSwagger(app)
-  // app.use(fileupload())
   await app.listen(process.env.PORT || port, () => console.log('Server is running on port ' + port))
 }
 bootstrap()

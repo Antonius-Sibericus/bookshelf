@@ -5,6 +5,8 @@ import { CategoryCreateDTO } from './dto/cat-create.dto'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { CategoryUpdateDTO } from './dto/cat-update.dto'
 import { AuthGuard } from 'src/guards/auth.guard'
+import { Roles } from 'src/decorators/roles.decorator'
+import { UserRole } from 'generated/prisma'
 
 @ApiTags('Категории книг')
 @Controller('categories')
@@ -31,6 +33,7 @@ export class CategoriesController {
     return await this.categoriesService.findByTag(tag, res)
   }
 
+  @Roles([UserRole.ADMIN, UserRole.PUBLISHER])
   @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Создание категории',
@@ -41,6 +44,7 @@ export class CategoriesController {
     return await this.categoriesService.create(dto, res)
   }
 
+  @Roles([UserRole.ADMIN, UserRole.PUBLISHER])
   @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Обновление категории',
@@ -51,6 +55,7 @@ export class CategoriesController {
     return await this.categoriesService.update(tag, dto, res)
   }
 
+  @Roles([UserRole.ADMIN, UserRole.PUBLISHER])
   @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Удаление категории',

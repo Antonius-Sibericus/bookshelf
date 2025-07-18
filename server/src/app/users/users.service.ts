@@ -1,18 +1,15 @@
-import { BadRequestException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException, NotImplementedException, UnauthorizedException } from '@nestjs/common'
+import { BadRequestException, HttpStatus, Injectable, NotFoundException, NotImplementedException, UnauthorizedException } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
 import { Request, Response } from 'express'
 import { AuthService } from '../auth/auth.service'
-import { JwtPayload } from 'src/types/jwt.interface'
-import { JwtService } from '@nestjs/jwt'
 import { UserInfoDTO } from './dto/user-info.dto'
-import { UserPasswordDTO } from './dto/user-password.dto'
+import { User } from 'generated/prisma'
 
 @Injectable()
 export class UsersService {
     constructor(
         private readonly prismaService: PrismaService,
         private readonly authService: AuthService,
-        private readonly jwtService: JwtService
     ) { }
 
     public async findAll(res: Response) {
@@ -125,18 +122,8 @@ export class UsersService {
 
     public async delete(req: Request, id: string, res: Response) {
         try {
-            const refreshToken = req.cookies['refreshToken']
-
-            if (!refreshToken) {
-                throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию')
-            }
-
-            const payload: JwtPayload = await this.jwtService.decode(refreshToken)
-
-
-            if (!payload) {
-                throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)')
-            }
+            const userId = (req.user as User).id
+            if (!userId) { throw new NotFoundException('ID пользователя не найден') }
 
             const potentialUser = await this.prismaService.user.findUnique({
                 where: {
@@ -148,7 +135,7 @@ export class UsersService {
                 throw new NotFoundException(`Пользователь по ID ${id} не найден`)
             }
 
-            if (potentialUser.id !== payload.id) {
+            if (potentialUser.id !== userId) {
                 throw new UnauthorizedException('Пользователя может удалить только он сам')
             }
             

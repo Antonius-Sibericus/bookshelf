@@ -8,6 +8,7 @@
 
     .container {
         @include container;
+        box-sizing: border-box;
 
         .bookPageHeading {
             @include head-lora-36;
@@ -165,26 +166,28 @@
 
         .bookPageDescription {
             margin-top: 48px;
-
+            
             @media screen and (max-width: 599px) {
                 margin-top: 24px;
             }
-
+            
             .bookPageDescHeading {
                 font-size: 27px;
                 font-family: 'Lora', sans-serif;
                 margin-bottom: 24px;
-
+                
                 @media screen and (max-width: 899px) {
                     font-size: 18px;
                     margin-bottom: 12px;
                 }
             }
-
+            
             .bookPageDescText {
                 font-size: 18px;
                 line-height: 1.25;
                 margin: 12px 0;
+                max-width: 100%;
+                overflow: hidden;
 
                 @media screen and (max-width: 899px) {
                     font-size: 15px;

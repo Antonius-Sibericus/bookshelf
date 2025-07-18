@@ -1,7 +1,5 @@
-import { BadRequestException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException, NotImplementedException, UnauthorizedException } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
+import { BadRequestException, HttpStatus, Injectable, NotFoundException, NotImplementedException } from '@nestjs/common'
 import { Request, Response } from 'express'
-import { JwtPayload } from 'src/types/jwt.interface'
 import { PrismaService } from '../prisma/prisma.service'
 import { User } from 'generated/prisma'
 
@@ -9,18 +7,11 @@ import { User } from 'generated/prisma'
 export class BasketsService {
     constructor(
         private readonly prismaService: PrismaService,
-        private readonly jwtService: JwtService
     ) { }
 
     public async get(req: Request, res: Response) {
         try {
-            const refreshToken = req.cookies['refreshToken']
-            if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
-
-            const payload: JwtPayload = await this.jwtService.decode(refreshToken)
-            if (!payload) { throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)') }
-
-            const userId = payload.id
+            const userId = (req.user as User).id
             if (!userId) { throw new NotFoundException('ID пользователя не найден') }
 
             const booksInBasket = await this.prismaService.basket.findUnique({
@@ -46,13 +37,8 @@ export class BasketsService {
 
     public async add(req: Request, bookTag: string, res: Response) {
         try {
-            const refreshToken = req.cookies['refreshToken']
-            if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
-
-            const payload: JwtPayload = await this.jwtService.decode(refreshToken)
-            if (!payload) { throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)') }
-
-            const userId = payload.id
+            const userId = (req.user as User).id
+            
             if (!userId || !bookTag) {
                 throw new BadRequestException(`Получены не все данные - ${!userId ? 'ID пользователя ' : '' + !bookTag ? 'Тэг книги ' : ''}`)
             }
@@ -94,13 +80,8 @@ export class BasketsService {
 
     public async remove(req: Request, bookTag: string, res: Response) {
         try {
-            const refreshToken = req.cookies['refreshToken']
-            if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
+            const userId = (req.user as User).id
 
-            const payload: JwtPayload = await this.jwtService.decode(refreshToken)
-            if (!payload) { throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)') }
-
-            const userId = payload.id
             if (!userId || !bookTag) {
                 throw new BadRequestException(`Получены не все данные - ${!userId ? 'ID пользователя ' : '' + !bookTag ? 'Тэг книги ' : ''}`)
             }

@@ -4,16 +4,14 @@ import { BookCreateDTO } from './dto/book-create.dto'
 import { Request, Response } from 'express'
 import { Filters } from 'src/types/filters.enum'
 import { BookUpdateDTO } from './dto/book-update.dto'
-import { JwtPayload } from 'src/types/jwt.interface'
-import { JwtService } from '@nestjs/jwt'
 import { UserRoles } from 'src/types/user-roles.enum'
 import { FilesService } from 'src/files/files.service'
+import { User } from 'generated/prisma'
 
 @Injectable()
 export class BooksService {
     constructor(
         private readonly prismaService: PrismaService,
-        private readonly jwtService: JwtService,
         private readonly fileService: FilesService
     ) { }
 
@@ -105,13 +103,7 @@ export class BooksService {
 
     public async create(req: Request, dto: BookCreateDTO, image: Express.Multer.File, res: Response) {
         try {
-            const refreshToken = req.cookies['refreshToken']
-            if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
-
-            const payload: JwtPayload = await this.jwtService.decode(refreshToken)
-            if (!payload) { throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)') }
-
-            const userId = payload.id
+            const userId = (req.user as User).id
             if (!userId) { throw new NotFoundException('ID пользователя не найден') }
             
             const potentialPublished = await this.prismaService.user.findUnique({
@@ -227,13 +219,7 @@ export class BooksService {
 
     public async update(req: Request, tag: string, dto: BookUpdateDTO, image: any, res: Response) {
         try {
-            const refreshToken = req.cookies['refreshToken']
-            if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
-
-            const payload: JwtPayload = await this.jwtService.decode(refreshToken)
-            if (!payload) { throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)') }
-
-            const userId = payload.id
+            const userId = (req.user as User).id
             if (!userId) { throw new NotFoundException('ID пользователя не найден') }
             
             const potentialPublished = await this.prismaService.user.findUnique({
@@ -342,13 +328,7 @@ export class BooksService {
 
     public async delete(req: Request, tag: string, res: Response) {
         try {
-            const refreshToken = req.cookies['refreshToken']
-            if (!refreshToken) { throw new UnauthorizedException('Недействительный токен. Пройдите авторизацию') }
-
-            const payload: JwtPayload = await this.jwtService.decode(refreshToken)
-            if (!payload) { throw new InternalServerErrorException('Внутренняя ошибка (JWT verification)') }
-
-            const userId = payload.id
+            const userId = (req.user as User).id
             if (!userId) { throw new NotFoundException('ID пользователя не найден') }
             
             const potentialPublished = await this.prismaService.user.findUnique({

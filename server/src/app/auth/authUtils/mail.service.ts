@@ -6,17 +6,7 @@ import * as nodemailer from 'nodemailer'
 export class MailService {
     constructor(
         private readonly configService: ConfigService
-    ) {
-        // this.transporter = nodemailer.createTransport({
-        //     host: configService.getOrThrow('SMTP_HOST'),
-        //     port: configService.getOrThrow('SMTP_PORT'),
-        //     secure: false,
-        //     auth: {
-        //         user: configService.getOrThrow('SMTP_USER'),
-        //         pass: configService.getOrThrow('SMTP_PASSWORD')
-        //     }
-        // })
-    }
+    ) { }
 
     public emailTransport() {
         const transporter = nodemailer.createTransport({

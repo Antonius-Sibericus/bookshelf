@@ -5,6 +5,8 @@ import { ThemeCreateDTO } from './dto/theme-create.dto'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ThemeUpdateDTO } from './dto/theme-update.dto'
 import { AuthGuard } from 'src/guards/auth.guard'
+import { Roles } from 'src/decorators/roles.decorator'
+import { UserRole } from 'generated/prisma'
 
 @ApiTags('Темы книг')
 @Controller('themes')
@@ -31,6 +33,7 @@ export class ThemesController {
     return await this.themesService.findByTag(tag, res)
   }
 
+  @Roles([UserRole.ADMIN, UserRole.PUBLISHER])
   @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Создание темы для категории',
@@ -41,6 +44,7 @@ export class ThemesController {
     return await this.themesService.create(dto, res)
   }
 
+  @Roles([UserRole.ADMIN, UserRole.PUBLISHER])
   @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Обновление темы для категории',
@@ -51,6 +55,7 @@ export class ThemesController {
     return await this.themesService.update(tag, dto, res)
   }
 
+  @Roles([UserRole.ADMIN, UserRole.PUBLISHER])
   @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Удаление темы',

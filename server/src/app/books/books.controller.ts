@@ -7,6 +7,8 @@ import { Filters } from 'src/types/filters.enum'
 import { BookUpdateDTO } from './dto/book-update.dto'
 import { AuthGuard } from 'src/guards/auth.guard'
 import { FileInterceptor } from '@nestjs/platform-express'
+import { Roles } from 'src/decorators/roles.decorator'
+import { UserRole } from 'generated/prisma'
 
 @ApiTags('Книги')
 @Controller('books')
@@ -33,6 +35,7 @@ export class BooksController {
     return await this.booksService.findByTag(tag, res)
   }
 
+  @Roles([UserRole.ADMIN, UserRole.PUBLISHER])
   @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Добавление книги',
@@ -44,6 +47,7 @@ export class BooksController {
     return await this.booksService.create(req, dto, image, res)
   }
 
+  @Roles([UserRole.ADMIN, UserRole.PUBLISHER])
   @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Обновление информации о книге',
@@ -55,6 +59,7 @@ export class BooksController {
     return await this.booksService.update(req, tag, dto, image, res)
   }
 
+  @Roles([UserRole.ADMIN, UserRole.PUBLISHER])
   @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Удаление информации о книге',

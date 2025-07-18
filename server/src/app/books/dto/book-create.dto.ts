@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsBoolean, IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator'
+import { IsNotEmpty, IsString, MaxLength } from 'class-validator'
 
 export class BookCreateDTO {
     @ApiProperty({
@@ -56,10 +56,9 @@ export class BookCreateDTO {
         example: 457,
         type: Number
     })
-    // @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
+    @IsString({ message: 'Значение должно иметь строковый тип' })
     @IsNotEmpty({ message: 'Поле не должно быть пустым' })
     pages: string
-    // pages: number
 
     @ApiProperty({
         name: 'В наличии',
@@ -67,10 +66,9 @@ export class BookCreateDTO {
         example: true,
         type: Boolean
     })
-    // @IsBoolean({ message: 'Значение должно иметь булев тип' })
+    @IsString({ message: 'Значение должно иметь строковый тип' })
     @IsNotEmpty({ message: 'Поле не должно быть пустым' })
     isInStock: string
-    // isInStock: boolean
 
     @ApiProperty({
         name: 'Год выпуска',
@@ -78,10 +76,9 @@ export class BookCreateDTO {
         example: 2025,
         type: Number
     })
-    // @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
+    @IsString({ message: 'Значение должно иметь строковый тип' })
     @IsNotEmpty({ message: 'Поле не должно быть пустым' })
     year: string
-    // year: number
 
     @ApiProperty({
         name: 'ISBN',
@@ -89,10 +86,9 @@ export class BookCreateDTO {
         example: 9992158107,
         type: Number
     })
-    // @IsNumber({}, { message: 'Значение должно иметь целочисленный тип' })
+    @IsString({ message: 'Значение должно иметь строковый тип' })
     @IsNotEmpty({ message: 'Поле не должно быть пустым' })
     isbn: string
-    // isbn: number
 
     @ApiProperty({
         name: 'Мягкая обложка',
@@ -100,10 +96,9 @@ export class BookCreateDTO {
         example: true,
         type: Boolean
     })
-    // @IsBoolean({ message: 'Значение должно иметь булев тип' })
+    @IsString({ message: 'Значение должно иметь строковый тип' })
     @IsNotEmpty({ message: 'Поле не должно быть пустым' })
     isSoftCover: string
-    // isSoftCover: boolean
 
     @ApiProperty({
         name: 'Категория книги (тэг)',

@@ -43,7 +43,6 @@ export class AuthService {
             domain: this.COOKIE_DOMAIN,
             expires,
             secure: true,
-            // secure: !isDev(this.configService),
             sameSite: isDev(this.configService) ? 'none' : 'lax'
         })
     }
@@ -161,8 +160,9 @@ export class AuthService {
                     isActivated: true
                 }
             })
+
+            console.log(updatedUser)
         } catch (err) {
-            console.log(err.message)
             return res.status(HttpStatus.NOT_IMPLEMENTED).json({ error: true, message: err.message })
         }
     }

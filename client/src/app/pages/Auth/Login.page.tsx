@@ -74,7 +74,6 @@ const LoginPage: FC = () => {
                     Вход
                 </div>
                 <form className={styles.authForm} onSubmit={handleSubmit(onSubmit)}>
-                    {errors.root && <span>{errors.root.message}</span>}
                     <div className={styles.authGroup}>
                         <label htmlFor='email' className={styles.authLabel + ' ' + themeTernary}>
                             Электронная почта

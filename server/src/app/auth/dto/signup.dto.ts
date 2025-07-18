@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsBoolean, IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator'
-import { UserRoles } from 'src/types/user-roles.enum'
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator'
 import { UserRole } from 'generated/prisma'
 
 
@@ -39,6 +38,7 @@ export class SignupDTO {
         type: String
     })
     @IsString({ message: 'Значение должно иметь строковый тип' })
+    @IsOptional()
     @MaxLength(63, { message: 'Значение не должно быть длиннее 63 символов' })
     paternal: string
 

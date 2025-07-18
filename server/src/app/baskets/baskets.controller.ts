@@ -3,7 +3,6 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 import { BasketsService } from './baskets.service'
 import { AuthGuard } from 'src/guards/auth.guard'
-import { Roles } from 'src/decorators/roles.decorator'
 
 @ApiTags('Корзина пользователя')
 @Controller('basket')
@@ -21,7 +20,7 @@ export class BasketsController {
   public async getBasket(@Req() req: Request, @Res() res: Response) {
     return await this.basketsService.get(req, res)
   }
-
+  
   @UseGuards(AuthGuard)
   @ApiOperation({
     summary: 'Добавление книги в корзину',
