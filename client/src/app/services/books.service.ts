@@ -14,12 +14,12 @@ export default class BooksService {
         return await api.get<BookResponseType>(`/books/${tag}`)
     }
 
-    public static async createBook(heading: string, tag: string, author: string, description: string, pages: number, isInStock: boolean, year: number, isbn: number, isSoftCover: boolean, categoryTag: string, themeTag: string, image: File): Promise<AxiosResponse<BookResponseType>> {
+    public static async createBook(heading: string, tag: string, author: string, description: string, pages: number, isInStock: boolean, year: number, isbn: string, isSoftCover: boolean, categoryTag: string, themeTag: string, image: File): Promise<AxiosResponse<BookResponseType>> {
         const formData = dataFormation(heading, tag, author, description, pages, isInStock, year, isbn, isSoftCover, categoryTag, themeTag, image)
         return await $api.post<BookResponseType>('/books', formData)
     }
     
-    public static async updateBook(tag: string, heading: string, author: string, description: string, pages: number, isInStock: boolean, year: number, isbn: number, isSoftCover: boolean, categoryTag: string, themeTag: string, image: File): Promise<AxiosResponse<BookResponseType>> {
+    public static async updateBook(tag: string, heading: string, author: string, description: string, pages: number, isInStock: boolean, year: number, isbn: string, isSoftCover: boolean, categoryTag: string, themeTag: string, image: File): Promise<AxiosResponse<BookResponseType>> {
         const formData = dataFormation(heading, tag, author, description, pages, isInStock, year, isbn, isSoftCover, categoryTag, themeTag, image)
         return await $api.put<BookResponseType>(`/books/${tag}`, formData)
     }

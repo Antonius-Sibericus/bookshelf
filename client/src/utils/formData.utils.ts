@@ -6,7 +6,7 @@ export function dataFormation(
     pages: number,
     isInStock: boolean,
     year: number,
-    isbn: number,
+    isbn: string,
     isSoftCover: boolean,
     categoryTag: string,
     themeTag: string,
@@ -20,7 +20,7 @@ export function dataFormation(
     formData.append('pages', JSON.stringify(pages))
     formData.append('isInStock', JSON.stringify(isInStock))
     formData.append('year', JSON.stringify(year))
-    formData.append('isbn', JSON.stringify(isbn))
+    formData.append('isbn', isbn)
     formData.append('isSoftCover', JSON.stringify(isSoftCover))
     formData.append('categoryTag', categoryTag)
     formData.append('themeTag', themeTag)

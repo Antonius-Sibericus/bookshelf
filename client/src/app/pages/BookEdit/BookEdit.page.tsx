@@ -21,7 +21,7 @@ const updateBookSchema = z.object({
     pages: z.number({ message: 'Обязательное поле' }).positive({ message: 'Обязательное поле' }),
     isInStock: z.boolean(),
     year: z.number({ message: 'Обязательное поле' }).positive({ message: 'Обязательное поле' }).min(1300, { message: 'Введите правильный год' }),
-    isbn: z.number({ message: 'Обязательное поле' }).positive({ message: 'Обязательное поле' }),
+    isbn: z.string({ message: 'Обязательное поле' }),
     isSoftCover: z.boolean(),
     categoryTag: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Тэг не может быть длиннее 63 символов' }).regex(/^[a-zA-Z-]{1,63}$/, { message: 'Тэг может содержать только латинские буквы' }),
     themeTag: z.string().nonempty({ message: 'Обязательное поле' }).max(63, { message: 'Тэг не может быть длиннее 63 символов' }).regex(/^[a-zA-Z-]{1,63}$/, { message: 'Тэг может содержать только латинские буквы' }),
@@ -200,14 +200,10 @@ const BookEditPage: FC = () => {
                             ISBN
                         </label>
                         <input
-                            {...register('isbn',
-                                {
-                                    valueAsNumber: true
-                                }
-                            )}
+                            {...register('isbn')}
                             defaultValue={currentBook.isbn}
                             placeholder='123123123123'
-                            type='number'
+                            type='text'
                             id='isbn'
                             name='isbn'
                             className={styles.editInput + ' ' + themeTernary}

@@ -6,7 +6,7 @@ export type BookType = {
     pages: number,
     isInStock: boolean,
     year: number,
-    isbn: number,
+    isbn: string,
     isSoftCover: boolean,
     categoryTag: string,
     themeTag: string,

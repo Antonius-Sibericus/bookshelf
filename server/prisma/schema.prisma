@@ -70,7 +70,7 @@ model Book {
   pages       Int
   isInStock   Boolean     @default(true)
   year        Int
-  isbn        Int
+  isbn        String
   isSoftCover Boolean     @default(false)
   baskets     Basket[]    @relation("baskets_books")
   published   Published[] @relation("published_books")

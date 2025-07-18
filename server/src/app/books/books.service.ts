@@ -177,7 +177,7 @@ export class BooksService {
                     pages: JSON.parse(pages),
                     isInStock: JSON.parse(isInStock),
                     year: JSON.parse(year),
-                    isbn: JSON.parse(isbn),
+                    isbn,
                     isSoftCover: JSON.parse(isSoftCover),
                     publisherId: userId,
                     categoryTag,
@@ -302,7 +302,7 @@ export class BooksService {
                     pages: pages ? JSON.parse(pages) : oldData.pages,
                     isInStock: isInStock !== undefined ? JSON.parse(isInStock) : oldData.isInStock,
                     year: year ? JSON.parse(year) : oldData.year,
-                    isbn: isbn ? JSON.parse(isbn) : oldData.isbn,
+                    isbn: isbn ? isbn : oldData.isbn,
                     isSoftCover: isSoftCover !== undefined ? JSON.parse(isSoftCover) : oldData.isSoftCover,
                     categoryTag: categoryTag ? categoryTag : oldData.categoryTag,
                     themeTag: themeTag ? themeTag : oldData.themeTag
