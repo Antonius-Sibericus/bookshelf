@@ -4,7 +4,6 @@ import { z } from 'zod'
 import { useSelector } from 'react-redux'
 import { selectorGeneral } from '../../../../redux/general/general.selector'
 import { selectorCategoriesAndThemes } from '../../../../redux/categoriesAndThemes/categoriesAndThemes.selector'
-import { useAppDispatch } from '../../../../redux/store.redux'
 import { ColorThemeEnum } from '../../../../redux/general/general.types'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -34,8 +33,6 @@ const CreateBook: FC = () => {
     const { theme } = useSelector(selectorGeneral)
     const { categories, themes } = useSelector(selectorCategoriesAndThemes)
     const [created, setCreated] = useState<string | null>(null)
-
-    const dispatch = useAppDispatch()
 
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
 
@@ -71,13 +68,13 @@ const CreateBook: FC = () => {
         <form className={styles.createBookForm} onSubmit={handleSubmit(onSubmit)}>
             <h3 className={styles.workshopHeading}>Добавить книгу</h3>
             <div className={styles.createBookGroup}>
-                <label htmlFor="heading" className={styles.workshopLabel + ' ' + themeTernary}>
+                <label htmlFor='heading' className={styles.workshopLabel + ' ' + themeTernary}>
                     Название книги
                 </label>
                 <input
                     {...register('heading')}
                     placeholder='Наедине с собой'
-                    type="text"
+                    type='text'
                     id='heading'
                     name='heading'
                     className={styles.workshopInput + ' ' + themeTernary}
@@ -86,13 +83,13 @@ const CreateBook: FC = () => {
                 {errors.heading && <span className={styles.workshopError}>{errors.heading.message}</span>}
             </div>
             <div className={styles.createBookGroup}>
-                <label htmlFor="tag" className={styles.workshopLabel + ' ' + themeTernary}>
+                <label htmlFor='tag' className={styles.workshopLabel + ' ' + themeTernary}>
                     Тэг книги
                 </label>
                 <input
                     {...register('tag')}
                     placeholder='najedinje-s-soboj'
-                    type="text"
+                    type='text'
                     id='tag'
                     name='tag'
                     className={styles.workshopInput + ' ' + themeTernary}
@@ -101,13 +98,13 @@ const CreateBook: FC = () => {
                 {errors.tag && <span className={styles.workshopError}>{errors.tag.message}</span>}
             </div>
             <div className={styles.createBookGroup}>
-                <label htmlFor="author" className={styles.workshopLabel + ' ' + themeTernary}>
+                <label htmlFor='author' className={styles.workshopLabel + ' ' + themeTernary}>
                     Автор
                 </label>
                 <input
                     {...register('author')}
                     placeholder='Марк Аврелий Антонин'
-                    type="text"
+                    type='text'
                     id='author'
                     name='author'
                     className={styles.workshopInput + ' ' + themeTernary}
@@ -116,7 +113,7 @@ const CreateBook: FC = () => {
                 {errors.author && <span className={styles.workshopError}>{errors.author.message}</span>}
             </div>
             <div className={styles.createBookGroup}>
-                <label htmlFor="description" className={styles.workshopLabel + ' ' + themeTernary}>
+                <label htmlFor='description' className={styles.workshopLabel + ' ' + themeTernary}>
                     Описание
                 </label>
                 <textarea
@@ -130,7 +127,7 @@ const CreateBook: FC = () => {
                 {errors.description && <span className={styles.workshopError}>{errors.description.message}</span>}
             </div>
             <div className={styles.createBookGroup}>
-                <label htmlFor="pages" className={styles.workshopLabel + ' ' + themeTernary}>
+                <label htmlFor='pages' className={styles.workshopLabel + ' ' + themeTernary}>
                     Число страниц
                 </label>
                 <input
@@ -140,7 +137,7 @@ const CreateBook: FC = () => {
                         }
                     )}
                     placeholder='519'
-                    type="number"
+                    type='number'
                     id='pages'
                     name='pages'
                     className={styles.workshopInput + ' ' + themeTernary}
@@ -149,7 +146,7 @@ const CreateBook: FC = () => {
                 {errors.pages && <span className={styles.workshopError}>{errors.pages.message}</span>}
             </div>
             <div className={styles.createBookGroup}>
-                <label htmlFor="year" className={styles.workshopLabel + ' ' + themeTernary}>
+                <label htmlFor='year' className={styles.workshopLabel + ' ' + themeTernary}>
                     Год выпуска
                 </label>
                 <input
@@ -159,7 +156,7 @@ const CreateBook: FC = () => {
                         }
                     )}
                     placeholder='2025'
-                    type="number"
+                    type='number'
                     id='year'
                     name='year'
                     className={styles.workshopInput + ' ' + themeTernary}
@@ -168,7 +165,7 @@ const CreateBook: FC = () => {
                 {errors.year && <span className={styles.workshopError}>{errors.year.message}</span>}
             </div>
             <div className={styles.createBookGroup}>
-                <label htmlFor="isbn" className={styles.workshopLabel + ' ' + themeTernary}>
+                <label htmlFor='isbn' className={styles.workshopLabel + ' ' + themeTernary}>
                     ISBN
                 </label>
                 <input
@@ -178,7 +175,7 @@ const CreateBook: FC = () => {
                         }
                     )}
                     placeholder='123123123123'
-                    type="number"
+                    type='number'
                     id='isbn'
                     name='isbn'
                     className={styles.workshopInput + ' ' + themeTernary}
@@ -187,12 +184,12 @@ const CreateBook: FC = () => {
                 {errors.isbn && <span className={styles.workshopError}>{errors.isbn.message}</span>}
             </div>
             <div className={styles.createBookGroup}>
-                <label htmlFor="categoryTag" className={styles.workshopLabel + ' ' + themeTernary}>Выбрать Категорию</label>
+                <label htmlFor='categoryTag' className={styles.workshopLabel + ' ' + themeTernary}>Выбрать Категорию</label>
                 <select
                     {...register('categoryTag')}
                     onChange={(e) => setCat(e.target.value)}
-                    name="categoryTag"
-                    id="categoryTag"
+                    name='categoryTag'
+                    id='categoryTag'
                     className={styles.workshopSelect + ' ' + themeTernary}
                     style={errors.categoryTag ? { 'borderColor': 'red' } : {}}
                 >
@@ -207,11 +204,11 @@ const CreateBook: FC = () => {
             {
                 cat &&
                 <div className={styles.createBookGroup}>
-                    <label htmlFor="themeTag" className={styles.workshopLabel + ' ' + themeTernary}>Выбрать тему</label>
+                    <label htmlFor='themeTag' className={styles.workshopLabel + ' ' + themeTernary}>Выбрать тему</label>
                     <select
                         {...register('themeTag')}
-                        name="themeTag"
-                        id="themeTag"
+                        name='themeTag'
+                        id='themeTag'
                         className={styles.workshopSelect + ' ' + themeTernary}
                         style={errors.themeTag ? { 'borderColor': 'red' } : {}}
                     >
@@ -226,13 +223,13 @@ const CreateBook: FC = () => {
             <div className={styles.checkbox}>
                 <input
                     {...register('isInStock')}
-                    type="checkbox"
+                    type='checkbox'
                     id='isInStock'
                     name='isInStock'
                     className={styles.workshopInput + ' ' + themeTernary}
                     style={errors.isInStock ? { 'borderColor': 'red' } : {}}
                 />
-                <label htmlFor="isInStock" className={styles.workshopLabel + ' ' + themeTernary}>
+                <label htmlFor='isInStock' className={styles.workshopLabel + ' ' + themeTernary}>
                     В наличии на складе
                 </label>
                 {errors.isInStock && <span className={styles.workshopError}>{errors.isInStock.message}</span>}
@@ -240,24 +237,24 @@ const CreateBook: FC = () => {
             <div className={styles.checkbox}>
                 <input
                     {...register('isSoftCover')}
-                    type="checkbox"
+                    type='checkbox'
                     id='isSoftCover'
                     name='isSoftCover'
                     className={styles.workshopInput + ' ' + themeTernary}
                     style={errors.isSoftCover ? { 'borderColor': 'red' } : {}}
                 />
-                <label htmlFor="isSoftCover" className={styles.workshopLabel + ' ' + themeTernary}>
+                <label htmlFor='isSoftCover' className={styles.workshopLabel + ' ' + themeTernary}>
                     Мягкая обложка
                 </label>
                 {errors.isSoftCover && <span className={styles.workshopError}>{errors.isSoftCover.message}</span>}
             </div>
             <div className={styles.createBookGroup}>
-                <label htmlFor="image" className={styles.workshopLabel + ' ' + themeTernary}>
+                <label htmlFor='image' className={styles.workshopLabel + ' ' + themeTernary}>
                     Обложка
                 </label>
                 <input
                     {...register('image')}
-                    type="file"
+                    type='file'
                     id='image'
                     name='image'
                     required

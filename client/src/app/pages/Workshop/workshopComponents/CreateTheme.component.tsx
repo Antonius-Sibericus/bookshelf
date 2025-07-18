@@ -66,11 +66,11 @@ const CreateTheme: FC = () => {
 
     return (
         <form className={styles.workshopCreateItem} onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor="categoryTag" className={styles.workshopLabel + ' ' + themeTernary}>Создать тему</label>
+            <label htmlFor='categoryTag' className={styles.workshopLabel + ' ' + themeTernary}>Создать тему</label>
             <select
                 {...register('categoryTag')}
-                name="categoryTag"
-                id="categoryTag"
+                name='categoryTag'
+                id='categoryTag'
                 className={styles.workshopSelect + ' ' + themeTernary}
             >
                 {categories.map(item => (
@@ -81,7 +81,7 @@ const CreateTheme: FC = () => {
             <input
                 {...register('themeTitle')}
                 placeholder='Заголовок темы'
-                type="text"
+                type='text'
                 id='themeTitle'
                 name='themeTitle'
                 className={styles.workshopInput + ' ' + themeTernary}
@@ -91,7 +91,7 @@ const CreateTheme: FC = () => {
             <input
                 {...register('themeTag')}
                 placeholder='Тэг темы (например, biology)'
-                type="text"
+                type='text'
                 id='themeTag'
                 name='themeTag'
                 className={styles.workshopInput + ' ' + themeTernary}

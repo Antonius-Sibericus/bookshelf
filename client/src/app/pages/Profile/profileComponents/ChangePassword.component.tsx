@@ -55,12 +55,12 @@ const ChangePassword: FC = () => {
     return (
         <form className={styles.profilePassword} onSubmit={handleSubmit(onSubmitPassword)}>
             <div className={styles.profileGroup}>
-                <label htmlFor="password" className={styles.profileLabel + ' ' + themeTernary}>
+                <label htmlFor='password' className={styles.profileLabel + ' ' + themeTernary}>
                     Пароль
                 </label>
                 <input
                     {...register('password')}
-                    type="password"
+                    type='password'
                     id='password'
                     name='password'
                     className={styles.profileInput + ' ' + themeTernary + ' ' + disabledeTernary}
@@ -70,12 +70,12 @@ const ChangePassword: FC = () => {
                 {errors.password && <span className={styles.profileError}>{errors.password.message}</span>}
             </div>
             <div className={styles.profileGroup}>
-                <label htmlFor="repeatPassword" className={styles.profileLabel + ' ' + themeTernary}>
+                <label htmlFor='repeatPassword' className={styles.profileLabel + ' ' + themeTernary}>
                     Повторите пароль
                 </label>
                 <input
                     {...register('repeatPassword')}
-                    type="password"
+                    type='password'
                     id='repeatPassword'
                     name='repeatPassword'
                     className={styles.profileInput + ' ' + themeTernary + ' ' + disabledeTernary}

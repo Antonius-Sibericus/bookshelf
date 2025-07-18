@@ -56,9 +56,7 @@ const SignupPage: FC = () => {
                 const userId: string = response.user.id
 
                 if (userId) {
-                    dispatch(
-                        fetchCurrentUser(userId)
-                    )
+                    dispatch(fetchCurrentUser(userId))
                     localStorage.setItem('userId', JSON.stringify(userId))
                     dispatch(setSignedUp(true))
                 }
@@ -83,10 +81,10 @@ const SignupPage: FC = () => {
                 </div>
                 {!isSignedUp && <form className={styles.authForm} onSubmit={handleSubmit(onSubmit)}>
                     <div className={styles.authGroup}>
-                        <label htmlFor="surname" className={styles.authLabel + ' ' + themeTernary}>Фамилия</label>
+                        <label htmlFor='surname' className={styles.authLabel + ' ' + themeTernary}>Фамилия</label>
                         <input
                             {...register('surname')}
-                            type="text"
+                            type='text'
                             placeholder='Фамилия'
                             id='surname'
                             name='surname'
@@ -96,10 +94,10 @@ const SignupPage: FC = () => {
                         {errors.surname && <span className={styles.authError}>{errors.surname.message}</span>}
                     </div>
                     <div className={styles.authGroup}>
-                        <label htmlFor="name" className={styles.authLabel + ' ' + themeTernary}>Имя</label>
+                        <label htmlFor='name' className={styles.authLabel + ' ' + themeTernary}>Имя</label>
                         <input
                             {...register('name')}
-                            type="text"
+                            type='text'
                             placeholder='Имя'
                             id='name'
                             name='name'
@@ -109,10 +107,10 @@ const SignupPage: FC = () => {
                         {errors.name && <span className={styles.authError}>{errors.name.message}</span>}
                     </div>
                     <div className={styles.authGroup}>
-                        <label htmlFor="paternal" className={styles.authLabel + ' ' + themeTernary}>Отчество (если есть)</label>
+                        <label htmlFor='paternal' className={styles.authLabel + ' ' + themeTernary}>Отчество (если есть)</label>
                         <input
                             {...register('paternal')}
-                            type="text"
+                            type='text'
                             placeholder='Отчество'
                             id='paternal'
                             name='paternal'
@@ -122,10 +120,10 @@ const SignupPage: FC = () => {
                         {errors.paternal && <span className={styles.authError}>{errors.paternal.message}</span>}
                     </div>
                     <div className={styles.authGroup}>
-                        <label htmlFor="email" className={styles.authLabel + ' ' + themeTernary}>Электронная почта</label>
+                        <label htmlFor='email' className={styles.authLabel + ' ' + themeTernary}>Электронная почта</label>
                         <input
                             {...register('email')}
-                            type="text"
+                            type='text'
                             placeholder='Электронная почта'
                             id='email'
                             name='email'
@@ -135,10 +133,10 @@ const SignupPage: FC = () => {
                         {errors.email && <span className={styles.authError}>{errors.email.message}</span>}
                     </div>
                     <div className={styles.authGroup}>
-                        <label htmlFor="password" className={styles.authLabel + ' ' + themeTernary}>Пароль</label>
+                        <label htmlFor='password' className={styles.authLabel + ' ' + themeTernary}>Пароль</label>
                         <input
                             {...register('password')}
-                            type="password"
+                            type='password'
                             placeholder='Пароль'
                             id='password'
                             name='password'
@@ -148,10 +146,10 @@ const SignupPage: FC = () => {
                         {errors.password && <span className={styles.authError}>{errors.password.message}</span>}
                     </div>
                     <div className={styles.authGroup}>
-                        <label htmlFor="repeatPassword" className={styles.authLabel + ' ' + themeTernary}>Повторите пароль</label>
+                        <label htmlFor='repeatPassword' className={styles.authLabel + ' ' + themeTernary}>Повторите пароль</label>
                         <input
                             {...register('repeatPassword')}
-                            type="password"
+                            type='password'
                             placeholder='Повторите пароль'
                             id='repeatPassword'
                             name='repeatPassword'

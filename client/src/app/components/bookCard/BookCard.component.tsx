@@ -14,6 +14,8 @@ import { selectorBasket } from '../../../redux/basket/basket.selector'
 import { selectorFavorites } from '../../../redux/favorites/favorites.selector'
 import { selectorGeneral } from '../../../redux/general/general.selector'
 import { fetchPublished } from '../../../redux/published/published.async'
+import type { DefaultResponseType } from '../../../types/responsesTypes/defaultResponse.type'
+import type { AxiosError } from 'axios'
 
 const BookCard: FC<BookType> = (props) => {
     const dispatch = useAppDispatch()
@@ -47,7 +49,8 @@ const BookCard: FC<BookType> = (props) => {
             }
 
         } catch (err) {
-            console.error(err)
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.error(customErrorData ? customErrorData.message : err)
         }
     }
 
@@ -61,7 +64,8 @@ const BookCard: FC<BookType> = (props) => {
                 setIsInFavorites(true)
             }
         } catch (err) {
-            console.error(err)
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.error(customErrorData ? customErrorData.message : err)
         }
     }
 
@@ -75,7 +79,8 @@ const BookCard: FC<BookType> = (props) => {
                 setIsInBasket(false)
             }
         } catch (err) {
-            console.error(err)
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.error(customErrorData ? customErrorData.message : err)
         }
     }
 
@@ -89,7 +94,8 @@ const BookCard: FC<BookType> = (props) => {
                 setIsInFavorites(false)
             }
         } catch (err) {
-            console.error(err)
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.error(customErrorData ? customErrorData.message : err)
         }
     }
 

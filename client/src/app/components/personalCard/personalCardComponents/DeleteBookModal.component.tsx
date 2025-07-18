@@ -9,10 +9,12 @@ import type { BookResponseType } from '../../../../types/responsesTypes/bookResp
 import { fetchPublished } from '../../../../redux/published/published.async'
 import { fetchFavorites } from '../../../../redux/favorites/favorites.async'
 import { fetchBasket } from '../../../../redux/basket/basket.async'
+import type { DefaultResponseType } from '../../../../types/responsesTypes/defaultResponse.type'
+import type { AxiosError } from 'axios'
 
 type deleteBookModalProps = {
     setAreYouSure: (type: boolean) => void,
-    tag: string,
+    tag: string
 }
 
 const DeleteBookModal: FC<deleteBookModalProps> = ({ setAreYouSure, tag }) => {
@@ -35,7 +37,8 @@ const DeleteBookModal: FC<deleteBookModalProps> = ({ setAreYouSure, tag }) => {
             dispatch(fetchFavorites())
             dispatch(fetchBasket())
         } catch (err) {
-            console.log(err)
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.error(customErrorData ? customErrorData.message : err)
         }
     }
 

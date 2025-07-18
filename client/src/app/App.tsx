@@ -49,7 +49,7 @@ function App() {
           localStorage.removeItem('accessToken')
           window.location.reload()
           const customErrorData: DefaultResponseType = (err as AxiosError).response!.data as DefaultResponseType
-          console.log(customErrorData ? customErrorData : err)
+          console.log(customErrorData ? customErrorData.message : err)
         }
       }
 

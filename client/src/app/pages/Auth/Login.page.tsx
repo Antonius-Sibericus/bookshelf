@@ -51,9 +51,7 @@ const LoginPage: FC = () => {
                 const userId: string = response.user.id
                 
                 if (userId) {
-                    dispatch(
-                        fetchCurrentUser(userId)
-                    )
+                    dispatch(fetchCurrentUser(userId))
                     localStorage.setItem('userId', JSON.stringify(userId))
                     dispatch(setSignedUp(true))
                     
@@ -62,7 +60,7 @@ const LoginPage: FC = () => {
             }
         } catch (err) {
             console.log(err)
-            const customErrorData: DefaultResponseType = (err as AxiosError).response!.data as DefaultResponseType
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
             setError('root', {
                 message: customErrorData ? customErrorData.message : 'Непредвиденная ошибка. Обратитесь в поддержку'
             })
@@ -78,12 +76,12 @@ const LoginPage: FC = () => {
                 <form className={styles.authForm} onSubmit={handleSubmit(onSubmit)}>
                     {errors.root && <span>{errors.root.message}</span>}
                     <div className={styles.authGroup}>
-                        <label htmlFor="email" className={styles.authLabel + ' ' + themeTernary}>
+                        <label htmlFor='email' className={styles.authLabel + ' ' + themeTernary}>
                             Электронная почта
                         </label>
                         <input
                             {...register('email')}
-                            type="text"
+                            type='text'
                             placeholder='Электронная почта'
                             id='email'
                             name='email'
@@ -93,12 +91,12 @@ const LoginPage: FC = () => {
                         {errors.email && <span className={styles.authError}>{errors.email.message}</span>}
                     </div>
                     <div className={styles.authGroup}>
-                        <label htmlFor="password" className={styles.authLabel + ' ' + themeTernary}>
+                        <label htmlFor='password' className={styles.authLabel + ' ' + themeTernary}>
                             Пароль
                         </label>
                         <input
                             {...register('password')}
-                            type="password"
+                            type='password'
                             placeholder='Пароль'
                             id='password'
                             name='password'

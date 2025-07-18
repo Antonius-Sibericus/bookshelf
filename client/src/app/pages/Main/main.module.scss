@@ -5,7 +5,7 @@
 
 .main {
     @include section;
-    background-image: url("images/page/main.png");
+    background-image: url('images/page/main.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -13,7 +13,7 @@
 
     .container {
         @include container;
-        font-family: "Lora", serif;
+        font-family: 'Lora', serif;
 
         .mainHeading {
             font-weight: 600;

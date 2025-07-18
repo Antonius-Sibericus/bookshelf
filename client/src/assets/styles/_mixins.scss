@@ -77,11 +77,11 @@
         }
     }
 
-    &:invalid[data-focused="true"] {
+    &:invalid[data-focused='true'] {
         border: 2px solid red;
     }
 
-    &:invalid[data-focused="true"]~.authError {
+    &:invalid[data-focused='true']~.authError {
         display: block;
     }
 

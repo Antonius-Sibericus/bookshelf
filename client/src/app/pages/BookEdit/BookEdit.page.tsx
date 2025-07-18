@@ -67,18 +67,23 @@ const BookEditPage: FC = () => {
     }
 
     useEffect(() => {
-        const getBook = async () => {
-            if (params.bookTag) {
-                const result = await BooksService.getOneBook(params.bookTag)
-                const response = result.data
+        try {
+            const getBook = async () => {
+                if (params.bookTag) {
+                    const result = await BooksService.getOneBook(params.bookTag)
+                    const response = result.data
 
-                if (response as BookResponseType) {
-                    setCurrentBook(response.book)
+                    if (response as BookResponseType) {
+                        setCurrentBook(response.book)
+                    }
                 }
             }
-        }
 
-        getBook()
+            getBook()
+        } catch (err) {
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.error(customErrorData ? customErrorData.message : err)
+        }
     }, [])
 
     useEffect(() => {
@@ -105,13 +110,13 @@ const BookEditPage: FC = () => {
                 <div className={styles.editHeading + ' ' + themeTernary}>Редактировать запись о книге</div>
                 <form className={styles.editForm} onSubmit={handleSubmit(onSubmit)}>
                     <div className={styles.editGroup}>
-                        <label htmlFor="heading" className={styles.editLabel + ' ' + themeTernary}>
+                        <label htmlFor='heading' className={styles.editLabel + ' ' + themeTernary}>
                             Название книги
                         </label>
                         <input
                             {...register('heading')}
                             placeholder='Наедине с собой'
-                            type="text"
+                            type='text'
                             id='heading'
                             name='heading'
                             className={styles.editInput + ' ' + themeTernary}
@@ -120,14 +125,14 @@ const BookEditPage: FC = () => {
                         {errors.heading && <span className={styles.editError}>{errors.heading.message}</span>}
                     </div>
                     <div className={styles.editGroup}>
-                        <label htmlFor="author" className={styles.editLabel + ' ' + themeTernary}>
+                        <label htmlFor='author' className={styles.editLabel + ' ' + themeTernary}>
                             Автор
                         </label>
                         <input
                             {...register('author')}
                             defaultValue={currentBook.author}
                             placeholder='Марк Аврелий Антонин'
-                            type="text"
+                            type='text'
                             id='author'
                             name='author'
                             className={styles.editInput + ' ' + themeTernary}
@@ -136,7 +141,7 @@ const BookEditPage: FC = () => {
                         {errors.author && <span className={styles.editError}>{errors.author.message}</span>}
                     </div>
                     <div className={styles.editGroup}>
-                        <label htmlFor="description" className={styles.editLabel + ' ' + themeTernary}>
+                        <label htmlFor='description' className={styles.editLabel + ' ' + themeTernary}>
                             Описание
                         </label>
                         <textarea
@@ -151,7 +156,7 @@ const BookEditPage: FC = () => {
                         {errors.description && <span className={styles.editError}>{errors.description.message}</span>}
                     </div>
                     <div className={styles.editGroup}>
-                        <label htmlFor="pages" className={styles.editLabel + ' ' + themeTernary}>
+                        <label htmlFor='pages' className={styles.editLabel + ' ' + themeTernary}>
                             Число страниц
                         </label>
                         <input
@@ -162,7 +167,7 @@ const BookEditPage: FC = () => {
                             )}
                             defaultValue={currentBook.pages}
                             placeholder='519'
-                            type="number"
+                            type='number'
                             id='pages'
                             name='pages'
                             className={styles.editInput + ' ' + themeTernary}
@@ -171,7 +176,7 @@ const BookEditPage: FC = () => {
                         {errors.pages && <span className={styles.editError}>{errors.pages.message}</span>}
                     </div>
                     <div className={styles.editGroup}>
-                        <label htmlFor="year" className={styles.editLabel + ' ' + themeTernary}>
+                        <label htmlFor='year' className={styles.editLabel + ' ' + themeTernary}>
                             Год выпуска
                         </label>
                         <input
@@ -182,7 +187,7 @@ const BookEditPage: FC = () => {
                             )}
                             defaultValue={currentBook.year}
                             placeholder='2025'
-                            type="number"
+                            type='number'
                             id='year'
                             name='year'
                             className={styles.editInput + ' ' + themeTernary}
@@ -191,7 +196,7 @@ const BookEditPage: FC = () => {
                         {errors.year && <span className={styles.editError}>{errors.year.message}</span>}
                     </div>
                     <div className={styles.editGroup}>
-                        <label htmlFor="isbn" className={styles.editLabel + ' ' + themeTernary}>
+                        <label htmlFor='isbn' className={styles.editLabel + ' ' + themeTernary}>
                             ISBN
                         </label>
                         <input
@@ -202,7 +207,7 @@ const BookEditPage: FC = () => {
                             )}
                             defaultValue={currentBook.isbn}
                             placeholder='123123123123'
-                            type="number"
+                            type='number'
                             id='isbn'
                             name='isbn'
                             className={styles.editInput + ' ' + themeTernary}
@@ -211,12 +216,12 @@ const BookEditPage: FC = () => {
                         {errors.isbn && <span className={styles.editError}>{errors.isbn.message}</span>}
                     </div>
                     <div className={styles.editGroup}>
-                        <label htmlFor="categoryTag" className={styles.editLabel + ' ' + themeTernary}>Выбрать Категорию</label>
+                        <label htmlFor='categoryTag' className={styles.editLabel + ' ' + themeTernary}>Выбрать Категорию</label>
                         <select
                             {...register('categoryTag')}
                             onChange={(e) => setCat(e.target.value)}
-                            name="categoryTag"
-                            id="categoryTag"
+                            name='categoryTag'
+                            id='categoryTag'
                             className={styles.editSelect + ' ' + themeTernary}
                             style={errors.categoryTag ? { 'borderColor': 'red' } : {}}
                         >
@@ -231,11 +236,11 @@ const BookEditPage: FC = () => {
                     {
                         cat &&
                         <div className={styles.editGroup}>
-                            <label htmlFor="themeTag" className={styles.editLabel + ' ' + themeTernary}>Выбрать тему</label>
+                            <label htmlFor='themeTag' className={styles.editLabel + ' ' + themeTernary}>Выбрать тему</label>
                             <select
                                 {...register('themeTag')}
-                                name="themeTag"
-                                id="themeTag"
+                                name='themeTag'
+                                id='themeTag'
                                 className={styles.editSelect + ' ' + themeTernary}
                                 style={errors.themeTag ? { 'borderColor': 'red' } : {}}
                             >
@@ -250,13 +255,13 @@ const BookEditPage: FC = () => {
                     <div className={styles.checkbox}>
                         <input
                             {...register('isInStock')}
-                            type="checkbox"
+                            type='checkbox'
                             id='isInStock'
                             name='isInStock'
                             className={styles.editInput + ' ' + themeTernary}
                             style={errors.isInStock ? { 'borderColor': 'red' } : {}}
                         />
-                        <label htmlFor="isInStock" className={styles.editLabel + ' ' + themeTernary}>
+                        <label htmlFor='isInStock' className={styles.editLabel + ' ' + themeTernary}>
                             В наличии на складе
                         </label>
                         {errors.isInStock && <span className={styles.editError}>{errors.isInStock.message}</span>}
@@ -265,24 +270,24 @@ const BookEditPage: FC = () => {
                         <input
                             {...register('isSoftCover')}
                             defaultChecked={currentBook.isSoftCover ? true : false}
-                            type="checkbox"
+                            type='checkbox'
                             id='isSoftCover'
                             name='isSoftCover'
                             className={styles.editInput + ' ' + themeTernary}
                             style={errors.isSoftCover ? { 'borderColor': 'red' } : {}}
                         />
-                        <label htmlFor="isSoftCover" className={styles.editLabel + ' ' + themeTernary}>
+                        <label htmlFor='isSoftCover' className={styles.editLabel + ' ' + themeTernary}>
                             Мягкая обложка
                         </label>
                         {errors.isSoftCover && <span className={styles.editError}>{errors.isSoftCover.message}</span>}
                     </div>
                     <div className={styles.editGroup}>
-                        <label htmlFor="image" className={styles.editLabel + ' ' + themeTernary}>
+                        <label htmlFor='image' className={styles.editLabel + ' ' + themeTernary}>
                             Обложка
                         </label>
                         <input
                             {...register('image')}
-                            type="file"
+                            type='file'
                             id='image'
                             name='image'
                             className={styles.editInput + ' ' + themeTernary}

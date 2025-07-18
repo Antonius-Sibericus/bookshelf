@@ -63,11 +63,11 @@ const CreateCategory: FC = () => {
 
     return (
         <form className={styles.workshopCreateItem} onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor="categoryTitle" className={styles.workshopLabel + ' ' + themeTernary}>Создать категорию</label>
+            <label htmlFor='categoryTitle' className={styles.workshopLabel + ' ' + themeTernary}>Создать категорию</label>
             <input
                 {...register('categoryTitle')}
                 placeholder='Заголовок категории'
-                type="text"
+                type='text'
                 id='categoryTitle'
                 name='categoryTitle'
                 className={styles.workshopInput + ' ' + themeTernary}
@@ -77,7 +77,7 @@ const CreateCategory: FC = () => {
             <input
                 {...register('categoryTag')}
                 placeholder='Тэг категории (например, textbook)'
-                type="text"
+                type='text'
                 id='categoryTag'
                 name='categoryTag'
                 className={styles.workshopInput + ' ' + themeTernary}

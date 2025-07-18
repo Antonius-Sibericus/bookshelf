@@ -92,7 +92,8 @@ const ProfilePage: FC = () => {
 
             navigate('/login')
         } catch (err) {
-            console.error((err as DefaultResponseType)?.message || err)
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.error(customErrorData ? customErrorData.message : err)
         }
     }
 
@@ -112,12 +113,12 @@ const ProfilePage: FC = () => {
                 <div className={styles.profileContainer}>
                     <form className={styles.profileForm} onSubmit={handleSubmit(onSubmitInfo)}>
                         <div className={styles.profileGroup}>
-                            <label htmlFor="surname" className={styles.profileLabel + ' ' + themeTernary}>
+                            <label htmlFor='surname' className={styles.profileLabel + ' ' + themeTernary}>
                                 Фамилия
                             </label>
                             <input
                                 {...register('surname')}
-                                type="text"
+                                type='text'
                                 id='surname'
                                 name='surname'
                                 className={styles.profileInput + ' ' + themeTernary + ' ' + disabledeTernary}
@@ -127,12 +128,12 @@ const ProfilePage: FC = () => {
                             {errors.surname && <span className={styles.profileError}>{errors.surname.message}</span>}
                         </div>
                         <div className={styles.profileGroup}>
-                            <label htmlFor="name" className={styles.profileLabel + ' ' + themeTernary}>
+                            <label htmlFor='name' className={styles.profileLabel + ' ' + themeTernary}>
                                 Имя
                             </label>
                             <input
                                 {...register('name')}
-                                type="text"
+                                type='text'
                                 id='name'
                                 name='name'
                                 className={styles.profileInput + ' ' + themeTernary + ' ' + disabledeTernary}
@@ -142,12 +143,12 @@ const ProfilePage: FC = () => {
                             {errors.name && <span className={styles.profileError}>{errors.name.message}</span>}
                         </div>
                         <div className={styles.profileGroup}>
-                            <label htmlFor="paternal" className={styles.profileLabel + ' ' + themeTernary}>
+                            <label htmlFor='paternal' className={styles.profileLabel + ' ' + themeTernary}>
                                 Отчество (если есть)
                             </label>
                             <input
                                 {...register('paternal')}
-                                type="text"
+                                type='text'
                                 id='paternal'
                                 name='paternal'
                                 className={styles.profileInput + ' ' + themeTernary + ' ' + disabledeTernary}
@@ -157,13 +158,13 @@ const ProfilePage: FC = () => {
                             {errors.paternal && <span className={styles.profileError}>{errors.paternal.message}</span>}
                         </div>
                         <div className={styles.profileGroup}>
-                            <label htmlFor="role" className={styles.profileLabel + ' ' + themeTernary}>
+                            <label htmlFor='role' className={styles.profileLabel + ' ' + themeTernary}>
                                 Ваша роль на сайте
                             </label>
                             <select
                                 {...register('role')}
-                                name="role"
-                                id="role"
+                                name='role'
+                                id='role'
                                 className={styles.profileSelect + ' ' + themeTernary + ' ' + disabledeTernary}
                                 style={errors.role ? { 'borderColor': 'red' } : {}}
                                 disabled={!userInfoEdit ? true : false}

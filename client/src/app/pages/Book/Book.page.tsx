@@ -16,6 +16,8 @@ import { fetchFavorites } from '../../../redux/favorites/favorites.async'
 import { selectorFavorites } from '../../../redux/favorites/favorites.selector'
 import { selectorUsers } from '../../../redux/users/users.selector'
 import { selectorGeneral } from '../../../redux/general/general.selector'
+import type { DefaultResponseType } from '../../../types/responsesTypes/defaultResponse.type'
+import type { AxiosError } from 'axios'
 
 const BookPage: FC = () => {
     const { isSignedUp } = useSelector(selectorGeneral)
@@ -31,18 +33,23 @@ const BookPage: FC = () => {
     const [isCheckingAuth, setIsCheckingAuth] = useState<boolean>(false)
 
     useEffect(() => {
-        const getBook = async () => {
-            if (params.bookTag) {
-                const result = await BooksService.getOneBook(params.bookTag)
-                const response = result.data
+        try {
+            const getBook = async () => {
+                if (params.bookTag) {
+                    const result = await BooksService.getOneBook(params.bookTag)
+                    const response = result.data
 
-                if (response as BookResponseType) {
-                    setCurrentBook(response.book)
+                    if (response as BookResponseType) {
+                        setCurrentBook(response.book)
+                    }
                 }
             }
-        }
 
-        getBook()
+            getBook()
+        } catch (err) {
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.error(customErrorData ? customErrorData.message : err)
+        }
     }, [])
 
     useEffect(() => {
@@ -61,7 +68,8 @@ const BookPage: FC = () => {
             }
 
         } catch (err) {
-            console.error(err)
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.error(customErrorData ? customErrorData.message : err)
         }
     }
 
@@ -75,7 +83,8 @@ const BookPage: FC = () => {
                 setIsInFavorites(true)
             }
         } catch (err) {
-            console.error(err)
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.error(customErrorData ? customErrorData.message : err)
         }
     }
 
@@ -89,7 +98,8 @@ const BookPage: FC = () => {
                 setIsInBasket(false)
             }
         } catch (err) {
-            console.error(err)
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.error(customErrorData ? customErrorData.message : err)
         }
     }
 
@@ -103,7 +113,8 @@ const BookPage: FC = () => {
                 setIsInFavorites(false)
             }
         } catch (err) {
-            console.error(err)
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.error(customErrorData ? customErrorData.message : err)
         }
     }
 
@@ -114,7 +125,7 @@ const BookPage: FC = () => {
                 <div className={styles.bookPageAuthor}>{currentBook.author}</div>
                 <div className={styles.bookMainContent}>
                     <div className={styles.bookPageImage}>
-                        <img src={`${import.meta.env.VITE_API_URL}/${currentBook.tag}.png`} alt="image" />
+                        <img src={`${import.meta.env.VITE_API_URL}/${currentBook.tag}.png`} alt='image' />
                     </div>
                     <div className={styles.bookPageInfo}>
                         <div className={styles.bookPageEntry}>

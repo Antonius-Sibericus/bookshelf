@@ -9,6 +9,7 @@ import UsersService from '../../../services/users.service'
 import type { UserType } from '../../../../types/entitiesTypes/user.type'
 import type { UserResponseType } from '../../../../types/responsesTypes/userResponse.type'
 import type { DefaultResponseType } from '../../../../types/responsesTypes/defaultResponse.type'
+import type { AxiosError } from 'axios'
 
 type deleteUserModalProps = {
     setAreYouSure: (type: boolean) => void,
@@ -33,7 +34,8 @@ const DeleteUserModal: FC<deleteUserModalProps> = ({ setAreYouSure, currentUser 
                 console.log(response.message)
             }
         } catch (err) {
-            console.error((err as DefaultResponseType)?.message || err)
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.error(customErrorData ? customErrorData.message : err)
         }
     }
 

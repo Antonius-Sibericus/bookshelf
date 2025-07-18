@@ -10,6 +10,8 @@ import { useAppDispatch } from '../../../redux/store.redux'
 import FavoritesService from '../../services/favorites.service'
 import type { BookResponseType } from '../../../types/responsesTypes/bookResponse.type'
 import { fetchFavorites } from '../../../redux/favorites/favorites.async'
+import type { DefaultResponseType } from '../../../types/responsesTypes/defaultResponse.type'
+import type { AxiosError } from 'axios'
 
 const FavoritesPage: FC = () => {
     const { theme, currentUser } = useSelector(selectorGeneral)
@@ -18,14 +20,19 @@ const FavoritesPage: FC = () => {
     const dispath = useAppDispatch()
 
     const removeFromFav = async (tag: string) => {
-        const result = await FavoritesService.removeFavorite(tag)
-        const response = result.data
+        try {
+            const result = await FavoritesService.removeFavorite(tag)
+            const response = result.data
 
-        if (response as BookResponseType) {
-            console.log(response.message)
+            if (response as BookResponseType) {
+                console.log(response.message)
+            }
+
+            dispath(fetchFavorites())
+        } catch (err) {
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.error(customErrorData ? customErrorData.message : err)
         }
-
-        dispath(fetchFavorites())
     }
 
     return (

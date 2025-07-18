@@ -10,22 +10,29 @@ import BasketService from '../../services/basket.service'
 import type { BooksResponseType } from '../../../types/responsesTypes/booksResponse.type'
 import { useAppDispatch } from '../../../redux/store.redux'
 import { fetchBasket } from '../../../redux/basket/basket.async'
+import type { DefaultResponseType } from '../../../types/responsesTypes/defaultResponse.type'
+import type { AxiosError } from 'axios'
 
 const BasketPage: FC = () => {
     const { theme, currentUser } = useSelector(selectorGeneral)
     const { basket } = useSelector(selectorBasket)
     const themeTernary = theme === ColorThemeEnum.LIGHT ? styles.light : styles.dark
     const dispatch = useAppDispatch()
-    
+
     const removeFromCart = async (tag: string) => {
-        const result = await BasketService.removeFromBasket(tag)
-        const response = result.data
+        try {
+            const result = await BasketService.removeFromBasket(tag)
+            const response = result.data
 
-        if (response as BooksResponseType) {
-            console.log(response.message)
+            if (response as BooksResponseType) {
+                console.log(response.message)
+            }
+
+            dispatch(fetchBasket())
+        } catch (err) {
+            const customErrorData: DefaultResponseType = (err as AxiosError).response?.data as DefaultResponseType
+            console.error(customErrorData ? customErrorData.message : err)
         }
-
-        dispatch(fetchBasket())
     }
 
     return (
